@@ -16,8 +16,7 @@
 }
 
 /* 深色模式变量 */
-@media (prefers-color-scheme: dark) {
-    :root {
+[data-theme="dark"] {
         --bg-primary: #1a1a1a;
         --bg-secondary: #2d2d2d;
         --text-primary: #ffffff;
@@ -25,7 +24,6 @@
         --border-color: #404040;
         --table-header-bg: #333333;
         --table-row-hover: #383838;
-    }
 }
 
 /* 基础样式重置 */
@@ -143,3 +141,28 @@ h1 {
         padding: 6px 8px;
     }
 }
+
+/* 针对color-scheme元素的样式 
+#color-scheme {
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+#color-scheme-status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+#color-scheme-status.status-normal {
+    color: var(--status-normal);
+}
+
+#color-scheme-status.status-warning {
+    color: var(--status-warning);
+}
+
+#color-scheme-status.status-error {
+    color: var(--status-error);
+}
+*/

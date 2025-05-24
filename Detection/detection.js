@@ -17,6 +17,14 @@ function updateElement(id, value, status) {
     }
 }
 
+const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'theme') {
+                document.documentElement.setAttribute('data-theme', e.newValue || 'light');
+            }
+        });
+
 // 检测浏览器UA标识
 function detectBrowserUA() {
     const ua = navigator.userAgent;
@@ -112,7 +120,7 @@ async function detectIP() {
         if (geoData.country) locationParts.push(geoData.country);
         if (geoData.region) locationParts.push(geoData.region);
         if (geoData.city) locationParts.push(geoData.city);
-        if (geoData.org) locationParts.push(geoData.org.split(' ')[0]); // 取组织简称
+        if (geoData.org) locationParts.push(geoData.org.split(' ')[0]);
         
         const finalLocation = locationParts.length > 0 
             ? locationParts.join(' · ') 
@@ -140,31 +148,45 @@ async function detectIP() {
     }
 }
 
-// Ping检测函数
 async function pingWebsite(url, elementId) {
-    const startTime = performance.now();
+    const TIMEOUT = 5000; // 总检测超时5秒
+    const WARNING_THRESHOLD = 500; // 慢速阈值0.5秒
+    
     try {
+        // 双协议并行检测
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
+        setTimeout(() => controller.abort(), TIMEOUT);
         
-        await fetch(`https://${url}`, {
-            mode: 'no-cors',
-            signal: controller.signal
-        });
-        
-        clearTimeout(timeoutId);
-        const duration = Math.round(performance.now() - startTime);
+        // 同时尝试HTTPS和HTTP
+        const requests = [
+            fetch(`https://${url}`, { mode: 'no-cors', signal: controller.signal }),
+            fetch(`http://${url}`, { mode: 'no-cors', signal: controller.signal })
+        ];
+
+        // 等待任意一个协议成功
+        const startTime = Date.now();
+        const response = await Promise.any(requests);
+        const latency = Date.now() - startTime;
+
+        // 判断访问速度
         let status = STATUS.NORMAL;
-        
-        if (duration > 1000) {
+        let statusText = '正常';
+        if (latency > WARNING_THRESHOLD) {
             status = STATUS.WARNING;
-        } else if (duration > 2000) {
-            status = STATUS.ERROR;
+            statusText = '较慢';
         }
+
+        updateElement(elementId, statusText, status);
         
-        updateElement(elementId, `${duration}ms`, status);
     } catch (error) {
-        updateElement(elementId, '连接失败', STATUS.ERROR);
+        const isTimeout = error.name === 'AbortError';
+        const isCertError = error.message.match(/SSL|certificate/i);
+        
+        let errorText = '不可访问';
+        if (isTimeout) errorText = '请求超时';
+        else if (isCertError) errorText = '证书错误';
+        
+        updateElement(elementId, errorText, STATUS.ERROR);
     }
 }
 
@@ -172,8 +194,9 @@ async function pingWebsite(url, elementId) {
 function runPingTests() {
     pingWebsite('baidu.com', 'ping-baidu');
     pingWebsite('mihoyo.com', 'ping-mihoyo');
-    pingWebsite('qq.com', 'ping-qq');
     pingWebsite('bilibili.com', 'ping-bilibili');
+    pingWebsite('tool.lonzov.top', 'ping-tool.lonzov.top');
+    pingWebsite('www.lonzov.top', 'ping-www.lonzov.top');
     pingWebsite('github.com', 'ping-github');
     pingWebsite('youtube.com', 'ping-youtube');
 }
@@ -186,6 +209,6 @@ document.addEventListener('DOMContentLoaded', () => {
     detectIP();
     runPingTests();
 
-    // 每60秒更新一次Ping检测
-    setInterval(runPingTests, 60000);
+    // 每30秒更新一次Ping检测
+    setInterval(runPingTests, 30000);
 });
