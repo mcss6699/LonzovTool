@@ -74,79 +74,131 @@ function detectColorScheme() {
     });
 }
 
-async function detectIP() {
-    const TIMEOUT = 10000; // 10秒超时
+// 英文运营商名称映射表
+const ISP_TRANSLATIONS = {
+    'China Mobile': '中国移动',
+    'China Telecom': '中国电信',
+    'China Unicom': '中国联通',
+    'CMCC': '中国移动',
+    'CHINANET': '中国电信',
+    'UNICOM': '中国联通'
+};
 
-    // 获取IP地址
+// IP检测
+async function detectIP() {
+    const TIMEOUT = 10000; // 超时
+
+    //IP地址
+    let ip;
     try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        if (!response.ok) throw new Error('使用api.ipify.org失败');
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
+        
+        const response = await fetch('https://api.ipify.org?format=json', {
+            signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) throw new Error('IP查询失败');
         const data = await response.json();
         ip = data.ip;
     } catch (error) {
         try {
             // 备用IP查询
-            const response = await fetch('https://ipv4.icanhazip.com/');
-            if (!response.ok) throw new Error('使用icanhazip.com失败');
-            const text = await response.text();
-            ip = text.trim();
-        } catch (backupError) {
-            updateElement('ipv4', '获取IP失败', STATUS.ERROR);
-            updateElement('ipv4-location', '无法获取', STATUS.ERROR);
+            const backupRes = await fetch('https://ipv4.icanhazip.com/');
+            ip = (await backupRes.text()).trim();
+        } catch {
+            updateElement('ipv4', 'IP获取失败', STATUS.ERROR);
+            updateElement('ipv4-location', '服务不可用', STATUS.ERROR);
             return;
         }
     }
 
-    // 更新IP地址显示
     updateElement('ipv4', ip, STATUS.NORMAL);
 
-    // 查询归属地信息
+// 运营商检测
+    // 1-太平洋网络
     try {
-        const controller3 = new AbortController();
-        const timeout3 = setTimeout(() => controller3.abort(), TIMEOUT);
+        const controller = new AbortController();
+        setTimeout(() => controller.abort(), TIMEOUT);
         
-        // 使用支持ISP/ASN的API
-        const geoResponse = await fetch(`https://ipapi.co/${ip}/json/`, {
-            headers: { 'User-Agent': 'Mozilla/5.0' }, // 绕过某些API的限制
-            signal: controller3.signal
+        const response = await fetch(`http://whois.pconline.com.cn/ipJson.jsp?ip=${ip}&json=true`, {
+            signal: controller.signal,
+            headers: { 'Accept-Language': 'zh-CN' }
         });
-        clearTimeout(timeout3);
         
-        if (!geoResponse.ok) throw new Error(`HTTP ${geoResponse.status}`);
-        const geoData = await geoResponse.json();
+        const data = await response.json();
+        if (data.addr) {
+            return updateElement('ipv4-location', data.addr.split(' ').pop(), STATUS.NORMAL);
+        }
+    } catch {}
+
+    // A2-国内HTTPS API
+    try {
+        const response = await fetch(`https://ip.niu.pi/api/ip/isp?ip=${ip}`);
+        const data = await response.json();
+        if (data.data?.isp) {
+            return updateElement('ipv4-location', data.data.isp, STATUS.NORMAL);
+        }
+    } catch {}
+
+    // 3-IPinfo
+    try {
+        const response = await fetch(`https://ipinfo.io/${ip}/json?token=233425fc2ab6a5`, {
+            headers: { 'User-Agent': 'Mozilla/5.0' }
+        });
+        const data = await response.json();
         
-        // 智能组合归属地信息
-        const locationParts = [];
-        if (geoData.country) locationParts.push(geoData.country);
-        if (geoData.region) locationParts.push(geoData.region);
-        if (geoData.city) locationParts.push(geoData.city);
-        if (geoData.org) locationParts.push(geoData.org.split(' ')[0]);
-        
-        const finalLocation = locationParts.length > 0 
-            ? locationParts.join(' · ') 
-            : '未知归属地';
-        
-        updateElement('ipv4-location', finalLocation, STATUS.NORMAL);
-    } catch (geoError) {
-        // 备用归属地查询
-        try {
-            const controller4 = new AbortController();
-            const timeout4 = setTimeout(() => controller4.abort(), TIMEOUT);
-            
-            const backupGeo = await fetch(`https://ipwhois.app/format/json/${ip}`, {
-                signal: controller4.signal
-            });
-            clearTimeout(timeout4);
-            
-            const backupData = await backupGeo.json();
-            const simpleLocation = backupData.asn || backupData.timezone;
-            updateElement('ipv4-location', simpleLocation || '查询超时', 
-                        backupGeo.ok ? STATUS.WARNING : STATUS.ERROR);
-        } catch {
-            updateElement('ipv4-location', '服务不可用', STATUS.ERROR);
+        if (data.org) {
+            const processed = processInternationalISP(data.org);
+            return updateElement('ipv4-location', processed, STATUS.NORMAL);
+        }
+    } catch {}
+
+    updateElement('ipv4-location', '运营商检测失败', STATUS.WARNING);
+}
+
+// IPinfo特殊处理函数
+function processInternationalISP(ispString) {
+    // 去除AS号码和技术细节
+    const cleaned = ispString
+        .replace(/^AS\d+\s*/i, '')  // 去除AS
+        .replace(/[^\w\s]/g, ' ')   // 去除特殊字符
+        .trim();
+
+    // 优先完整匹配
+    for (const [en, cn] of Object.entries(ISP_TRANSLATIONS)) {
+        if (new RegExp(`\\b${en}\\b`, 'i').test(cleaned)) {
+            return cn;
         }
     }
+
+    // 关键词匹配
+    if (/mobile|cmcc/i.test(cleaned)) return '中国移动';
+    if (/telecom|chinanet/i.test(cleaned)) return '中国电信';
+    if (/unicom/i.test(cleaned)) return '中国联通';
+
+    return cleaned; // 无法识别时返回原始数据
 }
+
+// 辅助函数和初始化
+function updateElement(id, value, status) {
+    const element = document.getElementById(id);
+    const statusElement = document.getElementById(`${id}-status`);
+    if (element) element.textContent = value;
+    if (statusElement) {
+        statusElement.textContent = 
+            status === STATUS.NORMAL ? '正常' :
+            status === STATUS.WARNING ? '警告' : '异常';
+        statusElement.className = status;
+    }
+}
+
+// 页面初始化
+document.addEventListener('DOMContentLoaded', () => {
+    detectIP();
+    setInterval(detectIP, 60000); // 每60s更新
+});
 
 async function pingWebsite(url, elementId) {
     const TIMEOUT = 5000; // 总检测超时5秒
@@ -195,8 +247,7 @@ function runPingTests() {
     pingWebsite('baidu.com', 'ping-baidu');
     pingWebsite('mihoyo.com', 'ping-mihoyo');
     pingWebsite('bilibili.com', 'ping-bilibili');
-    pingWebsite('tool.lonzov.top', 'ping-tool.lonzov.top');
-    pingWebsite('www.lonzov.top', 'ping-www.lonzov.top');
+    pingWebsite('github.io', 'ping-githubio');
     pingWebsite('github.com', 'ping-github');
     pingWebsite('youtube.com', 'ping-youtube');
 }
