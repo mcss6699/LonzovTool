@@ -1,0 +1,364 @@
+/* 基础样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: #202124;
+  background-color: #FFFFFF;
+  line-height: 1.6;
+  padding: 1.5rem;
+}
+
+/* 头部区域 */
+.site-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* 头部控制区域 */
+.header-controls {
+  display: flex;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  gap: 1rem;
+  position: relative;
+}
+
+.price-btn {
+  position: static;
+  margin-right: 0.5rem;
+}
+
+.price-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.price-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.price-btn img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.search-container {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 24px !important;
+  padding: 0.5rem 1rem;
+  overflow: hidden;
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.75rem;
+  display: block;
+}
+
+.search-divider {
+  width: 1px;
+  height: 20px;
+  background: #ddd;
+  margin-right: 0.75rem;
+}
+
+#search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  padding: 0.3rem 0;
+  background: transparent;
+}
+
+.search-hint {
+  position: absolute;
+  bottom: -1.5rem;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* 作品网格布局 */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 作品卡片样式 */
+.project-card {
+  background: #FFFFFF;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.project-card .card-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.project-card .card-content {
+  padding: 1rem;
+}
+
+.project-card .card-content h3 {
+  margin-bottom: 0.5rem;
+  color: #4285F4;
+}
+
+.project-card .card-content .price-tag {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #666;
+  cursor: pointer;
+}
+
+.project-card .card-content .price-tag:hover {
+  text-decoration: underline;
+}
+
+/* 详情页遮罩层 */
+.project-detail-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(8px) !important;
+  backdrop-filter: blur(8px) !important;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.project-detail-overlay.active {
+  opacity: 1;
+}
+
+.project-detail-overlay .detail-content {
+  background: #FFFFFF;
+  width: 90%;
+  max-width: 800px;
+  padding: 2rem;
+  border-radius: 8px;
+  position: relative;
+  transform: scale(0.95);
+  transition: transform 0.4s ease;
+}
+
+.project-detail-overlay .detail-content.active {
+  transform: scale(1);
+}
+
+.project-detail-overlay .detail-content .close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.project-detail-overlay .detail-content .detail-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+  border-radius: 8px !important;
+  -webkit-border-radius: 8px !important;
+  display: block;
+}
+
+.project-detail-overlay .detail-content {
+  overflow: hidden;
+}
+
+.project-detail-overlay .detail-content .price-container {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.price-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: env(safe-area-inset-top);
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  
+.price-popup.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.price-popup .popup-content {
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    padding: 2rem;
+    background: #FFFFFF;
+    border-radius: 8px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    margin: auto;
+  }
+
+.price-popup.active .popup-content {
+  transform: scale(1);
+}
+
+@media (max-height: 900px) {
+    .price-popup {
+        align-items: flex-start;
+      }
+      .price-popup .popup-content {
+        margin-top: 30rem;
+      }
+    }
+
+@media (max-height: 700px) {
+      .price-popup .popup-content {
+        margin-top: 15rem;
+      }
+    }
+
+@media (max-height: 450px) {
+    .price-popup .popup-content {
+      margin-top: 13.5rem;
+    }
+  }
+
+.price-info {
+  margin: 1.5rem 0;
+  text-align: left;
+  padding: 0 1rem;
+}
+
+.price-info p {
+  margin-bottom: 0.8rem;
+  line-height: 1.6;
+}
+
+.confirm-btn {
+  display: block;
+  width: 120px;
+  margin: 1.5rem auto 0;
+  padding: 0.8rem;
+  background: #4285F4;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.confirm-btn:hover {
+  background: #3367d6;
+}
+
+/* 页面通知样式 */
+.page-notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 4px;
+  z-index: 1002;
+  display: none;
+  animation: fadeInOut 3s ease;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .project-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 1rem;
+  }
+  
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .header-controls {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .search-container {
+    width: 100%;
+  }
+  
+  .price-btn {
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+  }
+  
+  .price-popup .popup-content,
+  .price-detail-popup .popup-content {
+    padding: 1.5rem;
+    width: 95%;
+  }
+}
