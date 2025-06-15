@@ -15,13 +15,13 @@ async function loadProjects() {
     console.log('加载到项目数据:', data); // 调试日志
     return data;
   } catch (error) {
-    console.error('加载作品数据出错:', error);
+    console.error('加载数据出错:', error);
     // 返回示例数据作为后备
     return [
       {
         "id": "backup-1",
-        "title": "示例项目",
-        "description": "这是示例项目",
+        "title": "加载失败❌",
+        "description": "当你看到这个代表json文件加载失败了，请刷新重试",
         "image": "https://img.fastmirror.net/s/2025/05/17/6827ffcf8218b.jpg",
         "price": "S - 小型",
         "tags": ["示例"]
@@ -84,7 +84,6 @@ function showProjectDetail(project) {
   });
 }
 
-// 搜索过滤功能
 async function setupSearch(projects) {
   // 搜索图标点击事件
   document.querySelector('.search-icon').addEventListener('click', async () => {
@@ -120,20 +119,9 @@ async function setupSearch(projects) {
     );
     
     renderProjects(filtered);
-    
+
     if (filtered.length === 0) {
-      // 显示浏览器通知
-      if ('Notification' in window) {
-        if (Notification.permission === 'granted') {
-          new Notification('什么都没搜到捏…换个关键词试试吧~');
-        } else if (Notification.permission !== 'denied') {
-          Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-              new Notification('什么都没搜到捏…换个关键词试试吧~');
-            }
-          });
-        }
-      }
+      alert('什么都没搜到捏…换个关键词试试吧~');
       
       // 重置搜索状态
       searchInput.value = '';
@@ -228,11 +216,6 @@ function renderPriceList(projects) {
 // 初始化应用
 async function initApp() {
   console.log('应用初始化开始');
-  
-  // 请求通知权限
-  if (typeof Notification !== 'undefined') {
-    Notification.requestPermission().catch(console.error);
-  }
 
   try {
     const projects = await loadProjects();

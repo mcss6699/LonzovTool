@@ -11,12 +11,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 卡片
     const tools = [
-        { title: "全角转换", desc: "Minecraft专属艺术字符", link: "qjzh/qjzh.html" },
-        { title: "命令转换", desc: "execute转换新语法", link: "execute/exec.html" },
-        { title: "工具3", desc: "暂时想不到还需要什么", link: "index.html" },
-        { title: "工具4", desc: "欢迎投稿提建议~", link: "index.html" },
-        { title: "工具5", desc: "工具5的简介", link: "index.html" },
-        { title: "工具6", desc: "工具6的简介", link: "index.html" }
+        { title: "艺术字转换", desc: "Minecraft专属艺术字符，游戏内才能显示", link: "qjzh/qjzh.html" },
+        { title: "命令转换", desc: "execute命令转换新语法", link: "execute/exec.html" },
+        { title: "T显动画", desc: "自动生成打字机效果逐字出现动画", link: "tr/tr.html" },
+        { title: "语法高亮", desc: "高亮语法指令编辑器，更易读易编辑(还在做)", link: "index.html" },
     ];
 
     // 初始化卡片
