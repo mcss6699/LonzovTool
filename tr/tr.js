@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleThemeBtn = document.getElementById('toggleTheme');
     const messageEl = document.getElementById('message');
     const scoreboardName = document.getElementById('scoreboardName');
+    let isOutputEdited = false;
+    const editedLabel = document.querySelector('.edited-label');
 
     // 显示消息提示
     function showMessage(text, type = 'info') {
@@ -72,6 +74,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
 
+    function resetOutputEditState() {
+        isOutputEdited = false;
+        outputText.classList.remove('edited');
+        editedLabel.style.display = 'none';
+    }
+
     // 生成T显命令
     function generateTCommands(text, scoreboard, startScore) {
         if (!text.trim()) {
@@ -81,24 +89,72 @@ document.addEventListener('DOMContentLoaded', function() {
         
         try {
             const commands = [];
+            let i = 0;
+            let score = parseInt(startScore);
             
-            for (let i = 0; i < text.length; i++) {
-                const currentScore = parseInt(startScore) + i;
-                const char = text[i];
-                const commandData = {
-                    translate: "%%2",
-                    with: {
-                        rawtext: [
-                            {selector: `@s[scores={${scoreboard}=${currentScore}..}]`},
-                            {text: char}
-                        ]
+            while (i < text.length) {
+                let currentText = '';
+                
+                // 递归收集所有连续的§*和\n
+                while (i < text.length) {
+                    // 处理§*格式
+                    if (text[i] === '§' && i + 1 < text.length) {
+                        currentText += text.substr(i, 2);
+                        i += 2;
+                        continue;
                     }
-                };
-                commands.push(JSON.stringify(commandData));
+                    // 处理\n字符串
+                    else if (text[i] === '\\' && i + 1 < text.length && text[i+1] === 'n') {
+                        currentText += '\n'; // 直接使用换行符
+                        i += 2;
+                        continue;
+                    }
+                    // 处理实际换行符
+                    else if (text[i] === '\n') {
+                        currentText += '\n';
+                        i++;
+                        continue;
+                    }
+                    break;
+                }
+                
+                // 收集后续一个普通字符
+                if (i < text.length && currentText) {
+                    currentText += text[i];
+                    i++;
+                }
+                
+                if (currentText) {
+                    const commandData = {
+                        translate: "%%2",
+                        with: {
+                            rawtext: [
+                                {selector: `@s[scores={${scoreboard}=${score}..}]`},
+                                {text: currentText}
+                            ]
+                        }
+                    };
+                    commands.push(JSON.stringify(commandData));
+                    score++;
+                } else if (i < text.length) {
+                    // 处理普通字符
+                    const commandData = {
+                        translate: "%%2",
+                        with: {
+                            rawtext: [
+                                {selector: `@s[scores={${scoreboard}=${score}..}]`},
+                                {text: text[i]}
+                            ]
+                        }
+                    };
+                    commands.push(JSON.stringify(commandData));
+                    i++;
+                    score++;
+                }
             }
             
             const result = "[" + commands.join(",") + "]";
-            showMessage(`生成 ${text.length} 条命令成功！`, 'success');
+            showMessage(`✔共生成 ${commands.length} 组！`, 'success');
             return result;
         } catch (err) {
             showMessage('生成失败，请检查输入', 'error');
@@ -160,10 +216,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 绑定事件处理函数
+    outputText.addEventListener('input', function() {
+        if (!isOutputEdited) {
+            isOutputEdited = true;
+            this.classList.add('edited');
+            editedLabel.style.display = 'inline';
+        }
+    });
+    
     toFullWidthBtn.addEventListener('click', function() {
         const scoreboard = scoreboardName.value || 'T显';
         const score = startScore.value || '0';
-        outputText.value = generateTCommands(inputText.value, scoreboard, score);
+        const result = generateTCommands(inputText.value, scoreboard, score);
+        if (result) {
+            outputText.value = result;
+            setTimeout(() => {
+                resetOutputEditState();
+            }, 0);
+        }
     });
 
     clearTextBtn.addEventListener('click', function() {
@@ -173,7 +243,12 @@ document.addEventListener('DOMContentLoaded', function() {
         startScore.value = '0';
         inputText.focus();
         messageEl.className = 'message';
+        setTimeout(() => {
+            resetOutputEditState();
+        }, 0);
     });
+    
+    
 
     copyTextBtn.addEventListener('click', async function() {
         const success = await copyText(outputText.value);

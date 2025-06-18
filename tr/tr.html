@@ -94,17 +94,32 @@
                     background-color: var(--card-bg);
                     color: var(--text-color);
                 }
+
+                .output-area textarea.edited {
+                    border: 2px solid var(--primary-color);
+                    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
+                }
+    
+                .output-area .edited-label {
+                    color: var(--primary-color);
+                    font-weight: bold;
+                    display: none;
+                }
             </style>
             
             <div class="output-area">
-                <label for="outputText">转换结果：</label>
-                <textarea id="outputText" readonly placeholder="转换后的结果将显示在这里..."></textarea>
+                <div>
+                    <label for="outputText">转换结果：</label>
+                    <span class="edited-label">(已编辑)</span>
+                </div>
+                <textarea id="outputText" placeholder="转换结果现在支持编辑了，快试试吧~"></textarea>
             </div>
         </main>
         
         <footer>
             <p>所有内容由用户输入，与本站无关</p>
             <p>本功能基于<a href="https://www.bilibili.com/opus/1077201926970408960">🔗链接</a>实现</p>
+            <p>25.06.18：新增忽略§和\n，自动转换换行</p>
         </footer>
     </div>
     
