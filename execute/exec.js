@@ -158,8 +158,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     toggleThemeBtn.addEventListener('click', function() {
-        try { window.close(); } catch (e) { console.log('窗口关闭被浏览器阻止'); }
-    });
+        // 先模拟浏览器返回
+        if (history.length > 1) {
+          // 有历史记录时尝试返回
+          const fallbackTimer = setTimeout(() => {
+            location.href = "/"; // 超时未返回则跳转首页
+          }, 300); // 超时阈值
+          
+          window.history.back();
+          window.addEventListener('popstate', function handlePop() {
+            clearTimeout(fallbackTimer); // 返回成功时清除定时器
+            window.removeEventListener('popstate', handlePop); // 清理事件
+          }, { once: true });
+        } else {
+          location.href = "/";
+        }
+      });
 
     /* 
     async function copyText(text) {

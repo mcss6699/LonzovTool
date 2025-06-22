@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>建筑预览 - 小舟工具箱</title>
+    <link rel="stylesheet" href="dr.css">
+    <link rel="shortcut icon" href="../favicon.png" type="image/png">
+</head>
+<body>
+    <header class="site-header">
+        <h1>建筑预览</h1>
+    </header>
+
+    <div class="header-controls">
+        <button class="price-btn" id="price-btn">
+            <img src="../icon/money.svg" alt="价格">
+        </button>
+        <div class="search-container">
+            <img src="../icon/sou.svg" class="search-icon" alt="搜索">
+            <div class="search-divider"></div>
+            <input type="text" id="search-input" placeholder="搜索作品名称或标签...">
+            <div class="search-hint" id="search-hint"></div>
+            <div class="filter-tags"></div>
+        </div>
+    </div>
+
+    <main class="project-grid" id="project-container">
+    </main>
+
+    <div class="project-detail-overlay" id="detail-overlay">
+        <div class="detail-content">
+            <button class="close-btn">&times;</button>
+            <img class="detail-image" src="" alt="">
+            <div class="detail-text">
+                <h2 class="detail-title"></h2>
+                <p class="detail-description"></p>
+                <div class="price-container">
+                    <span class="price-label">建筑规模: </span>
+                    <span class="price-value"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="price-popup" id="price-popup">
+        <div class="popup-content">
+            <h3>导入价格 (规模按预估耗时划分)</h3>
+            <div class="price-info">
+                <p>S - 小型：¥1~3/文件</p>
+                <p>M - 中型：¥5/文件</p>
+                <p>L - 大型：¥8/文件</p>
+                <p>SL - 巨大：¥12/文件</p>
+                <p>UL - 超大：¥20/文件</p>
+                <p>*服务器大型地图私聊</p>
+                <p>*支持所有能获得权限的场景</p>
+            </div>
+            <button class="confirm-btn">我知道了</button>
+        </div>
+    </div>
+
+    <div class="page-notification" id="notification">
+        <div class="notification-content"></div>
+    </div>
+
+    <script src="dr.js"></script>
+</body>
+</html>
