@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { title: "命令转换", desc: "execute命令转换新语法", link: "../execute", newTab: false },
         { title: "T显动画", desc: "自动生成打字机效果逐字出现动画", link: "../tr", newTab: false, tag:{ text:"热", type:"hot"} },
         { title: "ID查询", desc: "查询各种原版ID(by 命令助手)", link: "https://ca.projectxero.top/idlist/", newTab: true, tag:{ text:"站外", type:"external"} },
-        { title: "T显编辑器", desc: "可视化编辑T显json(by Dislink)", link: "https://dislink.github.io/rawJSONEditor/", newTab: true, tag:{ text:"站外", type:"external"} },
+        { title: "T显编辑器", desc: "可视化编辑T显json(by Dislink) 如果报错-105多刷新几次", link: "https://dislink.github.io/rawJSONEditor/", newTab: true, tag:{ text:"站外", type:"external"} },
         { title: "语法高亮", desc: "高亮语法指令编辑器，更易读易编辑(还在做)", link: "../index.html", newTab: false, tag:{ text:"在做", type:"doing"} },
     ];
 
