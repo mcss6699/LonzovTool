@@ -1,6 +1,5 @@
 
 :root {
-    /* 浅色 */
     --primary-color: #4285F4;
     --background-color: #FFFFFF;
     --text-color: #202124;
@@ -8,14 +7,11 @@
     --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     --menu-bg: #FFFFFF;
     --dimmed-bg: rgba(0, 0, 0, 0.5);
-    
-    /* 动画时间 */
     --menu-transition: 300ms;
     --hover-transition: 200ms;
 }
 
 [data-theme="dark"] {
-    /* 深色 */
     --primary-color: #8AB4F8;
     --background-color: #202124;
     --text-color: #E8EAED;
@@ -135,8 +131,8 @@ body {
 /* 卡片标签 */
 .tool-tag {
     display: inline-block;
-    padding: 2px 8px;
-    border-radius: 12px;
+    padding: 1.5px 8px;
+    border-radius: 6px;
     font-size: 0.75rem;
     font-weight: normal;
     margin-left: 8px;
@@ -234,7 +230,7 @@ body {
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(51, 0, 0, 0.8); /* 透明度 */
+    background-color: rgba(51, 0, 0, 0.8);
     border: 1px solid #ff3838;
     color: #ff3838;
     padding: 12px 24px;
