@@ -109,6 +109,7 @@ const cardsData = [
     { title: "网易版导入", description: "限免活动中…站长自营无坑", categories:["resource"], link: "./dr/pro.html", newtap:true },
     { title: "安卓基岩版下载↗", description: "优质的境外下载站", categories:["resource"], link: "https://mcapks.net/", newtap:true },
     { title: "幸运转盘", description: "选择困难症？让转盘来决定！", categories:["other"], link: "./spin-the-wheel", newtap:true },
+    { title: "nohello", description: "不要问在吗 | 短链接:nohello.top (池鱼提供服务器&域名支持)", categories:["other"], link: "./nohello", newtap:true },
     
 ];
 
