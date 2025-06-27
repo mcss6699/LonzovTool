@@ -5,6 +5,41 @@ const STATUS = {
     ERROR: 'status-error'
 };
 
+// 调试日志系统
+const debugLog = [];
+const debugLogElement = document.getElementById('debug-log');
+const debugToggle = document.getElementById('debug-toggle');
+
+// 确保日志元素支持换行显示
+if (debugLogElement) {
+    debugLogElement.style.whiteSpace = 'pre-wrap';
+    debugLogElement.style.overflowY = 'auto';
+    debugLogElement.style.maxHeight = '300px';
+}
+
+// 添加日志
+function addDebugLog(message) {
+    const timestamp = new Date().toLocaleTimeString();
+    debugLog.push(`[${timestamp}] ${message}`);
+    
+    if (debugLogElement.style.display === 'block') {
+        debugLogElement.textContent = debugLog.join('\n');
+        debugLogElement.scrollTop = debugLogElement.scrollHeight;
+    }
+}
+
+// 切换调试日志显示
+debugToggle.addEventListener('click', () => {
+    if (debugLogElement.style.display === 'none' || !debugLogElement.style.display) {
+        debugLogElement.style.display = 'block';
+        debugLogElement.textContent = debugLog.join('\n');
+        debugToggle.textContent = '隐藏详细信息';
+    } else {
+        debugLogElement.style.display = 'none';
+        debugToggle.textContent = '显示详细信息';
+    }
+});
+
 // 更新元素内容和状态的通用函数
 function updateElement(id, value, status) {
     const element = document.getElementById(id);
@@ -25,7 +60,7 @@ const savedTheme = localStorage.getItem('theme') || 'light';
             }
         });
 
-// 检测浏览器UA标识
+// 用户代理
 function detectBrowserUA() {
     const ua = navigator.userAgent;
     const element = document.getElementById('browser-ua');
@@ -34,7 +69,7 @@ function detectBrowserUA() {
     if (statusElement) statusElement.textContent = '-';
 }
 
-// 检测浏览器核心
+// 浏览器信息
 function detectBrowserCore() {
     const ua = navigator.userAgent;
     let browserCore = '';
@@ -57,7 +92,7 @@ function detectBrowserCore() {
     if (statusElement) statusElement.textContent = '-';
 }
 
-// 检测深浅色模式
+// 深浅色模式
 function detectColorScheme() {
     const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const colorScheme = isDarkMode ? '深色模式' : '浅色模式';
@@ -84,76 +119,130 @@ const ISP_TRANSLATIONS = {
     'UNICOM': '中国联通'
 };
 
+// 处理FuHongAPI返回的运营商数据
+function processFuHongISP(data) {
+    const lines = data.split('\n');
+    let province = '';
+    let isp = '';
+    
+    for (const line of lines) {
+        if (line.includes('IP物理位置：')) {
+            province = line.split('：')[1].trim().split('省')[0];
+        } else if (line.includes('IP运营商：')) {
+            isp = line.split('：')[1].trim();
+        }
+    }
+    
+    return province ? `${province}${isp}` : isp;
+}
+
 // IP检测
 async function detectIP() {
-    const TIMEOUT = 10000; // 超时
-
-    //IP地址
+    const TIMEOUT = 1500; // 超时1500ms
     let ip;
+
+    // 1. 优先使用FuHongAPI获取IP
     try {
+        addDebugLog('开始调用FuHongAPI获取IP');
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
         
-        const response = await fetch('https://api.ipify.org?format=json', {
+        const response = await fetch('http://fuhongweb.cn/api/api/ip.php', {
             signal: controller.signal
         });
         clearTimeout(timeoutId);
         
-        if (!response.ok) throw new Error('IP查询失败');
-        const data = await response.json();
-        ip = data.ip;
+        if (!response.ok) {
+            addDebugLog(`FuHongAPI返回错误状态: ${response.status}`);
+            throw new Error('IP查询失败');
+        }
+        ip = (await response.text()).trim();
+        addDebugLog('FuHongAPI调用成功');
     } catch (error) {
+        addDebugLog(`FuHongAPI调用失败: ${error.message}`);
+        // 2. 使用ipify.org
         try {
-            // 备用IP查询
-            const backupRes = await fetch('https://ipv4.icanhazip.com/');
-            ip = (await backupRes.text()).trim();
-        } catch {
-            updateElement('ipv4', 'IP获取失败', STATUS.ERROR);
-            updateElement('ipv4-location', '服务不可用', STATUS.ERROR);
-            return;
+            addDebugLog('开始调用ipify.org获取IP');
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
+            
+            const response = await fetch('https://api.ipify.org?format=json', {
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                addDebugLog(`ipify.org返回错误状态: ${response.status}`);
+                throw new Error('IP查询失败');
+            }
+            const data = await response.json();
+            ip = data.ip;
+            addDebugLog('ipify.org调用成功');
+        } catch (error) {
+            addDebugLog(`ipify.org调用失败: ${error.message}`);
+            // 3. 使用icanhazip.com
+            try {
+                addDebugLog('开始调用icanhazip.com获取IP');
+                const backupRes = await fetch('https://ipv4.icanhazip.com/');
+                ip = (await backupRes.text()).trim();
+                addDebugLog('icanhazip.com调用成功');
+            } catch (error) {
+                addDebugLog(`icanhazip.com调用失败: ${error.message}`);
+                updateElement('ipv4', 'IP获取失败', STATUS.ERROR);
+                updateElement('ipv4-location', '服务不可用', STATUS.ERROR);
+                return;
+            }
         }
     }
 
     updateElement('ipv4', ip, STATUS.NORMAL);
 
-// 运营商检测
-    // 1-太平洋网络
+    // 运营商检测
+    // 1. 优先使用FuHongAPI
     try {
         const controller = new AbortController();
-        setTimeout(() => controller.abort(), TIMEOUT);
+        const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
         
-        const response = await fetch(`http://whois.pconline.com.cn/ipJson.jsp?ip=${ip}&json=true`, {
-            signal: controller.signal,
-            headers: { 'Accept-Language': 'zh-CN' }
+        const response = await fetch(`http://fuhongweb.cn/api/api/ip_info.php?ip=${ip}`, {
+            signal: controller.signal
         });
+        clearTimeout(timeoutId);
         
-        const data = await response.json();
-        if (data.addr) {
-            return updateElement('ipv4-location', data.addr.split(' ').pop(), STATUS.NORMAL);
-        }
-    } catch {}
-
-    // A2-国内HTTPS API
-    try {
-        const response = await fetch(`https://ip.niu.pi/api/ip/isp?ip=${ip}`);
-        const data = await response.json();
-        if (data.data?.isp) {
-            return updateElement('ipv4-location', data.data.isp, STATUS.NORMAL);
-        }
-    } catch {}
-
-    // 3-IPinfo
-    try {
-        const response = await fetch(`https://ipinfo.io/${ip}/json?token=233425fc2ab6a5`, {
-            headers: { 'User-Agent': 'Mozilla/5.0' }
-        });
-        const data = await response.json();
-        
-        if (data.org) {
-            const processed = processInternationalISP(data.org);
+        if (!response.ok) throw new Error('运营商查询失败');
+        const data = await response.text();
+        const processed = processFuHongISP(data);
+        if (processed) {
             return updateElement('ipv4-location', processed, STATUS.NORMAL);
         }
     } catch {}
+
+    // 2. 使用IPinfo
+    try {
+        addDebugLog('开始调用IPinfo获取运营商信息');
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
+        
+        const response = await fetch(`https://ipinfo.io/${ip}/json?token=233425fc2ab6a5`, {
+            headers: { 'User-Agent': 'Mozilla/5.0' },
+            signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+            addDebugLog(`IPinfo返回错误状态: ${response.status}`);
+            throw new Error('运营商查询失败');
+        }
+        
+        const data = await response.json();
+        if (data.org) {
+            const processed = processInternationalISP(data.org);
+            addDebugLog('IPinfo调用成功');
+            return updateElement('ipv4-location', processed, STATUS.NORMAL);
+        }
+        addDebugLog('IPinfo返回数据缺少运营商信息');
+    } catch (error) {
+        addDebugLog(`IPinfo调用失败: ${error.message}`);
+    }
 
     updateElement('ipv4-location', '运营商检测失败', STATUS.WARNING);
 }
@@ -201,10 +290,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function pingWebsite(url, elementId) {
-    const TIMEOUT = 5000; // 总检测超时5秒
-    const WARNING_THRESHOLD = 500; // 慢速阈值0.5秒
+    const TIMEOUT = 8000; // 总检测超时5秒
+    const WARNING_THRESHOLD = 800; // 慢速阈值0.5秒
     
     try {
+        addDebugLog(`开始ping测试: ${url}`);
         // 双协议并行检测
         const controller = new AbortController();
         setTimeout(() => controller.abort(), TIMEOUT);
@@ -228,6 +318,7 @@ async function pingWebsite(url, elementId) {
             statusText = '较慢';
         }
 
+        addDebugLog(`ping测试成功: ${url}, 延迟: ${latency}ms, 状态: ${statusText}`);
         updateElement(elementId, statusText, status);
         
     } catch (error) {
@@ -238,6 +329,7 @@ async function pingWebsite(url, elementId) {
         if (isTimeout) errorText = '请求超时';
         else if (isCertError) errorText = '证书错误';
         
+        addDebugLog(`ping测试失败: ${url}, 错误: ${errorText}, 详情: ${error.message}`);
         updateElement(elementId, errorText, STATUS.ERROR);
     }
 }
@@ -260,6 +352,6 @@ document.addEventListener('DOMContentLoaded', () => {
     detectIP();
     runPingTests();
 
-    // 每30秒更新一次Ping检测
-    setInterval(runPingTests, 30000);
+    // 自动更新Ping检测
+    setInterval(runPingTests, 600000);
 });

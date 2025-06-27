@@ -1,28 +1,41 @@
 :root {
     /* 浅色模式变量 */
-    --bg-primary: #ffffff;
-    --bg-secondary: #f5f5f5;
+    --bg-primary: #fafafa;
+    --bg-secondary: #FFFBCC;
     --text-primary: #333333;
-    --text-secondary: #666666;
+    --text-secondary: #3d3d3d;
     --border-color: #e0e0e0;
     --table-header-bg: #f0f0f0;
     --table-row-hover: #f8f8f8;
     
     /* 状态颜色 */
-    --status-normal: #2ecc71;
-    --status-warning: #f1c40f;
-    --status-error: #e74c3c;
+    --status-normal: #06c;
+    --status-warning: #FFEC19;
+    --status-error: #ff4d4f;
+
+    /* 调试界面变量 */
+    --button-bg: #1890ff;
+    --button-text: #ffffff;
+    --button-hover: #40a9ff;
+    --debug-bg: #f0f0f0;
+    --debug-text: #333333;
 }
 
 /* 深色模式变量 */
 [data-theme="dark"] {
-        --bg-primary: #1a1a1a;
-        --bg-secondary: #2d2d2d;
-        --text-primary: #ffffff;
-        --text-secondary: #cccccc;
-        --border-color: #404040;
-        --table-header-bg: #333333;
-        --table-row-hover: #383838;
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --border-color: #404040;
+    --table-header-bg: #333333;
+    --table-row-hover: #383838;
+
+    /* 调试界面变量 - 深色模式 */
+    --button-bg: #177ddc;
+    --button-hover: #3c9ae8;
+    --debug-bg: #2a2a2a;
+    --debug-text: #e0e0e0;
 }
 
 /* 基础样式重置 */
@@ -42,9 +55,10 @@ body {
 
 /* 容器样式 */
 .container {
+    width: 90%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 20px 0;
 }
 
 /* 头部样式 */
@@ -61,39 +75,81 @@ h1 {
 
 .subtitle {
     color: var(--text-secondary);
-    font-size: 1rem;
-    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    margin: 12px 0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--status-warning);
+    padding: 8px 12px;
+    border-radius: 4px;
+    line-height: 1.5;
 }
 
-/* 表格样式 */
-.detection-table {
+/* 列表样式 */
+.detection-list {
     width: 100%;
-    border-collapse: collapse;
-    background-color: var(--bg-primary);
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin: 10px 0;
 }
 
-.detection-table th,
-.detection-table td {
-    padding: 12px 15px;
+/* 调试界面样式 */
+.debug-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.debug-button {
+    padding: 8px 16px;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.debug-button:hover {
+    background-color: var(--button-hover);
+}
+
+.debug-log {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: var(--debug-bg);
+    color: var(--debug-text);
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.85rem;
     text-align: left;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    padding: 6px 0;
     border-bottom: 1px solid var(--border-color);
 }
 
-.detection-table thead th {
-    background-color: var(--table-header-bg);
-    font-weight: 600;
+.item-name {
+    flex: 0 0 120px;
+    font-weight: 500;
     color: var(--text-primary);
 }
 
-.detection-table tbody tr:hover {
-    background-color: var(--table-row-hover);
+.item-value {
+    flex: 1;
+    color: var(--text-secondary);
+    padding: 0 10px;
+    overflow: visible;
+    word-wrap: break-word;
+    white-space: normal;
+    text-align: right;
 }
 
-.detection-table tbody tr:last-child td {
-    border-bottom: none;
+.item:hover {
+    background-color: var(--table-row-hover);
 }
 
 /* 状态样式 */
@@ -112,7 +168,8 @@ h1 {
 /* 响应式布局 */
 @media (max-width: 768px) {
     .container {
-        padding: 10px;
+        width: 95%;
+        padding: 10px 0;
     }
 
     h1 {
@@ -123,10 +180,19 @@ h1 {
         font-size: 0.9rem;
     }
 
-    .detection-table th,
-    .detection-table td {
-        padding: 8px 10px;
+    .item {
+        padding: 5px 0;
+    }
+    
+    .item-name {
+        flex: 0 0 80px;
         font-size: 0.9rem;
+    }
+    
+    .item-value {
+        font-size: 0.9rem;
+        word-wrap: break-word;
+        white-space: normal;
     }
 }
 

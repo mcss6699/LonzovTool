@@ -3,86 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小舟工具箱-问题排查</title>
+    <title>小舟工具箱 - 诊断工具</title>
     <link rel="stylesheet" href="detection.css">
     <link rel="shortcut icon" href="../favicon.png" type="image/png">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>小舟工具箱-问题排查</h1>
-            <p class="subtitle">当前页面不包含您的个人信息，仅做开发者定位问题原因，请放心截图</p>
+            <h1>小舟工具箱 - 诊断工具</h1>
+            <p class="subtitle">此页面仅用于定位您的浏览器和网络信息，不涉及您的隐私信息，请放心使用。</p>
         </header>
         
         <main>
-            <table class="detection-table">
-                <thead>
-                    <tr>
-                        <th>检测项目</th>
-                        <th>检测结果</th>
-                        <th>状态</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>核心</td>
-                        <td id="browser-core">检测中...</td>
-                        <td id="browser-core-status">-</td>
-                    </tr>
-                    <tr>
-                        <td>UA</td>
-                        <td id="browser-ua">检测中...</td>
-                        <td id="browser-ua-status">-</td>
-                    </tr>
-                    <tr>
-                        <td>浏览器模式</td>
-                        <td id="color-scheme">检测中...</td>
-                        <td id="color-scheme-status">-</td>
-                    </tr>
-                    <tr>
-                        <td>IPV4</td>
-                        <td id="ipv4">检测中...</td>
-                        <td id="ipv4-status">-</td>
-                    </tr>
-                    <tr>
-                        <td>运营商</td>
-                        <td id="ipv4-location">检测中...</td>
-                        <td id="ipv4-location-status">-</td>
-                    </tr>
-                    <tr>
-                        <td>baidu.com</td>
-                        <td id="ping-baidu">检测中...</td>
-                        <td id="ping-baidu-status">-</td>
-                    </tr>
-                    <tr>
-                        <td>mihoyo.com</td>
-                        <td id="ping-mihoyo">检测中...</td>
-                        <td id="ping-mihoyo-status">-</td>
-                    </tr>
-                    <tr>
-                        <td>bilibili.com</td>
-                        <td id="ping-bilibili">检测中...</td>
-                        <td id="ping-bilibili-status">-</td>
-                    </tr>
-                    <tr>
-                        <td>github.io</td>
-                        <td id="ping-githubio">检测中...</td>
-                        <td id="ping-githubio-status">-</td>
-                    </tr>
-                    <tr>
-                        <td>github.com</td>
-                        <td id="ping-github">检测中...</td>
-                        <td id="ping-github-status">-</td>
-                    </tr>
-                    <tr>
-                        <td>youtube.com</td>
-                        <td id="ping-youtube">检测中...</td>
-                        <td id="ping-youtube-status">-</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="detection-list">
+                <div class="item">
+                    <span class="item-name">浏览器信息</span>
+                    <span class="item-value" id="browser-core">检测中...</span>
+                </div>
+                <div class="item">
+                    <span class="item-name">用户代理</span>
+                    <span class="item-value" id="browser-ua">检测中...</span>
+                </div>
+                <div class="item">
+                    <span class="item-name">浏览器模式</span>
+                    <span class="item-value" id="color-scheme">检测中...</span>
+                </div>
+                <div class="item">
+                    <span class="item-name">本地IP</span>
+                    <span class="item-value" id="ipv4">检测中...</span>
+                </div>
+                <div class="item">
+                    <span class="item-name">运营商</span>
+                    <span class="item-value" id="ipv4-location">检测中...</span>
+                </div>
+                <div class="item">
+                    <span class="item-name">baidu.com</span>
+                    <span class="item-value" id="ping-baidu">检测中...</span>
+                </div>
+                <div class="item">
+                    <span class="item-name">mihoyo.com</span>
+                    <span class="item-value" id="ping-mihoyo">检测中...</span>
+                </div>
+                <div class="item">
+                    <span class="item-name">bilibili.com</span>
+                    <span class="item-value" id="ping-bilibili">检测中...</span>
+                </div>
+                <div class="item">
+                    <span class="item-name">github.io</span>
+                    <span class="item-value" id="ping-githubio">检测中...</span>
+                </div>
+                <div class="item">
+                    <span class="item-name">github.com</span>
+                    <span class="item-value" id="ping-github">检测中...</span>
+                </div>
+                <div class="item">
+                    <span class="item-name">youtube.com</span>
+                    <span class="item-value" id="ping-youtube">检测中...</span>
+                </div>
+            </div>
         </main>
     </div>
+    
+    <div class="debug-container">
+        <button id="debug-toggle" class="debug-button">显示详细信息</button>
+        <div id="debug-log" class="debug-log"></div>
+    </div>
+
     <script src="detection.js"></script>
 </body>
 </html>
