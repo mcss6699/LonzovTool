@@ -138,12 +138,12 @@ function processFuHongISP(data) {
 
 // IP检测
 async function detectIP() {
-    const TIMEOUT = 1500; // 超时1500ms
+    const TIMEOUT = 3000; // 超时
     let ip;
 
     // 1. 优先使用FuHongAPI获取IP
     try {
-        addDebugLog('开始调用FuHongAPI获取IP');
+        addDebugLog('开始调用FuHongAPI(IP)');
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
         
@@ -153,13 +153,13 @@ async function detectIP() {
         clearTimeout(timeoutId);
         
         if (!response.ok) {
-            addDebugLog(`FuHongAPI返回错误状态: ${response.status}`);
+            addDebugLog(`FuHongAPI(IP)返回错误状态: ${response.status}`);
             throw new Error('IP查询失败');
         }
         ip = (await response.text()).trim();
-        addDebugLog('FuHongAPI调用成功');
+        addDebugLog('FuHongAPI(IP)调用成功');
     } catch (error) {
-        addDebugLog(`FuHongAPI调用失败: ${error.message}`);
+        addDebugLog(`FuHongAPI(IP)调用失败: ${error.message}`);
         // 2. 使用ipify.org
         try {
             addDebugLog('开始调用ipify.org获取IP');
@@ -200,6 +200,7 @@ async function detectIP() {
     // 运营商检测
     // 1. 优先使用FuHongAPI
     try {
+        addDebugLog('开始调用FuHongAPI(运营商)');
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
         
@@ -208,13 +209,21 @@ async function detectIP() {
         });
         clearTimeout(timeoutId);
         
-        if (!response.ok) throw new Error('运营商查询失败');
+        if (!response.ok) {
+            addDebugLog(`FuHongAPI(运营商)返回错误状态: ${response.status}`);
+            throw new Error('运营商查询失败');
+        }
+        
         const data = await response.text();
         const processed = processFuHongISP(data);
         if (processed) {
+            addDebugLog(`FuHongAPI(运营商)调用成功: ${processed}`);
             return updateElement('ipv4-location', processed, STATUS.NORMAL);
         }
-    } catch {}
+        addDebugLog('FuHongAPI返回数据缺少运营商信息');
+    } catch (error) {
+        addDebugLog(`FuHongAPI(运营商)调用失败: ${error.message}`);
+    }
 
     // 2. 使用IPinfo
     try {
@@ -286,12 +295,12 @@ function updateElement(id, value, status) {
 // 页面初始化
 document.addEventListener('DOMContentLoaded', () => {
     detectIP();
-    setInterval(detectIP, 60000); // 每60s更新
+    setInterval(detectIP, 30000); // 自动更新
 });
 
 async function pingWebsite(url, elementId) {
-    const TIMEOUT = 8000; // 总检测超时5秒
-    const WARNING_THRESHOLD = 800; // 慢速阈值0.5秒
+    const TIMEOUT = 8000; // 总检测超时
+    const WARNING_THRESHOLD = 800; // 慢速阈值
     
     try {
         addDebugLog(`开始ping测试: ${url}`);
