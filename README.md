@@ -8,6 +8,7 @@
 * 邮件: mcss6699@qq.com
 * Bilibili: [@浪小舟](https://space.bilibili.com/3494378672753456)
 * QQ群: [587984701](https://qm.qq.com/q/hjTqUyIKEo)
+* 频道: [小舟の小窝](https://pd.qq.com/s/7itprw4rq?b=9)
 
 ## 关于作者
 
