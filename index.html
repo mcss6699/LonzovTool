@@ -4,57 +4,559 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>小舟工具箱</title>
-    <link rel="stylesheet" href="home/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" href="./favicon.png" type="image/png">
     <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
     <script>LA.init({id:"3Ltl0yXYWQcgbDgB",ck:"3Ltl0yXYWQcgbDgB"})</script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --header-bg: #2c3e50;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* 深色模式变量 */
+        [data-theme="dark"] {
+            --text-color: #e0e0e0;
+            --bg-color: #1f2b38;
+            --card-bg: #2a3849;
+            --header-bg: #1f2b38;
+            --secondary-color: #8ba9ce;
+            --primary-color: #41a3ff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 40px;
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 头部样式 */
+        header {
+            background-color: var(--header-bg);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 10px;
+            position: absolute;
+            top: 0;
+            right: 20px;
+            z-index: 101;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            position: absolute;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .sun-icon {
+            transform: translate(0, 0);
+            opacity: 1;
+        }
+
+        .moon-icon {
+            transform: translate(150%, -150%);
+            opacity: 0;
+        }
+
+        [data-theme="dark"] .sun-icon {
+            transform: translate(150%, 150%);
+            opacity: 0;
+        }
+
+        [data-theme="dark"] .moon-icon {
+            transform: translate(0, 0);
+            opacity: 1;
+        }
+
+        .header-content {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 搜索区域 */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            box-shadow: var(--shadow);
+            padding-left: 55px;
+            transition: var(--transition);
+            background: var(--card-bg);
+            color: var(--text-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-box:focus {
+            outline: none;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+            font-size: 1.3rem;
+            z-index: 2;
+        }
+
+        /* 卡片容器 */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 25px;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+        }
+
+        .card-desc {
+            color: var(--text-color);
+            margin-bottom: 20px;
+            flex-grow: 1;
+            opacity: 0.9;
+        }
+
+        .card-link {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .card-link:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .card-link i {
+            margin-left: 8px;
+        }
+
+        /* 分类过滤 */
+        .category-container {
+            position: relative;
+            max-width: 100%;
+            overflow: hidden;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .category-filter {
+            display: inline-flex;
+            gap: 15px;
+            padding-bottom: 15px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            max-width: 100%;
+            cursor: grab;
+        }
+
+        .category-filter::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-scroll-fade {
+            position: absolute;
+            top: 0;
+            bottom: 15px;
+            width: 40px;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 1;
+            transition: var(--transition);
+        }
+
+        .category-scroll-fade-left {
+            left: 0;
+            background: linear-gradient(to right, var(--bg-color), rgba(245, 247, 250, 0));
+        }
+
+        .category-scroll-fade-right {
+            right: 0;
+            background: linear-gradient(to left, var(--bg-color), rgba(245, 247, 250, 0));
+        }
+
+        [data-theme="dark"] .category-scroll-fade-left {
+            background: linear-gradient(to right, var(--bg-color), rgba(31, 43, 56, 0));
+        }
+
+        [data-theme="dark"] .category-scroll-fade-right {
+            background: linear-gradient(to left, var(--bg-color), rgba(31, 43, 56, 0));
+        }
+
+        .filter-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* 菜单样式 */
+        .menu-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--header-bg);
+            z-index: 100;
+            padding: 1rem;
+            transform: translateY(-100%);
+            transition: transform 0.4s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-panel.active {
+            transform: translateY(0);
+        }
+
+        .menu-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 70px;
+        }
+
+        .menu-item {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            border-radius: 6px;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            font-size: 1.4rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        /* 菜单遮罩 */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            color: #777;
+            padding-top: 30px;
+            font-size: 1rem;
+        }
+
+        /* SVG动画 */
+        .menu-icon path {
+            transition: stroke-dashoffset 0.3s ease, stroke-dasharray 0.3s ease;
+            stroke-dasharray: 24;
+            stroke-dashoffset: 0;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .menu-toggle.active .menu-icon path:nth-child(1) {
+            stroke-dashoffset: -24;
+        }
+
+        .menu-toggle.active .menu-icon path:nth-child(2) {
+            stroke-dashoffset: -24;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .cards-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-controls {
+                right: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div id="theme-alert" class="theme-alert">
-        浏览器在深色模式下，网页的浅色模式可能显示异常！
-    </div>
-    <header class="header">
-        <button class="menu-button" aria-label="打开菜单">
-            <img src="icon/3Hpoint1.svg" alt="菜单" class="menu-icon">
-        </button>
-        <h1 class="site-title">小舟工具箱</h1>
+    <header>
+        <div class="container">
+            <div class="header-top">
+                <div class="header-controls">
+                <button class="menu-toggle" id="menuToggle">
+                    <!-- 三横 -->
+                    <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 7H19" />
+                        <path d="M5 12H19" />
+                        <path d="M5 17H19" />
+                    </svg>
+                </button>
+                    <button class="theme-toggle" id="themeToggle">
+                        <!-- 太阳 -->
+                        <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5" fill="currentColor" />
+                            <path d="M12 5V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M12 21V19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M16.9497 7.05078L18.364 5.63647" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M5.63599 18.3633L7.0502 16.9491" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M19 12L21 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M3 12L5 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M16.9497 16.9492L18.364 18.3635" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M5.63599 5.63672L7.0502 7.05094" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                        <!-- 月亮 -->
+                        <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.735 15.887C19.8592 16.0994 18.9549 16.1616 18.0581 16.0708C17.1614 15.98 16.2857 15.7377 15.468 15.3546C14.6502 14.9716 13.9026 14.454 13.2572 13.8259C12.6117 13.1979 12.0782 12.4691 11.6801 11.6708C11.282 10.8725 11.0257 10.0168 10.9221 9.13901C10.8185 8.26124 10.8692 7.37503 11.0719 6.5175C9.36045 7.10055 7.923 8.19191 6.96853 9.62578C6.01405 11.0596 5.59644 12.7558 5.78511 14.4447C5.97379 16.1335 6.75624 17.7147 8.0049 18.9291C9.25356 20.1435 10.8929 20.9179 12.6646 21.1244C14.4363 21.331 16.2347 20.9567 17.7672 20.0646C19.2997 19.1725 20.4732 17.8159 21.085 16.215C21.2013 16.1132 21.2921 15.9864 21.3503 15.8444C21.4085 15.7024 21.4326 15.549 21.4206 15.3968C21.4087 15.2445 21.3612 15.0975 21.2822 14.9674C21.2031 14.8372 21.0949 14.7275 20.9667 14.647C20.8385 14.5665 20.694 14.5174 20.545 14.5037C20.3961 14.49 20.2472 14.5121 20.1097 14.5681C19.9722 14.6241 19.8501 14.7124 19.7533 14.8253C19.6565 14.9381 19.5878 15.0724 19.5531 15.217C19.5184 15.3615 19.5188 15.5123 19.5541 15.6565C19.5894 15.8007 19.6585 15.9344 19.7555 16.0464" 
+                                stroke="currentColor" 
+                                stroke-width="1.5" 
+                                stroke-linecap="round"
+                                fill="none" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="header-content">
+                <h1 class="title">小舟工具箱</h1>
+                <p class="subtitle">Minecraft指令工具箱，兼导航站</p>
+            </div>
+        </div>
     </header>
-    
-    <div class="announcement-bar">
-        <a href="https://p.kdocs.cn/l/cdYwfJEuGwBr" class="announcement-link" target="_blank">
-            <span class="announcement-text">功能许愿，bug反馈请加QQ群587984701</span>
-        </a>
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="menu-panel" id="menuPanel">
+        <div class="menu-content">
+            <a href="https://p.kdocs.cn/l/cdYwfJEuGwBr" class="menu-item" target="_blank">
+                <i class="fas fa-newspaper"></i> 公告
+            </a>
+            <a href="https://afdian.com/a/lonzov" class="menu-item" target="_blank">
+                <i class="fas fa-heart"></i> 赞助
+            </a>
+            <a href="https://qm.qq.com/q/hjTqUyIKEo" class="menu-item" target="_blank">
+                <i class="fas fa-address-card"></i> 联系
+            </a>
+            <a href="./about" class="menu-item">
+                <i class="fas fa-info-circle"></i> 关于
+            </a>
+        </div>
     </div>
 
-    <main class="tool-grid">
-        <div class="tool-card">
-            <a href="index.html" target="_self" class="tool-link">
-                <h3 class="tool-title">加载失败</h3>
-                <p class="tool-desc">请开启"允许网页运行JavaScript"后刷新重试</p>
-            </a>
+    <main class="container">
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-box" placeholder="搜索工具、资源...">
+        </div>
+
+        <div class="category-container">
+            <div class="category-scroll-fade category-scroll-fade-left"></div>
+            <div class="category-scroll-fade category-scroll-fade-right"></div>
+            <div class="category-filter" id="categoryFilter">
+                <button class="filter-btn active" data-category="all">全部</button>
+                <button class="filter-btn" data-category="command">指令工具</button>
+                <button class="filter-btn" data-category="friend-links">友情链接</button>
+                <button class="filter-btn" data-category="other">百宝箱</button>
+                <button class="filter-btn" data-category="resource">资源</button>
+            </div>
+        </div>
+
+        <div class="cards-container" id="cardsContainer">
+            <!-- 卡片将通过JavaScript动态生成 -->
         </div>
     </main>
 
-    <aside class="side-menu">
-        <div class="menu-header">
-            <button class="close-menu" aria-label="关闭菜单">
-                <img src="icon/Larrow1.svg" alt="返回" class="back-icon">
-            </button>
-            <button class="theme-toggle">深色</button>
-        </div>
-        <nav class="menu-nav">
-            <a href="https://p.kdocs.cn/l/cdYwfJEuGwBr" class="menu-item" target="_blank">公告</a>
-            <a href="https://afdian.com/a/lonzov" class="menu-item" target="_blank">赞助</a>
-            <a href="https://qm.qq.com/q/hjTqUyIKEo" class="menu-item" target="_blank">联系</a>
-            <a href="./about" class="menu-item" target="_blank">关于</a>
-            <a href="百宝箱" class="menu-item" target="_blank">百宝箱</a>
-            <a href="./dr" class="menu-item" target="_blank">导入图册</a>
-            <a href="./dr/pro" class="menu-item" target="_blank">免费导入</a>
-        </nav>
-    </aside>
-<!---->
-    <script src="./home/index.js"></script>
-<!--
-    <script src="https://cdn.jsdelivr.net/gh/mcss6699/LonzovTool@main/home/index.js"></script>-->
+    <footer class="container">
+        <p>排序方式: 添加时间>使用频率</p>
+        <p>© 2025 浪小舟 | Minecraft工具箱</p>
+    </footer>
+
+    <script src="index.js"></script>
 </body>
 </html>
