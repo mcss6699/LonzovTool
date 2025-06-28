@@ -105,6 +105,7 @@ const cardsData = [
     { title: "MCNav↗", description: "MC导航站 | MC工具大全", categories:["friend-links"], link: "https://www.mcnav.net/", newtap:true },
     { title: "命令魔方↗", description: "强大的命令辅助应用", categories:["friend-links"], link: "https://www.viqu.com/pricing.html", newtap:true },
     { title: "命令助手↗", description: "便捷易用的命令辅助输入应用", categories:["friend-links"], link: "https://ca.projectxero.top/", newtap:true },
+    { title: "蓝天工作室↗", description: "代表作 CRoB命令查询机器人 等", categories:["friend-links"], link: "https://bsc.meteormc.cn/", newtap:true },
     { title: "苦力怕论坛↗", description: "国内最大的基岩版资源分享社区(应该是吧)", categories:["friend-links"], link: "https://klpbbs.com/", newtap:true },
     { title: "网易版导入", description: "限免活动中…站长自营无坑", categories:["resource"], link: "./dr/pro.html", newtap:true },
     { title: "安卓基岩版下载↗", description: "优质的境外下载站", categories:["resource"], link: "https://mcapks.net/", newtap:true },
