@@ -97,7 +97,7 @@ categoryFilter.addEventListener('mousemove', (e) => {
 
 // 卡片数据
 const cardsData = [
-    { title: "ID查询↗", description: "查询原版所有ID · by 命令魔方", categories:["command"], link: "https://ca.projectxero.top/idlist/", newtap:true },
+    { title: "ID查询↗", description: "查询原版所有ID · by 命令助手", categories:["command"], link: "https://ca.projectxero.top/idlist/", newtap:true },
     { title: "艺术字转换", description: "Minecraft艺术字(全角)，游戏内才能正常显示", categories:["command"], link: "./qjzh", newtap:false },
     { title: "T显动画", description: "自动生成“打字机”动画", categories:["command"], link: "./tr", newtap:false },
     { title: "T显编辑器↗", description: "可视化T显编辑器 · by Dislink", categories:["command"], link: "https://dislink.github.io/rawJSONEditor/", newtap:true },    
