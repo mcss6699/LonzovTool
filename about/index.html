@@ -137,10 +137,11 @@
             
             // 根据主题设置不同的统计挂件URL
             script.src = theme === 'dark' 
-                ? 'https://v6-widget.51.la/v6/3Ltl0yXYWQcgbDgB/quote.js?theme=#1690FF,#1690FF,#333333,#333333,#F5F5F5,#1690FF,12&col=true&f=12'
-                : 'https://v6-widget.51.la/v6/3Ltl0yXYWQcgbDgB/quote.js?theme=#1690FF,#1690FF,#D8D8D8,#D8D8D8,#121212,#1690FF,12&col=true&f=12';
+                ? 'https://v6-widget.51.la/v6/3Ltl0yXYWQcgbDgB/quote.js?theme=#1690FF,#1690FF,#D8D8D8,#D8D8D8,#121212,#1690FF,12&col=true&f=12'
+                : 'https://v6-widget.51.la/v6/3Ltl0yXYWQcgbDgB/quote.js?theme=#1690FF,#1690FF,#333333,#333333,#F5F5F5,#1690FF,12&col=true&f=12';
+                
             
-            document.body.appendChild(script);
+            document.querySelector('.container').appendChild(script);
         }
         
         // 初始加载统计挂件
