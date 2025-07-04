@@ -112,6 +112,7 @@ const cardsData = [
     { title: "安卓基岩版下载↗", description: "优质的境外下载站", categories:["resource"], link: "https://mcapks.net/", newtap:true },
     { title: "幸运转盘", description: "选择困难症？让转盘来决定！", categories:["other"], link: "./spin-the-wheel", newtap:true },
     { title: "nohello", description: "不要问在吗 | 短链接:nohello.top (池鱼提供服务器&域名支持)", categories:["other"], link: "./nohello", newtap:true },
+    { title: "Markdown渲染器", description: "在线预览Markdown | 一键导出多种格式", categories:["other"], link: "./md", newtap:true },
     
 ];
 
@@ -149,14 +150,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterButtons = document.querySelectorAll('.filter-btn');
 filterButtons.forEach(button => {
     button.addEventListener('click', () => {
-        // 更新按钮状态
         filterButtons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
-        // 过滤卡片
         const category = button.dataset.category;
         const filteredCards = category === 'all' 
             ? cardsData 
-            : cardsData.filter(card => card.categories.includes(category)); // 使用includes检查标签数组
+            : cardsData.filter(card => card.categories.includes(category));
         
         generateCards(filteredCards);
     });
