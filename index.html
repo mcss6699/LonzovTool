@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="no-js">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,27 @@
     <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
     <script>LA.init({id:"3Ltl0yXYWQcgbDgB",ck:"3Ltl0yXYWQcgbDgB"})</script>
     <style>
+        .no-js-warning {
+            display: none;
+            background: #CC3333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            margin: 10px 0;
+            opacity: 0;
+            visibility: hidden;
+            animation: fadeIn 0.2s ease-in 3s forwards;
+        }
+        .no-js #js-warning {
+            display: block;
+            animation-delay: 5s;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
         * {
             margin: 0;
             padding: 0;
@@ -511,6 +532,9 @@
             </div>
         </div>
     </header>
+    <div id="js-warning" class="no-js-warning">
+      请开启"允许运行JavaScript"后刷新网页，以体验完整功能！
+    </div>
     <div class="menu-overlay" id="menuOverlay"></div>
     <div class="menu-panel" id="menuPanel">
         <div class="menu-content">
@@ -548,7 +572,119 @@
         </div>
 
         <div class="cards-container" id="cardsContainer">
-            <!-- 卡片将通过JavaScript动态生成 -->
+            <!-- 静态卡片内容 - 当JS禁用时显示 -->
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">ID查询↗</h3>
+                    <p class="card-desc">查询原版所有ID · by 命令助手</p>
+                    <a href="https://ca.projectxero.top/idlist/" class="card-link" target="_blank" rel="noopener noreferrer">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">艺术字转换</h3>
+                    <p class="card-desc">Minecraft艺术字(全角)，游戏内才能正常显示</p>
+                    <a href="./qjzh" class="card-link">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">T显动画</h3>
+                    <p class="card-desc">自动生成"打字机"动画</p>
+                    <a href="./tr" class="card-link">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">T显编辑器↗</h3>
+                    <p class="card-desc">可视化T显编辑器 · by Dislink</p>
+                    <a href="https://dislink.github.io/rawJSONEditor/" class="card-link" target="_blank" rel="noopener noreferrer">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">语法转换</h3>
+                    <p class="card-desc">execute指令语法升级</p>
+                    <a href="./execute" class="card-link">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">MCNav↗</h3>
+                    <p class="card-desc">MC导航站 | MC工具大全</p>
+                    <a href="https://www.mcnav.net/" class="card-link" target="_blank" rel="noopener noreferrer">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">命令魔方↗</h3>
+                    <p class="card-desc">强大的命令辅助应用</p>
+                    <a href="https://www.viqu.com/pricing.html" class="card-link" target="_blank" rel="noopener noreferrer">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">命令助手↗</h3>
+                    <p class="card-desc">便捷易用的命令辅助输入应用</p>
+                    <a href="https://ca.projectxero.top/" class="card-link" target="_blank" rel="noopener noreferrer">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">命令集↗</h3>
+                    <p class="card-desc">利用无障碍权限实现全自动填写命令</p>
+                    <a href="https://space.bilibili.com/1526784927" class="card-link" target="_blank" rel="noopener noreferrer">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">蓝天工作室↗</h3>
+                    <p class="card-desc">代表作 CRoB命令查询机器人 等</p>
+                    <a href="https://bsc.meteormc.cn/" class="card-link" target="_blank" rel="noopener noreferrer">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">苦力怕论坛↗</h3>
+                    <p class="card-desc">国内最大的基岩版资源分享社区(应该是吧)</p>
+                    <a href="https://klpbbs.com/" class="card-link" target="_blank" rel="noopener noreferrer">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">网易版导入</h3>
+                    <p class="card-desc">限免活动中…站长自营无坑</p>
+                    <a href="./dr/pro.html" class="card-link" target="_blank" rel="noopener noreferrer">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">安卓基岩版下载↗</h3>
+                    <p class="card-desc">优质的境外下载站</p>
+                    <a href="https://mcapks.net/" class="card-link" target="_blank" rel="noopener noreferrer">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">幸运转盘</h3>
+                    <p class="card-desc">选择困难症？让转盘来决定！</p>
+                    <a href="./spin-the-wheel" class="card-link" target="_blank" rel="noopener noreferrer">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">nohello</h3>
+                    <p class="card-desc">不要问在吗 | 短链接:nohello.top (池鱼提供服务器&域名支持)</p>
+                    <a href="./nohello" class="card-link" target="_blank" rel="noopener noreferrer">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <h3 class="card-title">Markdown渲染器</h3>
+                    <p class="card-desc">在线预览Markdown | 一键导出多种格式</p>
+                    <a href="./md" class="card-link" target="_blank" rel="noopener noreferrer">立即使用 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
         </div>
     </main>
 

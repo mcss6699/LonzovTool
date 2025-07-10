@@ -101,7 +101,7 @@ const cardsData = [
     { title: "艺术字转换", description: "Minecraft艺术字(全角)，游戏内才能正常显示", categories:["command"], link: "./qjzh", newtap:false },
     { title: "T显动画", description: "自动生成“打字机”动画", categories:["command"], link: "./tr", newtap:false },
     { title: "T显编辑器↗", description: "可视化T显编辑器 · by Dislink", categories:["command"], link: "https://dislink.github.io/rawJSONEditor/", newtap:true },    
-    { title: "语法转换", description: "execute指令语法升级(有点小bug，请自行判断结果)", categories:["command"], link: "./execute", newtap:false },
+    { title: "语法转换", description: "execute指令语法升级", categories:["command"], link: "./execute", newtap:false },
     { title: "MCNav↗", description: "MC导航站 | MC工具大全", categories:["friend-links"], link: "https://www.mcnav.net/", newtap:true },
     { title: "命令魔方↗", description: "强大的命令辅助应用", categories:["friend-links"], link: "https://www.viqu.com/pricing.html", newtap:true },
     { title: "命令助手↗", description: "便捷易用的命令辅助输入应用", categories:["friend-links"], link: "https://ca.projectxero.top/", newtap:true },
@@ -144,6 +144,14 @@ function generateCards(cards) {
 
 // 初始化页面
 document.addEventListener('DOMContentLoaded', () => {
+    // 移除no-js类表示JS已执行
+    document.documentElement.classList.remove('no-js');
+    
+    // 清除静态卡片内容
+    const container = document.getElementById('cardsContainer');
+    container.innerHTML = '';
+    
+    // 生成动态卡片
     generateCards(cardsData);
     
     // 分类过滤功能
