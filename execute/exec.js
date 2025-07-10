@@ -75,16 +75,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // 转换核心
     function processCommand(command) {
         command = command.replace(/\s{2,}/g, ' ');
-
+    
         // 检测detect
-        const detectPattern = /^execute\s(@\S+)\s((?:[~0-9-]+ ?){1,3})detect\s((?:[~0-9-]+ ?){1,3})(\w+)\s(-?\d+)\s(.*)$/i;
+        const detectPattern = /^execute\s(@\S+)\s((?:[\^~0-9.-]+\s*){1,3})detect\s((?:[\^~0-9.-]+\s*){1,3})(\w+)(?:\s+(-?\d+|\*))?\s(.*)$/i;
         if (detectPattern.test(command)) {
             const match = command.match(detectPattern);
-            return `execute as ${match[1]} at @s positioned ${match[2].trim()} if block ${match[3].trim()} ${match[4]} ${match[5]} run ${processCommand(match[6])}`;
+            const blockValue = match[5] ? match[5] : '0';
+            return `execute as ${match[1]} at @s positioned ${match[2].trim()} if block ${match[3].trim()} ${match[4]} ${blockValue} run ${processCommand(match[6])}`;
         }
-
+    
         // 基础exec
-        const basicPattern = /^execute\s(@\S+)\s((?:[~0-9-]+ ?){1,3})(?!detect)(.+)$/i;
+        const basicPattern = /^execute\s(@\S+)\s((?:[\^~0-9.-]+\s*){1,3})(?!detect)(.+)$/i;
         if (basicPattern.test(command)) {
             const match = command.match(basicPattern);
             const coords = match[2].trim().split(/\s+/);
@@ -93,42 +94,42 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             return `execute as ${match[1]} at @s positioned ${match[2].trim()} run ${processCommand(match[3])}`;
         }
-
+    
         // 嵌套exec
         const nestedPattern = /^(execute)\s(.+?)\srun\s(.*)$/i;
         if (nestedPattern.test(command)) {
             const match = command.match(nestedPattern);
             return `execute ${match[2]} run ${processCommand(match[3])}`;
         }
-
+    
         if (/^execute/i.test(command)) {
             throw new Error(`指令结构异常: ${command}`);
         }
         return command;
     }
-
+    
     // 转换函数
     function convertExecuteCommand(input) {
         try {
             if (!/^\/?execute\b/i.test(input)) {
                 throw new Error('输入为空或不是execute命令');
             }
-
+    
             let cmd = input.replace(/^\//, '')
                          .replace(/\s{2,}/g, ' ')
                          .trim();
-
+    
             let converted = processCommand(cmd);
-
+    
             if (!/^\/execute\s+as\s+@/i.test('/' + converted)) {
                 throw new Error('生成命令不符合规范');
             }
-
+    
             converted = converted.replace(/ positioned ~~~/g, '')
                                .replace(/ positioned ~ ~ ~/g, '');
-
+    
             return '/' + converted.replace(/\s+/g, ' ').trim();
-
+    
         } catch (err) {
             return `//错误 ：${err.message}`;
         }
@@ -175,29 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
 
-    /* 
-    async function copyText(text) {
-        if (!text.trim()) return false;
-        try {
-            if (navigator.clipboard) {
-                await navigator.clipboard.writeText(text);
-                return true;
-            }
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            textArea.style.position = 'fixed';
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            return true;
-        } catch (err) {
-            console.error('复制失败:', err);
-            return false;
-        }
-    } */
-
-
+      
     // 复制
     async function copyText(text) {
         if (!text.trim()) {
