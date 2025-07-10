@@ -107,6 +107,7 @@ const cardsData = [
     { title: "命令助手↗", description: "便捷易用的命令辅助输入应用", categories:["friend-links"], link: "https://ca.projectxero.top/", newtap:true },
     { title: "命令集↗", description: "利用无障碍权限实现全自动填写命令", categories:["friend-links"], link: "https://space.bilibili.com/1526784927", newtap:true },
     { title: "蓝天工作室↗", description: "代表作 CRoB命令查询机器人 等", categories:["friend-links"], link: "https://bsc.meteormc.cn/", newtap:true },
+    { title: "MT管理器↗", description: "Android 平台文件管理 & 逆向修改神器", categories:["friend-links"], link: "https://mt2.cn/", newtap:true },
     { title: "苦力怕论坛↗", description: "国内最大的基岩版资源分享社区(应该是吧)", categories:["friend-links"], link: "https://klpbbs.com/", newtap:true },
     { title: "网易版导入", description: "限免活动中…站长自营无坑", categories:["resource"], link: "./dr/pro.html", newtap:true },
     { title: "安卓基岩版下载↗", description: "优质的境外下载站", categories:["resource"], link: "https://mcapks.net/", newtap:true },
