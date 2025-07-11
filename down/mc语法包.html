@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下载 - 小舟工具箱</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="../favicon.png" type="image/png">
+    <link rel="stylesheet" href="down.css">
+  <script>
+    const downloadData = {
+      lanzoudown: {
+        url: "https://lonzov.lanzouu.com/iw80Y30qsg6f",
+        password: "2knu"
+      }
+    };
+  </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1 class="title">小舟工具箱</h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="download-card">
+            <h1>MT管理器-mc语法包</h1>
+            <p>请选择下载方式</p>
+            
+            <div class="download-option">
+                <h2>快捷下载</h2>
+                <p>一键下载无需输入密码</p>
+                <button id="quickDownloadBtn" class="download-link">
+                    立即下载 <i class="fas fa-download"></i>
+                </button>
+            </div>
+            
+            <div class="download-option">
+                <h2>备用手动下载</h2>
+                <p>前往网盘下载页输入密码下载</p>
+                
+                <div class="password-input-group">
+                    <input type="text" id="downloadPassword" 
+                              placeholder="密码" 
+                              value="" readonly>
+                    <button id="copyPasswordBtn" class="copy-btn">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                
+                <a id="manualDownloadLink" href="#" class="download-link">
+                    前往下载 <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+
+            <div id="message" class="message"></div>
+        </div>
+    </main>
+
+    <footer class="container">
+        <p>提示有风险/被拦截不用管，蓝奏云经常这样<br>如果蓝奏云换域名及时通知站长</p>
+    </footer>
+
+    <script src="down.js"></script>
+</body>
+</html>

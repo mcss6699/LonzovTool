@@ -1,0 +1,248 @@
+.password-input-group {
+    display: flex;
+    align-items: stretch;
+    margin: 15px 0;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    position: relative;
+    min-width: 150px;
+    clear: both;
+    width: fit-content;
+}
+
+#downloadPassword {
+    width: calc(12ch + 30px);
+    min-width: 120px;
+    padding: 12px 15px;
+    border: none;
+    background: var(--card-bg);
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: width 0.2s ease;
+    box-sizing: border-box;
+}
+
+.copy-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0 20px;
+    cursor: pointer;
+    transition: var(--transition);
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 6px 6px 0;
+}
+
+.copy-btn:hover {
+    background-color: #2980b9;
+}
+
+.message {
+    position: fixed;
+    background: var(--primary-color);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+    .message {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+}
+
+.password-input-group {
+    position: relative;
+    overflow: visible;
+}
+
+.copy-btn {
+    position: relative;
+    z-index: 2;
+}
+
+.message.success {
+    background: #27ae60;
+}
+
+.message.error {
+    background: #e74c3c;
+}
+
+.message.show {
+    opacity: 1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Misa', 'Microsoft YaHei', 'PingFang SC', 'HarmonyOS Sans SC', sans-serif;
+}
+
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #34495e;
+    --text-color: #333;
+    --bg-color: #f5f7fa;
+    --card-bg: #ffffff;
+    --header-bg: #2c3e50;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+[data-theme="dark"] {
+    --text-color: #e0e0e0;
+    --bg-color: #1f2b38;
+    --card-bg: #2a3849;
+    --header-bg: #1f2b38;
+    --secondary-color: #8ba9ce;
+    --primary-color: #41a3ff;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding-bottom: 40px;
+    transition: var(--transition);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    background-color: var(--header-bg);
+    color: white;
+    padding: 1.5rem 0;
+    box-shadow: var(--shadow);
+    margin-bottom: 40px;
+    transition: var(--transition);
+}
+
+.header-content {
+    text-align: center;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+.download-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.download-card h1 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.download-card h2 {
+    color: var(--primary-color);
+    margin: 20px 0 15px;
+    font-size: 1.5rem;
+}
+
+.download-card p {
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.download-option {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+.download-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: var(--transition);
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.download-link:hover:not(:disabled) {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.download-link:disabled,
+.download-link.disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.download-link i {
+    margin-left: 8px;
+    transition: opacity 0.3s;
+}
+
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+footer {
+    text-align: center;
+    color: #777;
+    padding-top: 30px;
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 2rem;
+    }
+    
+    .download-card h1 {
+        font-size: 1.8rem;
+    }
+    
+    .download-card h2 {
+        font-size: 1.3rem;
+    }
+}
