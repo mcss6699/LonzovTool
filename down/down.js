@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 下载主逻辑
     async function startDownload(isInitialLoad = false) {
         // 检查失败次数
-        if (apiFailCount >= 5) {
+        if (apiFailCount >= 3) {
             showMessage('请手动下载', false, clickPosition);
             return;
         }
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 5000);
 
         try {
-            // API调用
+            // 主API调用
             const apiUrl = `https://api.suxun.site/api/lanzou?url=${encodeURIComponent(downloadData.lanzoudown.url)}&pwd=${encodeURIComponent(downloadData.lanzoudown.password)}&type=json`;
             
             const response = await fetchWithTimeout(apiUrl);
@@ -100,22 +100,37 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data && data.download) {
                 window.open(data.download, '_blank');
                 resetDownloadButton();
-            } else {
-                throw new Error('无效的API响应: 缺少download字段');
+                return;
             }
-        } catch (error) {
-            clearTimeout(timeoutId);
-            apiFailCount++;
-            showMessage(
-                `请手动下载，API调用失败: ${error.message}`,
-                false,
-                clickPosition
-            );
-            resetDownloadButton();
+            throw new Error('无效的API响应: 缺少download字段');
+        } catch (mainError) {
+            console.log('主API失败，尝试备用API...');
             
-            if (apiFailCount >= 5) {
-                quickDownloadBtn.innerHTML = '立即下载 <i class="fas fa-download"></i>';
-                quickDownloadBtn.classList.add('disabled');
+            try {
+                // 备用API调用
+                const backupUrl = `https://v2.alapi.cn/api/lanzou?url=${encodeURIComponent(downloadData.lanzoudown.url)}&token=LwExDtUWhF3rH5ib`;
+                const backupResponse = await fetchWithTimeout(backupUrl);
+                
+                if (backupResponse.ok) {
+                    window.open(backupResponse.url, '_blank');
+                    resetDownloadButton();
+                    return;
+                }
+                throw new Error('备用API返回无效响应');
+            } catch (backupError) {
+                clearTimeout(timeoutId);
+                apiFailCount++;
+                showMessage(
+                    `请手动下载，备用API调用失败: ${backupError.message}`,
+                    false,
+                    clickPosition
+                );
+                resetDownloadButton();
+                
+                if (apiFailCount >= 5) {
+                    quickDownloadBtn.innerHTML = '立即下载 <i class="fas fa-download"></i>';
+                    quickDownloadBtn.classList.add('disabled');
+                }
             }
         }
     }
@@ -129,27 +144,52 @@ document.addEventListener('DOMContentLoaded', () => {
     // 为下载按钮添加点击事件
     quickDownloadBtn.addEventListener('click', function(e) {
         clickPosition = { x: e.clientX, y: e.clientY };
+        // 先显示提示再开始下载
         startDownload();
     });
 
     // 消息提示
-    function showMessage(text, isSuccess, event) {
+    function showMessage(text, isSuccess, eventOrPosition) {
         message.textContent = text;
         message.className = 'message show';
         message.classList.add(isSuccess ? 'success' : 'error');
         
-        // 设置提示框位置
+        // 统一的位置计算方式
+        if (eventOrPosition) {
+            let x, y;
+            
+            // 处理event对象或clickPosition对象
+            if (eventOrPosition.clientX !== undefined) {
+                // 来自event对象
+                x = eventOrPosition.clientX;
+                y = eventOrPosition.clientY;
+            } else if (eventOrPosition.x !== undefined) {
+                // 来自clickPosition对象
+                x = eventOrPosition.x;
+                y = eventOrPosition.y;
+            } else if (eventOrPosition.changedTouches) {
+                // 触屏事件
+                x = eventOrPosition.changedTouches[0].clientX;
+                y = eventOrPosition.changedTouches[0].clientY;
+            }
+            
+            if (x !== undefined && y !== undefined) {
+                // 使用与复制按钮相同的偏移量
+                message.style.left = (x + 15) + 'px';
+                message.style.top = (y + 15) + 'px';
+                setTimeout(() => {
+                    message.classList.remove('show');
+                }, 2000);
+                return;
+            }
+        }
+        
+        // 默认位置（按钮下方居中）
         const manualDownload = document.querySelector('.download-option:nth-child(3)');
-        if (event && (event.clientX || event.changedTouches)) {
-            const clientX = event.clientX || event.changedTouches[0].clientX;
-            const clientY = event.clientY || event.changedTouches[0].clientY;
-            message.style.left = (clientX + 21) + 'px';
-            message.style.top = clientY + 'px';
-        } else if (manualDownload) {
-            // 兜底位置
+        if (manualDownload) {
             const rect = manualDownload.getBoundingClientRect();
-            message.style.left = (rect.left + rect.width / 2) + 'px';
-            message.style.top = (rect.top - 10) + 'px';
+            message.style.left = (rect.left + rect.width / 2 - 50) + 'px';
+            message.style.top = (rect.bottom + 5) + 'px';
         }
         
         setTimeout(() => {
