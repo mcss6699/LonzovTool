@@ -111,7 +111,7 @@ const cardsData = [
     { title: "苦力怕论坛↗", description: "国内最大的基岩版资源分享社区(应该是吧)", categories:["friend-links"], link: "https://klpbbs.com/", newtap:true },
     { title: "网易版导入", description: "限免活动中…站长自营无坑", categories:["resource"], link: "./dr/pro.html", newtap:true },
     { title: "安卓基岩版下载↗", description: "优质的境外下载站", categories:["resource"], link: "https://mcapks.net/", newtap:true },
-    { title: "MT管理器-mc语法包", description: "指令语法高亮，压缩包里有具体使用说明", categories:["resource"], link: "./down/mc语法包", newtap:false },
+    { title: "MT管理器-mc语法包", description: "指令语法高亮，压缩包里有具体使用说明", categories:["resource"], link: "./down/mc语法包", newtap:true },
     { title: "幸运转盘", description: "选择困难症？让转盘来决定！", categories:["other"], link: "./spin-the-wheel", newtap:true },
     { title: "nohello", description: "不要问在吗 | 短链接:nohello.top (池鱼提供服务器&域名支持)", categories:["other"], link: "./nohello", newtap:true },
     { title: "Markdown渲染器", description: "在线预览Markdown | 一键导出多种格式", categories:["other"], link: "./md", newtap:true },
