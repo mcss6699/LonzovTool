@@ -64,11 +64,10 @@ categoryFilter.addEventListener('wheel', (e) => {
     updateScrollFade();
 });
 
-// 鼠标拖动滚动分类栏
+// 拖动滚动分类栏
 let isDown = false;
 let startX;
 let scrollLeft;
-let startTouchX = 0;
 
 categoryFilter.addEventListener('mousedown', (e) => {
     isDown = true;
@@ -91,34 +90,55 @@ categoryFilter.addEventListener('mousemove', (e) => {
     if (!isDown) return;
     e.preventDefault();
     const x = e.pageX - categoryFilter.offsetLeft;
-    const walk = (x - startX) * 2;
+    const walk = (x - startX) * 1.5;
     categoryFilter.scrollLeft = scrollLeft - walk;
     updateScrollFade();
 });
 
+categoryFilter.addEventListener('wheel', (e) => {
+    if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
+        e.preventDefault();
+    }
+    
+    categoryFilter.scrollLeft += e.deltaY;
+    updateScrollFade();
+});
+
+let startTouchX = 0;
+let isTouchMove = false;
+
 categoryFilter.addEventListener('touchstart', (e) => {
-    isDown = true;
     startTouchX = e.touches[0].pageX;
     scrollLeft = categoryFilter.scrollLeft;
-    categoryFilter.style.cursor = 'grabbing';
-    e.preventDefault();
+    isTouchMove = false;
 });
 
 categoryFilter.addEventListener('touchmove', (e) => {
-    if (!isDown) return;
-    
     const touchX = e.touches[0].pageX;
     const walk = (touchX - startTouchX) * 1;
-    categoryFilter.scrollLeft = scrollLeft - walk;
     
-    updateScrollFade();
+    if (Math.abs(walk) > 5) {
+        isTouchMove = true;
+        categoryFilter.scrollLeft = scrollLeft - walk;
+        updateScrollFade();
+    }
     
-    e.preventDefault();
+    if (isTouchMove) {
+        e.preventDefault();
+    }
 });
 
-categoryFilter.addEventListener('touchend', () => {
-    isDown = false;
-    categoryFilter.style.cursor = 'grab';
+categoryFilter.addEventListener('touchend', (e) => {
+    if (!isTouchMove) {
+        const touch = e.changedTouches[0];
+        const element = document.elementFromPoint(touch.clientX, touch.clientY);
+        
+        if (element && element.classList.contains('filter-btn')) {
+            element.click();
+        }
+    }
+    
+    isTouchMove = false;
     updateScrollFade();
 });
 
