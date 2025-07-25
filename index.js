@@ -68,6 +68,7 @@ categoryFilter.addEventListener('wheel', (e) => {
 let isDown = false;
 let startX;
 let scrollLeft;
+let startTouchX = 0;
 
 categoryFilter.addEventListener('mousedown', (e) => {
     isDown = true;
@@ -90,8 +91,34 @@ categoryFilter.addEventListener('mousemove', (e) => {
     if (!isDown) return;
     e.preventDefault();
     const x = e.pageX - categoryFilter.offsetLeft;
-    const walk = (x - startX) * 2; // 滚动速度
+    const walk = (x - startX) * 2;
     categoryFilter.scrollLeft = scrollLeft - walk;
+    updateScrollFade();
+});
+
+categoryFilter.addEventListener('touchstart', (e) => {
+    isDown = true;
+    startTouchX = e.touches[0].pageX;
+    scrollLeft = categoryFilter.scrollLeft;
+    categoryFilter.style.cursor = 'grabbing';
+    e.preventDefault();
+});
+
+categoryFilter.addEventListener('touchmove', (e) => {
+    if (!isDown) return;
+    
+    const touchX = e.touches[0].pageX;
+    const walk = (touchX - startTouchX) * 1;
+    categoryFilter.scrollLeft = scrollLeft - walk;
+    
+    updateScrollFade();
+    
+    e.preventDefault();
+});
+
+categoryFilter.addEventListener('touchend', () => {
+    isDown = false;
+    categoryFilter.style.cursor = 'grab';
     updateScrollFade();
 });
 
@@ -156,25 +183,64 @@ document.addEventListener('DOMContentLoaded', () => {
     // 生成动态卡片
     generateCards(cardsData);
     
-    // 分类过滤功能
-    const filterButtons = document.querySelectorAll('.filter-btn');
-filterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        filterButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        const category = button.dataset.category;
-        const filteredCards = category === 'all' 
-            ? cardsData 
-            : cardsData.filter(card => card.categories.includes(category));
+    // 获取清除按钮和搜索框引用
+    const clearSearchBtn = document.getElementById('clearSearch');
+    const searchBox = document.querySelector('.search-box');
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    // 检查是否有search参数
+    if (urlParams.has('search')) {
+        // 获取参数值并解码
+        const searchValue = decodeURIComponent(urlParams.get('search'));
+        // 填充到搜索框
+        searchBox.value = searchValue;
         
-        generateCards(filteredCards);
+        // 有文字时显示叉号
+        if (searchValue) {
+            clearSearchBtn.style.display = 'block';
+        }
+    }
+    
+    // 叉号功能
+    clearSearchBtn.addEventListener('click', () => {
+        searchBox.value = '';
+        searchBox.focus();
+        clearSearchBtn.style.display = 'none';
+        
+        // 触发input事件更新搜索结果
+        const event = new Event('input', { bubbles: true });
+        searchBox.dispatchEvent(event);
     });
-});
+    
+    // 标签分类过滤功能
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            const category = button.dataset.category;
+            const filteredCards = category === 'all' 
+                ? cardsData 
+                : cardsData.filter(card => card.categories.includes(category));
+            
+            generateCards(filteredCards);
+        });
+    });
     
     // 搜索功能
-    const searchBox = document.querySelector('.search-box');
     searchBox.addEventListener('input', () => {
         const searchTerm = searchBox.value.toLowerCase();
+        
+        clearSearchBtn.style.display = searchTerm ? 'block' : 'none';
+        
+        const url = new URL(window.location);
+        if (searchTerm) {
+            url.searchParams.set('search', encodeURIComponent(searchTerm));
+        } else {
+            // 清空搜索时移除参数
+            url.searchParams.delete('search');
+        }
+        window.history.replaceState({}, '', url);
         
         const filteredCards = cardsData.filter(card => 
             card.title.toLowerCase().includes(searchTerm) || 
@@ -192,6 +258,33 @@ filterButtons.forEach(button => {
             }
         });
     });
+
+    searchBox.addEventListener('focus', () => {
+        // 保存原始placeholder
+        if (!searchBox.dataset.originalPlaceholder) {
+            searchBox.dataset.originalPlaceholder = searchBox.placeholder;
+        }
+        // 清空placeholder
+        searchBox.placeholder = '';
+    });
+    
+    searchBox.addEventListener('blur', () => {
+        // 恢复原始placeholder
+        if (searchBox.dataset.originalPlaceholder) {
+            searchBox.placeholder = searchBox.dataset.originalPlaceholder;
+        }
+    });
+    
+    // 触发初始搜索
+    if (urlParams.has('search')) {
+        // 使用setTimeout确保页面渲染完成
+        setTimeout(() => {
+            const event = new Event('input', { bubbles: true });
+            searchBox.dispatchEvent(event);
+        }, 100);
+    }
+    
+    // 更新滚动渐变效果
     updateScrollFade();
     window.addEventListener('resize', updateScrollFade);
 });
