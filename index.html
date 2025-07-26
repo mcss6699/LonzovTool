@@ -4,14 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
-    <title>小舟工具箱</title>
+    <title>小舟工具箱 - MC指令工具箱</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" href="./favicon.png" type="image/png">
     <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
     <script>LA.init({id:"3Ltl0yXYWQcgbDgB",ck:"3Ltl0yXYWQcgbDgB"})</script>
     <link rel="preconnect" href="https://cn.windfonts.com" />
     <link rel="stylesheet" type="text/css" crossorigin='anonymous' href="https://cn.windfonts.com/wenfeng/fonts/misa/regular/web/index.css" />
-    <!-- 此中文网页字体由文风字体（Windfonts）免费提供，您可以自由引用，请务必保留此授权许可标注 https://wenfeng.org/license --> 
+    <!-- 此中文网页字体由文风字体（Windfonts）免费提供，您可以自由引用，请务必保留此授权许可标注 https://wenfeng.org/license -->
+    <script src="modal.js"></script>
+    <script>
+        const modalConfig = {
+            title: "近期更新",
+            id: "update_log_0727",
+            version: "202507270000",
+            forceShow: false,
+            content: `
+                    <p>1. 首页新支持search参数 <a href="https://p.kdocs.cn/l/cdYwfJEuGwBr" style="color: #007AFF;" target="_blank">​​⍰</a><br>2. 免费导入活动延长到10月8日<br>3. 新增"特殊符号"卡片</p>
+                    <p>*建议/反馈请加Q群:587984701</p>
+                `,
+            buttons: [
+                { text: "查看详情", style: "gray", action: "open_link", url: "https://p.kdocs.cn/l/cdYwfJEuGwBr" },
+                { text: "加群", style: "", action: "open_link", url: "https://qm.qq.com/q/hjTqUyIKEo" },
+                { text: "不再显示", style: "red", action: "close" },
+            ]
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            showModal(modalConfig);
+        });
+
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+    </script>
     <style>
         .no-js-warning {
             display: none;
@@ -565,7 +590,7 @@
             </div>
             <div class="header-content">
                 <h1 class="title">小舟工具箱</h1>
-                <p class="subtitle">Minecraft指令工具箱，兼导航站</p>
+                <p class="subtitle">MC指令工具箱 | 你需要的这里都有</p>
             </div>
         </div>
     </header>
@@ -620,7 +645,7 @@
 
     <footer class="container">
         <p>排序方式: 添加时间>使用频率</p>
-        <p>© 2025 小舟工具箱 | Minecraft工具箱</p>
+        <p>© 2025 小舟工具箱 | mc指令工具箱</p>
     </footer>
 
     <script src="index.js"></script>

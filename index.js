@@ -149,6 +149,7 @@ const cardsData = [
     { title: "T显动画", description: "自动生成“打字机”动画", categories:["command"], link: "./tr", newtap:false },
     { title: "T显编辑器↗", description: "可视化T显编辑器 · by Dislink", categories:["command"], link: "https://dislink.github.io/rawJSONEditor/", newtap:true },    
     { title: "语法转换", description: "execute指令语法升级", categories:["command"], link: "./execute", newtap:false },
+    { title: "特殊符号↗", description: "特殊符号大全", categories:["command"], link: "https://teshuzifu.cn/", newtap:true },
     { title: "MCNav↗", description: "MC导航站 | MC工具大全", categories:["friend-links"], link: "https://www.mcnav.net/", newtap:true },
     { title: "命令魔方↗", description: "强大的命令辅助应用", categories:["friend-links"], link: "https://www.viqu.com/pricing.html", newtap:true },
     { title: "命令助手↗", description: "便捷易用的命令辅助输入应用", categories:["friend-links"], link: "https://ca.projectxero.top/", newtap:true },
@@ -193,29 +194,21 @@ function generateCards(cards) {
 
 // 初始化页面
 document.addEventListener('DOMContentLoaded', () => {
-    // 移除no-js类表示JS已执行
     document.documentElement.classList.remove('no-js');
-    
-    // 清除静态卡片内容
     const container = document.getElementById('cardsContainer');
     container.innerHTML = '';
     
-    // 生成动态卡片
     generateCards(cardsData);
     
-    // 获取清除按钮和搜索框引用
     const clearSearchBtn = document.getElementById('clearSearch');
     const searchBox = document.querySelector('.search-box');
     
     const urlParams = new URLSearchParams(window.location.search);
     // 检查是否有search参数
     if (urlParams.has('search')) {
-        // 获取参数值并解码
         const searchValue = decodeURIComponent(urlParams.get('search'));
-        // 填充到搜索框
         searchBox.value = searchValue;
         
-        // 有文字时显示叉号
         if (searchValue) {
             clearSearchBtn.style.display = 'block';
         }
@@ -226,8 +219,6 @@ document.addEventListener('DOMContentLoaded', () => {
         searchBox.value = '';
         searchBox.focus();
         clearSearchBtn.style.display = 'none';
-        
-        // 触发input事件更新搜索结果
         const event = new Event('input', { bubbles: true });
         searchBox.dispatchEvent(event);
     });
@@ -280,16 +271,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     searchBox.addEventListener('focus', () => {
-        // 保存原始placeholder
         if (!searchBox.dataset.originalPlaceholder) {
             searchBox.dataset.originalPlaceholder = searchBox.placeholder;
         }
-        // 清空placeholder
         searchBox.placeholder = '';
     });
     
     searchBox.addEventListener('blur', () => {
-        // 恢复原始placeholder
         if (searchBox.dataset.originalPlaceholder) {
             searchBox.placeholder = searchBox.dataset.originalPlaceholder;
         }
@@ -297,7 +285,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 触发初始搜索
     if (urlParams.has('search')) {
-        // 使用setTimeout确保页面渲染完成
         setTimeout(() => {
             const event = new Event('input', { bubbles: true });
             searchBox.dispatchEvent(event);
