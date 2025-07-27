@@ -6,26 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const copyTextBtn = document.getElementById('copyText');
     const toggleThemeBtn = document.getElementById('toggleTheme');
     const messageEl = document.getElementById('message');
-    const modalOverlay = document.getElementById('modal-overlay');
-    const modalConfirmBtn = document.getElementById('modal-confirm');
-
-    // 显示弹窗函数
-    function showModal() {
-        modalOverlay.style.display = 'flex';
-    }
-
-    // 隐藏弹窗函数
-    function hideModal() {
-        modalOverlay.classList.add('closing');
-        setTimeout(() => {
-            modalOverlay.style.display = 'none';
-            modalOverlay.classList.remove('closing');
-        }, 200); 
-    }
-
-    showModal();
-
-    modalConfirmBtn.addEventListener('click', hideModal);
 
     function showMessage(text, type = 'info') {
         if (!document.querySelector('style.qjzh-message-style')) {
@@ -158,18 +138,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // 返回
     toggleThemeBtn.addEventListener('click', function() {
-        // 先模拟浏览器返回
         if (history.length > 1) {
-          // 有历史记录时尝试返回
           const fallbackTimer = setTimeout(() => {
-            location.href = "/"; // 超时未返回则跳转首页
-          }, 300); // 超时阈值
+            location.href = "/";
+          }, 300);
           
           window.history.back();
           window.addEventListener('popstate', function handlePop() {
-            clearTimeout(fallbackTimer); // 返回成功时清除定时器
-            window.removeEventListener('popstate', handlePop); // 清理事件
+            clearTimeout(fallbackTimer);
+            window.removeEventListener('popstate', handlePop);
           }, { once: true });
         } else {
           location.href = "/";
