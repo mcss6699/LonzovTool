@@ -1,245 +1,232 @@
-// DOM元素
-const projectContainer = document.getElementById('project-container');
-const searchInput = document.getElementById('search-input');
-const searchHint = document.getElementById('search-hint');
-const priceBtn = document.getElementById('price-btn');
-const detailOverlay = document.getElementById('detail-overlay');
-const pricePopup = document.getElementById('price-popup');
-
-// 加载作品数据
-async function loadProjects() {
-  try {
-    const response = await fetch('dr.json');
-    if (!response.ok) throw new Error('数据加载失败');
-    const data = await response.json();
-    console.log('加载到项目数据:', data); // 调试日志
-    return data;
-  } catch (error) {
-    console.error('加载数据出错:', error);
-    // 返回示例数据作为后备
-    return [
-      {
-        "id": "backup-1",
-        "title": "加载失败❌",
-        "description": "当你看到这个代表json文件加载失败了，请刷新重试",
-        "image": "https://img.fastmirror.net/s/2025/05/17/6827ffcf8218b.jpg",
-        "price": "S - 小型",
-        "tags": ["示例"]
-      }
-    ];
-  }
-}
-
-// 渲染作品卡片
-function renderProjects(projects) {
-  projectContainer.innerHTML = '';
+document.addEventListener('DOMContentLoaded', function () {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.body.className = savedTheme;
   
-  projects.forEach(project => {
-    const card = document.createElement('div');
-    card.className = 'project-card';
-    card.innerHTML = `
-      <img class="card-image" src="${project.image}" alt="${project.title}">
-      <div class="card-content">
-        <h3>${project.title}</h3>
-        <p>${project.description}</p>
-        <span class="price-tag" data-id="${project.id}">${project.price}</span>
-      </div>
-    `;
-    
-    // 添加点击事件
-    card.addEventListener('click', () => showProjectDetail(project));
-    projectContainer.appendChild(card);
-  });
-}
+  const galleryEl = document.getElementById('gallery');
+  const detailOverlay = document.getElementById('detail-overlay');
+  const imageOverlay = document.getElementById('image-overlay');
+  const detailTitle = document.getElementById('detail-title');
+  const carouselWrapper = document.getElementById('carousel-wrapper');
+  const dotIndicator = document.getElementById('dot-indicator');
+  const detailDesc = document.getElementById('detail-desc');
+  const detailTags = document.getElementById('detail-tags');
+  const homeButton = document.querySelector('.home-button');
+  const priceButton = document.getElementById('priceButton');
+  const headerTitle = document.getElementById('headerTitle');
+  const searchControl = document.getElementById('searchControl');
+  const searchIcon = document.getElementById('searchIcon');
+  const searchClose = document.getElementById('searchClose');
+  const searchInput = document.getElementById('searchInput');
 
-// 显示作品详情
-function showProjectDetail(project) {
-  console.log('显示详情开始');
-  const detailImage = detailOverlay.querySelector('.detail-image');
-  const detailTitle = detailOverlay.querySelector('.detail-title');
-  const detailDesc = detailOverlay.querySelector('.detail-description');
-  const priceValue = detailOverlay.querySelector('.price-value');
-  
-  // 重置状态确保动画可重播
-  detailOverlay.classList.remove('active');
-  detailOverlay.querySelector('.detail-content').classList.remove('active');
-  
-  // 设置内容
-  detailImage.src = project.image;
-  detailImage.alt = project.title;
-  detailTitle.textContent = project.title;
-  detailDesc.textContent = project.description;
-  priceValue.textContent = project.price;
-  detailOverlay.querySelector('.price-label').textContent = '建筑规模: ';
-  
-  // 立即显示并触发动画
-  detailOverlay.style.display = 'flex';
-  detailOverlay.querySelector('.detail-content').style.display = 'block';
-  
-  // 强制同步布局和重绘
-  requestAnimationFrame(() => {
-    detailOverlay.classList.add('active');
-    detailOverlay.querySelector('.detail-content').classList.add('active');
-    console.log('动画已触发');
-  });
-}
+  let photoData = [];
+  let filteredData = [];
+  let currentCardIndex = -1;
+  let carouselCurrentIndex = 0;
+  let isDragging = false;
+  let startX = 0;
 
-async function setupSearch(projects) {
-  // 搜索图标点击事件
-  document.querySelector('.search-icon').addEventListener('click', async () => {
-    await performSearch(projects);
-  });
-
-  // 回车键搜索
-  searchInput.addEventListener('keydown', async (e) => {
-    if (e.key === 'Enter') {
-      if (searchInput.value.trim() === '') {
-        // 空搜索时重置状态
-        const projects = await loadProjects();
-        renderProjects(projects);
-        searchHint.textContent = '按回车搜索...';
-      } else {
-        await performSearch(projects);
-      }
-    }
-  });
-
-  // 执行搜索
-  async function performSearch(projects) {
-    const searchTerm = searchInput.value.trim().toLowerCase();
-    
-    if (!searchTerm) {
-      searchHint.textContent = '请输入搜索关键词';
-      return;
-    }
-
-    const filtered = projects.filter(project => 
-      project.title.toLowerCase().includes(searchTerm) || 
-      project.tags.some(tag => tag.toLowerCase().includes(searchTerm))
-    );
-    
-    renderProjects(filtered);
-
-    if (filtered.length === 0) {
-      alert('什么都没搜到捏…换个关键词试试吧~');
-      
-      // 重置搜索状态
-      searchInput.value = '';
-      const projects = await loadProjects();
-      renderProjects(projects);
-      searchHint.textContent = '按回车搜索...';
-    } else {
-      searchHint.textContent = '';
+  async function loadPhotoData() {
+    try {
+      const response = await fetch('dr.json');
+      photoData = await response.json();
+      filteredData = [...photoData];
+      renderGallery();
+    } catch (error) {
+      console.error('数据加载失败:', error);
+      galleryEl.innerHTML = '<p class="error">图册加载失败，请刷新页面</p>';
     }
   }
-}
 
-// 初始化详情页和弹窗事件
-function initModalEvents() {
-  // 价格按钮点击事件
-  priceBtn.addEventListener('click', () => {
-    const popup = pricePopup;
-    const content = popup.querySelector('.popup-content');
-    
-    // 重置状态
-    popup.style.display = 'flex';
-    content.style.display = 'block';
-    popup.classList.remove('active');
-    content.style.opacity = '0';
-    content.style.transform = 'translateY(-50%) scale(0.95)';
-    
-    // 强制重绘后触发动画
-    requestAnimationFrame(() => {
-      popup.classList.add('active');
-      content.style.opacity = '1';
-      content.style.transform = 'translateY(-50%) scale(1)';
+  function renderGallery() {
+    galleryEl.innerHTML = '';
+    filteredData.forEach((card, index) => {
+      const firstLineDesc = card.desc.split('\n')[0];
+
+      const cardEl = document.createElement('div');
+      cardEl.className = 'card';
+      cardEl.innerHTML = `
+        <img class="card-img" src="${card.images[0]}" alt="${card.title}" loading="lazy">
+        <div class="card-content">
+          <div class="card-header">
+            <div class="card-title">${card.title}</div>
+          </div>
+          <div class="card-desc">${firstLineDesc}</div>
+          <div class="card-tags">
+            ${card.tags.map(tag => `<span class="card-tag">${tag}</span>`).join('')}
+          </div>
+        </div>
+      `;
+      cardEl.addEventListener('click', () => openDetail(index));
+      galleryEl.appendChild(cardEl);
     });
+  }
+
+  function openSearch() {
+    searchControl.classList.add('active');
+    setTimeout(() => {
+      searchInput.focus();
+    }, 100);
+  }
+
+  function closeSearch() {
+    searchControl.classList.remove('active');
+    searchInput.value = '';
+    filteredData = [...photoData];
+    renderGallery();
+  }
+
+  function searchPhotos() {
+    const keyword = searchInput.value.trim().toLowerCase();
+    if (!keyword) return;
+
+    filteredData = photoData.filter(card =>
+      card.title.toLowerCase().includes(keyword) ||
+      card.desc.toLowerCase().includes(keyword) ||
+      card.tags.some(tag => tag.toLowerCase().includes(keyword))
+    );
+
+    renderGallery();
+
+    if (filteredData.length === 0) {
+      alert("什么都没找到捏…");
+      closeSearch();
+    }
+  }
+
+  function openDetail(index) {
+    currentCardIndex = index;
+    const card = filteredData[index];
+
+    detailTitle.textContent = card.title;
+    detailDesc.innerHTML = card.desc.replace(/\n/g, '<br>');
+    detailTags.innerHTML = card.tags.map(tag =>
+      `<span class="detail-tag">${tag}</span>`
+    ).join('');
+
+    carouselWrapper.innerHTML = '';
+    dotIndicator.innerHTML = '';
+    card.images.forEach((img, i) => {
+      const item = document.createElement('div');
+      item.className = 'carousel-item';
+      item.innerHTML = `<img src="${img}" class="carousel-img" data-index="${i}">`;
+      carouselWrapper.appendChild(item);
+
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      dot.dataset.index = i;
+      dotIndicator.appendChild(dot);
+    });
+
+    document.querySelectorAll('.carousel-img').forEach(img => {
+      img.addEventListener('click', (e) => {
+        openImageOverlay(e.target.src);
+      });
+    });
+
+    document.querySelectorAll('.dot').forEach(dot => {
+      dot.addEventListener('click', (e) => {
+        slideTo(parseInt(e.target.dataset.index));
+      });
+    });
+
+    carouselWrapper.addEventListener('wheel', handleCarouselWheel);
+    carouselWrapper.addEventListener('mousedown', handleDragStart);
+    carouselWrapper.addEventListener('touchstart', handleDragStart);
+
+    detailOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    slideTo(0);
+  }
+
+  function handleCarouselWheel(e) {
+    e.preventDefault();
+    if (e.deltaY > 0) {
+      slideToNext();
+    } else {
+      slideToPrev();
+    }
+  }
+
+  function slideTo(index) {
+    const total = filteredData[currentCardIndex].images.length;
+    index = (index + total) % total;
+
+    carouselWrapper.style.transform = `translateX(-${index * 100}%)`;
+    document.querySelectorAll('.dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+    carouselCurrentIndex = index;
+  }
+
+  function handleDragStart(e) {
+    isDragging = true;
+    startX = e.clientX || e.touches[0].clientX;
+    document.addEventListener('mousemove', handleDragMove);
+    document.addEventListener('mouseup', handleDragEnd);
+    document.addEventListener('touchmove', handleDragMove);
+    document.addEventListener('touchend', handleDragEnd);
+  }
+
+  function handleDragMove(e) {
+    if (!isDragging) return;
+    const currentX = e.clientX || e.touches[0].clientX;
+    const diffX = startX - currentX;
+
+    if (Math.abs(diffX) > 50) {
+      diffX > 0 ? slideToNext() : slideToPrev();
+      handleDragEnd();
+    }
+  }
+
+  function handleDragEnd() {
+    isDragging = false;
+    document.removeEventListener('mousemove', handleDragMove);
+    document.removeEventListener('mouseup', handleDragEnd);
+    document.removeEventListener('touchmove', handleDragMove);
+    document.removeEventListener('touchend', handleDragEnd);
+  }
+
+  function slideToNext() { slideTo(carouselCurrentIndex + 1); }
+  function slideToPrev() { slideTo(carouselCurrentIndex - 1); }
+
+  function openImageOverlay(src) {
+    imageOverlay.querySelector('img').src = src;
+    imageOverlay.classList.add('active');
+  }
+
+  searchIcon.addEventListener('click', openSearch);
+  searchClose.addEventListener('click', closeSearch);
+  searchInput.addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') searchPhotos();
   });
 
-  // 关闭详情页
-  detailOverlay.querySelector('.close-btn').addEventListener('click', () => {
-    detailOverlay.classList.remove('active');
-    setTimeout(() => {
-      detailOverlay.style.display = 'none';
-    }, 400);
-  });
-  
-  // 点击遮罩层关闭
   detailOverlay.addEventListener('click', (e) => {
     if (e.target === detailOverlay) {
+      carouselWrapper.removeEventListener('wheel', handleCarouselWheel);
       detailOverlay.classList.remove('active');
-      setTimeout(() => {
-        detailOverlay.style.display = 'none';
-      }, 400);
-    }
-  });
-  
-  /*
-  document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('price-tag')) {
-      pricePopup.classList.add('active');
-      pricePopup.style.display = 'block';
-    }
-  });
-  */
-  
-  // 我知道了按钮点击事件
-  document.querySelector('.confirm-btn').addEventListener('click', () => {
-    pricePopup.classList.remove('active');
-    setTimeout(() => {
-      pricePopup.style.display = 'none';
-    }, 400);
-  });
-
-  // 搜索框事件
-  searchInput.addEventListener('focus', () => {
-    searchHint.textContent = '按回车搜索...';
-  });
-
-  searchInput.addEventListener('blur', () => {
-    if (!searchInput.value) {
-      searchHint.textContent = '';
+      document.body.style.overflow = 'auto';
     }
   });
 
-  searchInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      searchHint.textContent = '';
+  imageOverlay.addEventListener('click', () => {
+    imageOverlay.classList.remove('active');
+  });
+
+  homeButton.addEventListener('click', () => {
+    if (history.length > 1) {
+      const fallbackTimer = setTimeout(() => {
+        location.href = "/";
+      }, 300);
+
+      window.history.back();
+      window.addEventListener('popstate', function handlePop() {
+        clearTimeout(fallbackTimer);
+        window.removeEventListener('popstate', handlePop);
+      }, { once: true });
+    } else {
+      location.href = "/";
     }
   });
-}
 
-// 价格列表函数
-function renderPriceList(projects) {
-}
-
-// 初始化应用
-async function initApp() {
-  console.log('应用初始化开始');
-
-  try {
-    const projects = await loadProjects();
-    console.log('项目数据:', projects);
-    
-    renderProjects(projects);
-    setupSearch(projects);
-    initModalEvents();
-    
-    // 调试事件监听
-    console.log('事件监听状态:');
-    console.log('搜索按钮:', document.querySelector('.search-icon').onclick);
-    console.log('价格按钮:', document.getElementById('price-btn').onclick);
-    
-  } catch (error) {
-    console.error('初始化失败:', error);
-  }
-}
-
-// 确保DOM加载完成后初始化
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM已加载');
-  initApp();
+  loadPhotoData();
 });
-
-// 启动应用
-document.addEventListener('DOMContentLoaded', initApp);
