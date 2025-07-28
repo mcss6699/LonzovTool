@@ -152,6 +152,7 @@ const cardsData = [
     { title: "特殊符号↗", description: "特殊符号大全", categories:["command"], link: "https://teshuzifu.cn/", newtap:true },
     { title: "MCNav↗", description: "MC导航站 | MC工具大全", categories:["friend-links"], link: "https://www.mcnav.net/", newtap:true },
     { title: "命令魔方↗", description: "强大的命令辅助应用", categories:["friend-links"], link: "https://www.viqu.com/pricing.html", newtap:true },
+    { title: "命令助手·Reforged↗", description: "命令助手 | 社区重铸版", categories:["friend-links"], link: "https://ca.huangyx.eu.cc/", newtap:true },
     { title: "命令助手↗", description: "便捷易用的命令辅助输入应用", categories:["friend-links"], link: "https://ca.projectxero.top/", newtap:true },
     { title: "命令集↗", description: "利用无障碍权限实现全自动填写命令", categories:["friend-links"], link: "https://space.bilibili.com/1526784927", newtap:true },
     { title: "蓝天工作室↗", description: "代表作 CRoB命令查询机器人 等", categories:["friend-links"], link: "https://bsc.meteormc.cn/", newtap:true },
