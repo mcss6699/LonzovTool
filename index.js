@@ -144,7 +144,7 @@ categoryFilter.addEventListener('touchend', (e) => {
 
 // 卡片数据
 const cardsData = [
-    { title: "ID查询↗", description: "查询原版所有ID · by 命令助手", categories:["command"], link: "https://ca.projectxero.top/idlist/", newtap:true },
+    { title: "ID查询↗", description: "查询原版所有ID · by 命令助手", categories:["command"], link: "https://idlist.projectxero.top/", newtap:true },
     { title: "艺术字转换", description: "Minecraft艺术字(全角)，游戏内才能正常显示", categories:["command"], link: "./qjzh", newtap:false },
     { title: "T显动画", description: "自动生成“打字机”动画", categories:["command"], link: "./tr", newtap:false },
     { title: "T显编辑器↗", description: "可视化T显编辑器 · by Dislink", categories:["command"], link: "https://dislink.github.io/rawJSONEditor/", newtap:true },    
@@ -159,6 +159,7 @@ const cardsData = [
     { title: "蓝天工作室↗", description: "代表作 CRoB命令查询机器人 等", categories:["friend-links"], link: "https://bsc.meteormc.cn/", newtap:true },
     { title: "MT管理器↗", description: "Android 平台文件管理 & 逆向修改神器", categories:["friend-links"], link: "https://mt2.cn/", newtap:true },
     { title: "苦力怕论坛↗", description: "国内最大的基岩版资源分享社区(应该是吧)", categories:["friend-links"], link: "https://klpbbs.com/", newtap:true },
+    { title: "命令模拟器↗", description: "强大的基岩版命令调试程序", categories:["friend-links"], link: "https://commandsimulator.great-site.net/", newtap:true },
     { title: "网易版导入", description: "限免活动中…站长自营无坑", categories:["resource"], link: "./dr/pro.html", newtap:true },
     { title: "安卓基岩版下载↗", description: "优质的境外下载站", categories:["resource"], link: "https://mcapks.net/", newtap:true },
     { title: "MT管理器-mc语法包", description: "指令语法高亮，压缩包里有具体使用说明", categories:["resource"], link: "./down/mc语法包", newtap:true },
