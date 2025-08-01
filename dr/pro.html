@@ -5,7 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>免费导入 - 小舟工具箱</title>
+    <script>
+        (function () {
+            'use strict';
+
+            if (window.location.protocol === 'http:') {
+                const hostname = window.location.hostname;
+                const isLocalhost = hostname === 'localhost';
+                const isLoopback = hostname === '127.0.0.1';
+                const isPrivateIP = hostname.startsWith('192.168.');
+
+                if (!(isLocalhost || isLoopback || isPrivateIP)) {
+                    var httpsUrl = 'https://' + window.location.host + window.location.pathname + window.location.search + window.location.hash;
+
+                    window.location.replace(httpsUrl);
+                } else {
+                    console.log("检测到本地地址 (" + hostname + ")，跳过重定向。");
+                }
+            }
+        })();
+    </script>
     <link rel="shortcut icon" href="../favicon.png" type="image/png">
     <script>
         const savedTheme = localStorage.getItem('theme') || 'light';
