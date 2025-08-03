@@ -39,8 +39,8 @@
       forceShow: true,
       content: `
             <p>大小按导入预计耗时算，具体参考展示内容</p>
-            <p>小型：¥3/文件<br>中型：¥5/文件<br>大型：¥8/文件<br>巨大：¥12/文件<br>超大：¥20/文件</p>
-            <p>支持本地联机、联机大厅、租赁服<br>支持导出，价格是导入一半<br><a style="font-weight: bold">*认准587984701的群主！</a></p>
+            <p>小型：¥3/文件<br>中型：¥5/文件<br>大型：¥8/文件<br>巨大：¥12/文件<br>超大：¥20/文件<br>特大：¥2/10w方块<br>(四舍五入，不含空气)</p>
+            <p>支持本地联机、联机大厅、租赁服<br>支持导出，价格是导入一半<br><a style="font-weight: bold">*认准Q群587984701！</a></p>
         `,
       buttons: [
         { text: "加群", style: "gray", action: "open_link", url: "https://qm.qq.com/q/hjTqUyIKEo" },
@@ -61,7 +61,7 @@
       --light-bg-color: #ffffff;
       --light-text-color: #333333;
       --light-card-bg: #f8f9fa;
-      --light-header-bg: rgba(255, 255, 255, 0.9);
+      --light-header-bg: rgba(255, 255, 255, 0.85);
       --light-box-shadow: rgba(0, 0, 0, 0.1);
       --light-tag-bg: #e9ecef;
       --light-tag-text: #495057;
@@ -96,6 +96,7 @@
       color: var(--text-color);
       transition: background-color 0.3s, color 0.3s;
       -webkit-tap-highlight-color: transparent;
+      padding-bottom: 20px;
     }
 
     body.light {
@@ -143,7 +144,7 @@
       align-items: center;
       justify-content: space-between;
       background-color: var(--header-bg);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(9.1px);
       z-index: 100;
       box-shadow: 0 2px 10px var(--box-shadow);
     }
@@ -792,6 +793,14 @@
     .price-button:hover {
       background-color: rgba(0, 0, 0, 0.1);
     }
+
+    footer {
+            text-align: center;
+            color: #777;
+            line-height: 1.6;
+            padding-top: 30px;
+            font-size: 1rem;
+    }
   </style>
 </head>
 
@@ -841,6 +850,10 @@
     <img src="" alt="放大图片">
   </div>
   <div class="notification" id="notification">什么都没找到捏…</div>
+
+  <footer class="container">
+    <p>© 2025 小舟工具箱 | mc指令工具箱</p>
+  </footer>
 </body>
 <script>
   priceButton.addEventListener('click', () => {
