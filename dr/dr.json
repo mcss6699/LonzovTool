@@ -11,15 +11,16 @@
     {
       "title": "幻城",
       "tags": ["大型", "石英"],
-      "desc": "大型城堡，适合地铁、主城",
+      "desc": "大型城堡，适合地铁、主城、商店",
       "images": [
-        "https://img.fastmirror.net/s/2025/05/17/6828a9809a7d2.jpg"
+        "https://img.fastmirror.net/s/2025/05/17/6828a9809a7d2.jpg",
+        "https://img.fastmirror.net/s/2025/08/04/688ffceb5f324.png"
       ]
     },
     {
       "title": "荒废城市",
       "tags": ["大型"],
-      "desc": "末日风格，适合地铁、PVP、剧情\n*此文件地面杂化有空气，不清楚是有意设计还是文件问题，介意勿选",
+      "desc": "末日风格，适合地铁、PVP、RPG\n*此文件地面杂化有空气，不清楚是有意设计还是文件问题，介意勿选",
       "images": [
         "https://img.fastmirror.net/s/2025/05/17/6828a981ad3dd.jpg",
         "https://img.fastmirror.net/s/2025/08/02/688d709da216f.jpg"
@@ -76,7 +77,7 @@
       {
         "title": "狼人杀-幽静小镇",
         "tags": ["大型"],
-        "desc": "适合地铁、PVP、剧情",
+        "desc": "适合地铁、PVP、RPG",
         "images": [
           "https://img.fastmirror.net/s/2025/05/17/6828a9d5d0128.jpg"
         ]
