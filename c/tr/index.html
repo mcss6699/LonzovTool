@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>T显动画生成 - 小舟工具箱</title>
+    <link rel="stylesheet" href="../2.css">
+    <link rel="shortcut icon" href="/favicon.png" type="image/png">
+    <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+    <script>LA.init({id:"3Ltl0yXYWQcgbDgB",ck:"3Ltl0yXYWQcgbDgB"})</script>
+    <script>
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'theme') {
+                document.documentElement.setAttribute('data-theme', e.newValue || 'light');
+            }
+        });
+    </script>
+    <style>
+        .input-area, .output-area, .score-input {
+            margin-bottom: 20px;
+        }
+
+        .score-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .score-input label {
+            margin-bottom: 0;
+            white-space: nowrap;
+        }
+
+        .score-input input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>T显动画生成</h1>
+        </header>
+        
+        <main class="converter">
+            <div class="input-area">
+                <label for="inputText">输入文本：</label>
+                <textarea id="inputText" placeholder="请在此输入需要转换的文本..."></textarea>
+            </div>
+            
+            <div class="score-input">
+                <label for="startScore">初始的分数：</label>
+                <input type="number" id="startScore" placeholder="输入起始数字" value="0">
+            </div>
+            
+            <div class="score-input">
+                <label for="scoreboardName">计分板名称：</label>
+                <input type="text" id="scoreboardName" placeholder="输入计分板名称" value="T显">
+            </div>
+            
+            <div class="controls">
+                <button id="toFullWidth">转换</button>
+                <button id="clearText">清空</button>
+                <button id="copyText">复制</button>
+                <button id="toggleTheme" class="theme-toggle">返回</button>
+            </div>
+            <div id="message" class="message"></div>
+            
+            <style>
+                .score-input {
+                    margin-bottom: 20px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+                
+                .score-input label {
+                    margin-bottom: 0;
+                    white-space: nowrap;
+                }
+                
+                .score-input input {
+                    flex: 1;
+                    padding: 8px 12px;
+                    border: 1px solid var(--border-color);
+                    border-radius: 4px;
+                    font-size: 16px;
+                    background-color: var(--card-bg);
+                    color: var(--text-color);
+                }
+
+                .output-area textarea.edited {
+                    border: 2px solid var(--primary-color);
+                    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
+                }
+    
+                .output-area .edited-label {
+                    color: var(--primary-color);
+                    font-weight: bold;
+                    display: none;
+                }
+            </style>
+            
+            <div class="output-area">
+                <div>
+                    <label for="outputText">转换结果：</label>
+                    <span class="edited-label">(已编辑)</span>
+                </div>
+                <textarea id="outputText" placeholder="转换结果现在支持编辑了，快试试吧~"></textarea>
+            </div>
+        </main>
+        
+        <footer>
+            <p>所有内容由用户输入，与本站无关</p>
+            <p>本功能基于<a href="https://www.bilibili.com/opus/1077201926970408960">🔗链接</a>实现</p>
+            <p>25.06.18：新增忽略§和\n，自动转换换行</p>
+        </footer>
+    </div>
+    
+    <script src="tr.js"></script>
+</body>
+</html>

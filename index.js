@@ -145,12 +145,12 @@ categoryFilter.addEventListener('touchend', (e) => {
 // 卡片数据
 const cardsData = [
     { title: "ID查询↗", description: "查询原版所有ID · by 命令助手", categories:["command"], link: "https://idlist.projectxero.top/", newtap:true },
-    { title: "艺术字转换", description: "Minecraft艺术字(全角)，游戏内才能正常显示", categories:["command"], link: "./qjzh", newtap:false },
-    { title: "T显动画", description: "自动生成“打字机”动画", categories:["command"], link: "./tr", newtap:false },
-    { title: "T显编辑器↗", description: "可视化T显编辑器 · by Dislink", categories:["command"], link: "https://dislink.github.io/rawJSONEditor/", newtap:true },    
-    { title: "语法转换", description: "execute指令语法升级", categories:["command"], link: "./execute", newtap:false },
+    { title: "艺术字转换", description: "Minecraft艺术字(全角)，游戏内才能正常显示", categories:["command"], link: "./c/qjzh", newtap:false },
+    { title: "T显动画", description: "自动生成“打字机”动画", categories:["command"], link: "./c/tr", newtap:false },
+    { title: "T显编辑器↗", description: "可视化T显编辑器 · by Dislink", categories:["command"], link: "https://dislink.github.io/rawJSONEditor/", newtap:true },
+    { title: "语法转换", description: "execute指令语法升级", categories:["command"], link: "./c/execute", newtap:false },
     { title: "特殊符号↗", description: "特殊符号大全", categories:["command"], link: "https://teshuzifu.cn/", newtap:true },
-    { title: "MC特殊符号", description: "mc特殊符号，如鸡腿M币等", categories:["command"], link: "./fuhao", newtap:false },
+    { title: "MC特殊符号", description: "mc特殊符号，如鸡腿M币等", categories:["command"], link: "./c/fuhao", newtap:false },
     { title: "MCNav↗", description: "MC导航站 | MC工具大全", categories:["friend-links"], link: "https://www.mcnav.net/", newtap:true },
     { title: "命令魔方↗", description: "强大的命令辅助应用", categories:["friend-links"], link: "https://www.viqu.com/pricing.html", newtap:true },
     { title: "命令助手·Reforged↗", description: "命令助手 | 社区重铸版", categories:["friend-links"], link: "https://ca.huangyx.eu.cc/", newtap:true },
@@ -164,9 +164,12 @@ const cardsData = [
     { title: "安卓基岩版下载↗", description: "优质的境外下载站", categories:["resource"], link: "https://mcapks.net/", newtap:true },
     { title: "安卓基岩版下载2↗", description: "MineBBS论坛的下载站", categories:["resource"], link: "https://mc.minebbs.com/", newtap:true },
     { title: "MT管理器-mc语法包", description: "指令语法高亮，压缩包里有具体使用说明", categories:["resource"], link: "./down/mc语法包", newtap:true },
-    { title: "幸运转盘", description: "选择困难症？让转盘来决定！", categories:["other"], link: "./spin-the-wheel", newtap:true },
+    { title: "幸运转盘", description: "选择困难症？让转盘来决定！", categories:["other"], link: "./o/spin-the-wheel", newtap:true },
+    { title: "光棱坦克图↗", description: "一种新的图片混淆方式", categories:["other"], link: "https://prism.uyanide.com/", newtap:true },
     { title: "nohello", description: "不要问在吗 | 短链接:nohello.top (池鱼提供服务器&域名支持)", categories:["other"], link: "./nohello", newtap:true },
-    { title: "Markdown渲染器", description: "在线预览Markdown | 一键导出多种格式", categories:["other"], link: "./md", newtap:true },
+    { title: "Markdown渲染器", description: "在线预览Markdown 一键导出多种格式", categories:["other"], link: "./o/md", newtap:true },
+    { title: "毒蘑菇性能测试", description: "进行volumeshader性能测试 查看设备GPU性能", categories:["other"], link: "./o/vsbm", newtap:true },
+
     
 ];
 
