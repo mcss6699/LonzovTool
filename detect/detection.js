@@ -147,7 +147,7 @@ async function detectIP() {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
         
-        const response = await fetch('http://fuhongweb.cn/api/api/ip.php', {
+        const response = await fetch('https://fuhongweb.cn/api/api/ip.php', {
             signal: controller.signal
         });
         clearTimeout(timeoutId);
@@ -204,7 +204,7 @@ async function detectIP() {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
         
-        const response = await fetch(`http://fuhongweb.cn/api/api/ip_info.php?ip=${ip}`, {
+        const response = await fetch(`https://fuhongweb.cn/api/api/ip_info.php?ip=${ip}`, {
             signal: controller.signal
         });
         clearTimeout(timeoutId);
