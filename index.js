@@ -167,11 +167,10 @@ const cardsData = [
     { title: "MT管理器-mc语法包", description: "指令语法高亮，压缩包里有具体使用说明", categories:["resource"], link: "./down/mc语法包", newtap:true },
     { title: "3D字生成↗", description: "轻松制作mc风格中文3D文本！", categories:["other"], link: "https://3dt.easecation.net/", newtap:true },
     { title: "幸运转盘", description: "选择困难症？让转盘来决定！", categories:["other"], link: "./o/spin-the-wheel", newtap:true },
-    { title: "光棱坦克图↗", description: "一种新的图片混淆方式", categories:["other"], link: "https://prism.uyanide.com/", newtap:true },
     { title: "nohello", description: "不要问在吗 | 短链接:nohello.top (池鱼提供服务器&域名支持)", categories:["other"], link: "./nohello", newtap:true },
     { title: "Markdown渲染器", description: "在线预览Markdown 一键导出多种格式", categories:["other"], link: "./o/md", newtap:true },
     { title: "毒蘑菇性能测试", description: "进行volumeshader性能测试 查看设备GPU性能", categories:["other"], link: "./o/vsbm", newtap:true },
-    
+
     
 ];
 
