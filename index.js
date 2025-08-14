@@ -154,7 +154,7 @@ const cardsData = [
     { title: "MC特殊符号", description: "mc特殊符号，如鸡腿M币等", categories:["command"], link: "./c/fuhao", newtap:false },
     { title: "MCNav↗", description: "MC导航站 | MC工具大全", categories:["friend-links"], link: "https://www.mcnav.net/", newtap:true },
     { title: "命令魔方↗", description: "强大的命令辅助应用", categories:["friend-links"], link: "https://www.viqu.com/pricing.html", newtap:true },
-    { title: "命令助手·Reforged↗", description: "命令助手 | 社区重铸版", categories:["friend-links"], link: "https://ca.huangyx.eu.cc/", newtap:true },
+    { title: "命令助手·Reforged↗", description: "命令助手 | 社区重铸版", categories:["friend-links"], link: "https://ca.nycx.top", newtap:true },
     { title: "命令助手↗", description: "便捷易用的命令辅助输入应用", categories:["friend-links"], link: "https://projectxero.top/ca/", newtap:true },
     { title: "命令集↗", description: "利用无障碍权限实现全自动填写命令", categories:["friend-links"], link: "https://space.bilibili.com/1526784927", newtap:true },
     { title: "命令模拟器↗", description: "强大的基岩版命令调试程序", categories:["friend-links"], link: "https://commandsimulator.great-site.net/", newtap:true },
