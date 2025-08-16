@@ -2,7 +2,9 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <script>(function(){"use strict";if(window.location.protocol==="http:"){const e=window.location.hostname;if(!(e==="localhost"||e==="127.0.0.1"||e.startsWith("192.168."))){window.location.replace("https://"+window.location.host+window.location.pathname+window.location.search+window.location.hash)}else{console.log("检测到本地地址 ("+e+")，跳过重定向。")}}})()</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
     <title>小舟工具箱 - 诊断工具</title>
     <link rel="stylesheet" href="detection.css">
     <link rel="shortcut icon" href="../favicon.png" type="image/png">
@@ -57,6 +59,14 @@
                     <span class="item-value" id="ping-github">检测中...</span>
                 </div>
                 <div class="item">
+                    <span class="item-name">vercel.com</span>
+                    <span class="item-value" id="ping-vercel">检测中...</span>
+                </div>
+                <div class="item">
+                    <span class="item-name">vercel.app</span>
+                    <span class="item-value" id="ping-vercelapp">检测中...</span>
+                </div>
+                <div class="item">
                     <span class="item-name">youtube.com</span>
                     <span class="item-value" id="ping-youtube">检测中...</span>
                 </div>
@@ -64,11 +74,12 @@
         </main>
     </div>
     
-    <div class="debug-container">
+    <div class="button-container">
+        <button id="ping-refresh" class="debug-button">刷新Ping检测</button>
         <button id="debug-toggle" class="debug-button">显示详细信息</button>
-        <div id="debug-log" class="debug-log"></div>
     </div>
 
+    <div id="debug-log" class="debug-log"></div>
     <script src="detection.js"></script>
 </body>
 </html>
