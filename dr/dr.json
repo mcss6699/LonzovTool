@@ -179,5 +179,15 @@
         "images": [
           "https://img.fastmirror.net/s/2025/05/17/6828a98009781.jpg"
         ]
+      },
+      {
+        "title": "冰河禁区",
+        "tags": ["超大"],
+        "desc": "高质量地铁逃生地图，导入圈泛滥，租赁服暂未泛滥\n还原了地下部分，见图2、3的右半边\n微改了一下，如滑索坐标改成了相对坐标",
+        "images": [
+          "https://img.fastmirror.net/s/2025/08/16/68a0a2fe06a0e.jpg",
+          "https://img.fastmirror.net/s/2025/08/16/68a0a2fcde4b1.jpg",
+          "https://img.fastmirror.net/s/2025/08/16/68a0a2fcbf475.jpg"
+        ]
       }
   ]
