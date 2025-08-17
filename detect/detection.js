@@ -1,6 +1,7 @@
 const STATUS = {
     NORMAL: 'status-normal',
     WARNING: 'status-warning',
+    WARNING2: 'status-warning2',
     ERROR: 'status-error'
 };
 const debugLog = [];
@@ -36,14 +37,14 @@ debugToggle.addEventListener('click', () => {
 
 function updateElement(id, value, status) {
     const element = document.getElementById(id);
-    const statusElement = document.getElementById(`${id}-status`);
-    if (element) element.textContent = value;
-    // 如果未来需要状态元素，可以启用下面的代码
-    // if (statusElement) {
-    //     statusElement.textContent = status === STATUS.NORMAL ? '正常' :
-    //                               status === STATUS.WARNING ? '警告' : '异常';
-    //     statusElement.className = status;
-    // }
+
+    if (element) {
+        element.textContent = value;
+        element.classList.remove(STATUS.NORMAL, STATUS.WARNING, STATUS.WARNING2, STATUS.ERROR);
+        if (status) {
+            element.classList.add(status);
+        }
+    }
 }
 
 const savedTheme = localStorage.getItem('theme') || 'light';
@@ -146,10 +147,10 @@ async function detectIPLocation(ip) {
             return updateElement('ipv4-location', processed, STATUS.NORMAL);
         }
         addDebugLog('IPinfo返回数据缺少运营商信息');
-        updateElement('ipv4-location', '运营商检测失败', STATUS.WARNING);
+        updateElement('ipv4-location', '运营商检测失败', STATUS.ERROR);
     } catch (error) {
         addDebugLog(`IPinfo调用失败: ${error.message}`);
-        updateElement('ipv4-location', '运营商检测失败', STATUS.WARNING);
+        updateElement('ipv4-location', '运营商检测失败', STATUS.ERROR);
     }
 }
 // IPinfo特殊处理函数
@@ -168,42 +169,86 @@ function processInternationalISP(ispString) {
     if (/unicom/i.test(cleaned)) return '中国联通';
     return cleaned; // 无法识别时返回原始数据
 }
+
 // Ping检测函数
 async function pingWebsite(url, elementId) {
-    const TIMEOUT = 8000;
-    const WARNING_THRESHOLD = 1000;
-    try {
-        addDebugLog(`开始ping测试: ${url}`);
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), TIMEOUT);
-        
-        const startTime = Date.now();
-        const response = await fetch(`https://${url}`, { mode: 'no-cors', signal: controller.signal });
-        const latency = Date.now() - startTime;
-        
-        clearTimeout(timeoutId);
+    const SINGLE_TIMEOUT = 10000;
+    const MAX_ATTEMPTS = 3;
+    const results = [];
+    let consecutiveTimeoutsOrErrors = 0;
 
-        let status = STATUS.NORMAL;
-        let statusText = '正常';
-        if (latency > WARNING_THRESHOLD) {
+    addDebugLog(`开始ping测试 (3次平均): ${url}`);
+
+    for (let i = 0; i < MAX_ATTEMPTS; i++) {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => {
+                controller.abort();
+            }, SINGLE_TIMEOUT);
+
+            const startTime = Date.now();
+            const response = await fetch(`https://${url}`, { mode: 'no-cors', signal: controller.signal });
+            const latency = Date.now() - startTime;
+
+            clearTimeout(timeoutId);
+
+            if (!controller.signal.aborted) {
+                results.push(latency);
+                consecutiveTimeoutsOrErrors = 0;
+                addDebugLog(`第${i + 1}次ping (${url}) 成功: ${latency}ms`);
+            } else {
+                consecutiveTimeoutsOrErrors++;
+                addDebugLog(`第${i + 1}次ping (${url}) 请求超时 (>=${SINGLE_TIMEOUT}ms)`);
+                if (i === 1 && consecutiveTimeoutsOrErrors === 2) {
+                    addDebugLog(`  ${url} 前两次均超时/失败，提前中止第三次检测。`);
+                    break;
+                }
+            }
+        } catch (error) {
+            consecutiveTimeoutsOrErrors++;
+            const isTimeout = error.name === 'AbortError';
+            if (isTimeout) {
+                addDebugLog(`第${i + 1}次ping (${url}) 请求超时 (>=${SINGLE_TIMEOUT}ms)`);
+            } else {
+                addDebugLog(`第${i + 1}次ping (${url}) 失败: ${error.message}`);
+            }
+            if (i === 1 && consecutiveTimeoutsOrErrors === 2) {
+                addDebugLog(`  ${url} 前两次均超时/失败，提前中止第三次检测。`);
+                break;
+            }
+        }
+    }
+
+    let status, statusText;
+    if (results.length > 0) {
+        const averageLatency = results.reduce((a, b) => a + b, 0) / results.length;
+        addDebugLog(`${url} 检测完成，有效次数: ${results.length}, 平均延迟: ${averageLatency.toFixed(2)}ms`);
+
+        if (averageLatency < 1000) {
+            status = STATUS.NORMAL;
+            statusText = '正常';
+        } else if (averageLatency < 3000) {
             status = STATUS.WARNING;
             statusText = '较慢';
+        } else if (averageLatency < 6000) {
+            status = STATUS.WARNING2;
+            statusText = '慢';
+        } else if (averageLatency < 10000) {
+            status = STATUS.WARNING2;
+            statusText = '极慢';
+        } else {
+            status = STATUS.ERROR;
+            statusText = '极慢';
         }
-        addDebugLog(`ping测试成功: ${url}, 延迟: ${latency}ms, 状态: ${statusText}`);
-        updateElement(elementId, statusText, status);
-    } catch (error) {
-        const isTimeout = error.name === 'AbortError';
-        const isCertError = error.message && error.message.match(/SSL|certificate/i);
-        let errorText = '不可访问';
-        if (isTimeout) {
-            errorText = '请求超时';
-        } else if (isCertError) {
-            errorText = '证书错误';
-        }
-        addDebugLog(`ping测试失败: ${url}, 错误: ${errorText}, 详情: ${error.message || '未知错误'}`);
-        updateElement(elementId, errorText, STATUS.ERROR);
+    } else {
+        addDebugLog(`  ${url} 检测完成，所有尝试均失败或超时`);
+        status = STATUS.ERROR;
+        statusText = '超时';
     }
+
+    updateElement(elementId, statusText, status);
 }
+
 function runPingTests() {
     const pingElements = ['ping-baidu', 'ping-mihoyo', 'ping-bilibili', 'ping-githubio', 'ping-github','ping-vercel', 'ping-vercelapp', 'ping-youtube'];
     pingElements.forEach(id => {

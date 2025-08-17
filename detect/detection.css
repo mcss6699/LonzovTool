@@ -8,8 +8,9 @@
     --table-row-hover: #f8f8f8;
     
     --status-normal: #06c;
-    --status-warning: #FFEC19;
-    --status-error: #ff4d4f;
+    --status-warning: #e2bd15;
+    --status-warning2: #f38620;
+    --status-error: #fc6062;
 
     --button-bg: #1890ff;
     --button-text: #ffffff;
@@ -146,19 +147,28 @@ h1 {
     text-align: right;
 }
 
+.item-value.status-warning {
+    color: #ff7d00;
+}
+
+.item-value.status-error {
+    color: --status-error;
+}
+
+
 .item:hover {
     background-color: var(--table-row-hover);
 }
 
-.status-normal {
-    color: var(--status-normal);
-}
-
-.status-warning {
+.item-value.status-warning {
     color: var(--status-warning);
 }
 
-.status-error {
+.item-value.status-warning2 {
+    color: var(--status-warning2);
+}
+
+.item-value.status-error {
     color: var(--status-error);
 }
 
