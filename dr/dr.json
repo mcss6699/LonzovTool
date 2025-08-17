@@ -23,13 +23,13 @@
       "desc": "大型城堡，适合地铁、主城、商店",
       "images": [
         "https://img.fastmirror.net/s/2025/05/17/6828a9809a7d2.jpg",
-        "https://img.fastmirror.net/s/2025/08/04/688ffceb5f324.png"
+        "https://img.fastmirror.net/s/2025/08/18/68a254af0ad19.jpg"
       ]
     },
     {
       "title": "荒废城市",
       "tags": ["大型"],
-      "desc": "末日风格，适合地铁、PVP、RPG\n*此文件地面杂化有空气，不清楚是有意设计还是文件问题，介意勿选",
+      "desc": "末日风格，适合地铁、PVP、RPG\n· 此文件地面杂化有空气，不清楚是有意设计还是文件问题，介意勿选\n· 补：空气应该是砂土，在其他建筑发现同类问题，源文件空气位置是砂土",
       "images": [
         "https://img.fastmirror.net/s/2025/05/17/6828a981ad3dd.jpg",
         "https://img.fastmirror.net/s/2025/08/02/688d709da216f.jpg"
@@ -59,14 +59,6 @@
         "https://img.fastmirror.net/s/2025/05/17/6828a9d7a6361.jpg"
       ]
     },
-    {
-        "title": "科技金字塔",
-        "tags": ["巨大", "现代"],
-        "desc": "非常潦草的大建筑，适合末地枢纽？",
-        "images": [
-          "https://img.fastmirror.net/s/2025/05/17/6828a9d8808f9.jpg"
-        ]
-      },
       {
         "title": "空岛主城1",
         "tags": ["大型", "中世纪"],
@@ -94,9 +86,11 @@
       {
         "title": "类塔科夫地图",
         "tags": ["中型"],
-        "desc": "适合地铁、PVP\n展示图待修改",
+        "desc": "精制小镇，适合地铁、PVP",
         "images": [
-          "https://img.fastmirror.net/s/2025/05/17/6828a9d790782.jpg"
+          "https://img.fastmirror.net/s/2025/08/18/68a25341634b4.jpg",
+          "https://img.fastmirror.net/s/2025/08/18/68a2533f2ee73.jpg",
+          "https://img.fastmirror.net/s/2025/08/18/68a2533f76f04.jpg"
         ]
       },
       {
@@ -138,14 +132,6 @@
         "images": [
           "https://img.fastmirror.net/s/2025/05/17/6828aa191b59b.jpg",
           "https://ts4.tc.mm.bing.net/th/id/OIP-C.QQ_SDF7K94PS2U7JIE_39AHaHl?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
-        ]
-      },
-      {
-        "title": "小塔",
-        "tags": ["小型", "小建筑"],
-        "desc": "好像是联大的一个什么田园生活地图里的",
-        "images": [
-          "https://img.fastmirror.net/s/2025/05/17/6828aa1877056.jpg"
         ]
       },
       {
