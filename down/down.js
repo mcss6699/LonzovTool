@@ -6,11 +6,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyPasswordBtn = document.getElementById('copyPasswordBtn');
     const themeToggle = document.getElementById('themeToggle');
     const message = document.getElementById('message');
-    
+
+    const overlay = document.createElement('div');
+    overlay.id = 'download-overlay';
+    overlay.innerHTML = `
+        <p class="overlay-main">接下来如果有 任何不安全的警告请无视</p>
+        <p class="overlay-normal">虚拟主机防火墙限制，SSL证书启用后会504，暂时只能这样，不安全警告是正常的</p>
+        <p class="overlay-small">点击屏幕继续</p>
+    `;
+    document.body.appendChild(overlay);
+
     // 初始化值
     downloadPassword.value = downloadData.lanzoudown.password;
     manualDownloadLink.href = downloadData.lanzoudown.url;
-    
+
     // 主题管理
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
@@ -19,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.documentElement.setAttribute('data-theme', e.newValue || 'light');
         }
     });
-    
+
     // 密码复制
     copyPasswordBtn.addEventListener('click', (e) => {
         downloadPassword.select();
@@ -32,101 +41,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 .catch(() => showMessage('复制失败', false, e));
         }
     });
-    
-    // 下载功能配置
+
     let clickPosition = { x: 0, y: 0 };
-    let apiFailCount = 0;
-    let isCoolingDown = false;
+    let isOverlayShown = false;
 
-    // 带超时的fetch封装
-    async function fetchWithTimeout(url, timeout = 10000) {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), timeout);
-        try {
-            const response = await fetch(url, { signal: controller.signal });
-            clearTimeout(timeoutId);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return response.json();
-        } catch (error) {
-            clearTimeout(timeoutId);
-            throw error;
+    // 生成API URL的函数
+    function generateApiUrl() {
+        const proxyUrl = 'http://api.lonzov.top/lanzou/public/index.php';
+        const params = new URLSearchParams({
+            url: encodeURIComponent(downloadData.lanzoudown.url),
+            pwd: encodeURIComponent(downloadData.lanzoudown.password),
+            type: 'down'
+        });
+        return `${proxyUrl}?${params}`;
+    }
+
+    function handleOverlayClick() {
+        if (isOverlayShown) {
+            overlay.classList.remove('show');
+            isOverlayShown = false;
+            const apiUrl = generateApiUrl();
+            console.log("跳转到 API URL:", apiUrl);
+            window.open(apiUrl, '_blank');
         }
     }
 
-    // 下载主逻辑
-    async function startDownload(isInitialLoad = false) {
-        console.log("链接:", downloadData.lanzoudown.url);
-        console.log("密码:", downloadData.lanzoudown.password);
-        if (apiFailCount >= 3) {
-            showMessage('请手动下载', false, clickPosition);
-            return;
-        }
-        if (isCoolingDown) {
-            showMessage('不要重复点击', false, clickPosition);
-            return;
-        }
-        quickDownloadBtn.innerHTML = '加载中 <i class="fas fa-spinner fa-spin"></i>';
-        quickDownloadBtn.disabled = true;
-        isCoolingDown = true;
-        
-        const timeoutId = setTimeout(() => {
-            if (isCoolingDown) {
-                apiFailCount++;
-                showMessage('请手动下载，API调用超时', false, clickPosition);
-                resetDownloadButton();
-            }
-        }, 5000);
+    overlay.addEventListener('click', handleOverlayClick);
 
-        try {
-            const proxyUrl = 'https://vercel.lonzov.top/api/proxy';
-            const params = new URLSearchParams({
-                target: 'https://api.suxun.site/api/lanzou',
-                url: encodeURIComponent(downloadData.lanzoudown.url),
-                pwd: encodeURIComponent(downloadData.lanzoudown.password),
-                type: 'json'
-            });
-            const fullProxyUrl = `${proxyUrl}?${params}`;
-            const response = await fetchWithTimeout(fullProxyUrl);
-            console.log("代理:", fullProxyUrl);
-            clearTimeout(timeoutId);
-
-            if (response && response.download) {
-                window.open(response.download, '_blank');
-                resetDownloadButton();
-                return;
-            }
-            
-            if (response && typeof response.message === 'string') {
-                throw new Error(response.message);
-            } else {
-                throw new Error('无效的API响应: 缺少download字段');
-            }
-
-        } catch (error) {
-            clearTimeout(timeoutId);
-            apiFailCount++;
-            
-            const errorMessage = `请手动下载：${error.message}`;
-            showMessage(errorMessage, false, clickPosition);
-            
-            resetDownloadButton();
-            if (apiFailCount >= 5) {
-                quickDownloadBtn.innerHTML = '立即下载 <i class="fas fa-download"></i>';
-                quickDownloadBtn.classList.add('disabled');
-            }
-        }
-    }
-
-    function resetDownloadButton() {
-        isCoolingDown = false;
-        quickDownloadBtn.innerHTML = '立即下载 <i class="fas fa-download"></i>';
-        quickDownloadBtn.disabled = apiFailCount >= 5;
-    }
-
-    // 为下载按钮添加点击事件
     quickDownloadBtn.addEventListener('click', function(e) {
         clickPosition = { x: e.clientX, y: e.clientY };
-        startDownload();
+        if (!isOverlayShown) {
+            overlay.classList.add('show');
+            isOverlayShown = true;
+        }
     });
 
     // 消息提示
@@ -184,9 +131,17 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadPassword.style.width = `${tempSpan.offsetWidth + 30}px`;
         document.body.removeChild(tempSpan);
     }
-    
+
     // 页面加载时调整宽度
     window.addEventListener('load', () => {
         adjustPasswordWidth();
     });
+
+    // 页面卸载时清理可能的定时器或状态
+    window.addEventListener('beforeunload', () => {
+        // 如果需要清理定时器等，可以在这里做
+        // 例如：clearTimeout(someTimeoutId);
+        // 当前逻辑下暂无需要清理的长时间运行任务
+    });
+
 });
