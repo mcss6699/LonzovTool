@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>反应时间测试 - 小舟工具箱</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Misa', 'Microsoft YaHei', 'PingFang SC', 'HarmonyOS Sans SC', sans-serif;
+        }
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --header-bg: #2c3e50;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --reaction-area-bg: #bdc3c7;
+            --reaction-area-active: #2ecc71;
+            --reaction-area-triggered: #e74c3c;
+            --reaction-area-waiting: #f39c12;
+        }
+        [data-theme="dark"] {
+            --text-color: #e0e0e0;
+            --bg-color: #1f2b38;
+            --card-bg: #2a3849;
+            --header-bg: #1f2b38;
+            --secondary-color: #8ba9ce;
+            --primary-color: #41a3ff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --reaction-area-bg: #7f8c8d;
+            --reaction-area-active: #27ae60;
+            --reaction-area-triggered: #c0392b;
+            --reaction-area-waiting: #d35400;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 40px;
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background-color: var(--header-bg);
+            color: white;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: var(--transition);
+            margin-bottom: 40px;
+        }
+        .back-button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            left: 10px;
+        }
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            flex-grow: 1;
+            text-align: center;
+            margin: 0;
+        }
+
+        .test-area {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+        .reaction-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .reaction-area {
+            width: 100%;
+            max-width: 600px;
+            height: 300px;
+            margin: 0 auto 20px;
+            background-color: var(--reaction-area-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            user-select: none;
+        }
+        .reaction-area:hover {
+            transform: scale(1.01);
+        }
+        .reaction-area.active {
+            background-color: var(--reaction-area-active);
+        }
+        .reaction-area.waiting {
+            background-color: var(--reaction-area-waiting);
+        }
+        .reaction-area.triggered {
+            background-color: var(--reaction-area-triggered);
+        }
+        .reaction-area-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-color);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .start-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+        .start-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        .start-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+        .stat-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            color: var(--text-color);
+        }
+        .stat-unit {
+            font-size: 1rem;
+            color: #7f8c8d;
+            text-align: center;
+        }
+
+        .kp-container {
+            margin-bottom: 30px;
+        }
+        .kp-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .kp-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+        .kp-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        .kp-content {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .kp-content p {
+            margin-bottom: 10px;
+        }
+        .kp-content ul {
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+        .kp-content li {
+            margin-bottom: 5px;
+        }
+        .kp-content strong {
+            color: var(--primary-color);
+        }
+
+        .log-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        .log-container:hover {
+             transform: translateY(-2px);
+             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        .log-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: rgba(52, 152, 219, 0.1);
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+        [data-theme="dark"] tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+        tr:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        @media (max-width: 768px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            .reaction-area {
+                height: 200px;
+            }
+            .reaction-area-text {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="back-button" id="backButton" onclick="history.back()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <h1 class="header-title">反应速度测试</h1>
+    </header>
+
+    <main class="container">
+        <div class="test-area">
+            <div class="reaction-container">
+                <div class="reaction-area" id="reactionArea">
+                    <div class="reaction-area-text" id="reactionText">点击开始或按空格键</div>
+                </div>
+                <div class="controls">
+                    <button class="start-btn" id="startBtn">开始测试</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <h2 class="stat-title">最近一次</h2>
+                <div class="stat-value" id="lastReactionTime">-</div>
+                <div class="stat-unit">毫秒 (ms)</div>
+            </div>
+            <div class="stat-card">
+                <h2 class="stat-title">平均速度</h2>
+                <div class="stat-value" id="averageReactionTime">-</div>
+                <div class="stat-unit">毫秒 (ms)</div>
+            </div>
+        </div>
+
+        <div class="kp-container">
+            <div class="kp-card">
+                <h2 class="kp-title">🔬 正常人的反应速度</h2>
+                <div class="kp-content">
+                    <ul>
+                        <li><strong>普通年轻人</strong>：平均约为 <strong>200-300 毫秒</strong>。</li>
+                        <li><strong>受过专业训练</strong>：平均约为 <strong>120-180 毫秒</strong>，已知人类极限约为100ms。</li>
+                        <li><strong>影响的因素</strong>：年龄、注意力、疲劳、练习、刺激强度…等等</li>
+                    </ul>
+                    <p>你的平均反应时间是 <span id="science_average_time_span">-</span> 毫秒，感觉如何？</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="log-container">
+            <h2 class="log-title">全部记录</h2>
+            <table id="logTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>反应速度 (ms)</th>
+                        <th>评价</th>
+                    </tr>
+                </thead>
+                <tbody id="logBody">
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        function toggleTheme() {
+            const newTheme = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        const reactionArea = document.getElementById('reactionArea');
+        const reactionText = document.getElementById('reactionText');
+        const startBtn = document.getElementById('startBtn');
+        const lastReactionTimeEl = document.getElementById('lastReactionTime');
+        const averageReactionTimeEl = document.getElementById('averageReactionTime');
+        const logBody = document.getElementById('logBody');
+
+        let testState = 'idle';
+        let startTime = 0;
+        let timeoutId = null;
+        let reactionTimes = [];
+        let logCounter = 1;
+
+        function startTest() {
+            if (testState !== 'idle') return;
+
+            testState = 'waiting';
+            reactionArea.className = 'reaction-area waiting';
+            reactionText.textContent = '准备中...';
+            startBtn.disabled = true;
+
+            const randomDelay = Math.floor(Math.random() * (5000 - 300 + 1)) + 300;
+
+            timeoutId = setTimeout(() => {
+                if (testState === 'waiting') {
+                    testState = 'ready';
+                    reactionArea.className = 'reaction-area active';
+                    reactionText.textContent = '点击或按空格！';
+                    startTime = performance.now();
+                }
+            }, randomDelay);
+        }
+
+        function triggerTest() {
+            if (testState === 'ready') {
+                const endTime = performance.now();
+                const reactionTime = endTime - startTime;
+
+                testState = 'triggered';
+                reactionArea.className = 'reaction-area triggered';
+                reactionText.textContent = `${reactionTime.toFixed(2)} ms`;
+
+                lastReactionTimeEl.textContent = reactionTime.toFixed(2);
+                reactionTimes.push(reactionTime);
+                const averageTime = reactionTimes.length > 0 ? reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length : 0;
+                averageReactionTimeEl.textContent = averageTime.toFixed(2);
+
+                const scienceAverageTimeSpan = document.getElementById('science_average_time_span');
+                if (scienceAverageTimeSpan) {
+                    scienceAverageTimeSpan.textContent = averageTime.toFixed(2);
+                }
+
+                const row = document.createElement('tr');
+                const status = reactionTime < 100 ? '蒙的' : reactionTime < 220 ? '有天赋' : reactionTime < 300 ? '普通' : reactionTime < 450 ? '没睡醒？' : '稍慢';
+                row.innerHTML = `<td>${logCounter++}</td><td>${reactionTime.toFixed(2)}</td><td>${status}</td>`;
+                logBody.insertBefore(row, logBody.firstChild);
+
+                
+
+                setTimeout(() => {
+                    if (testState === 'triggered') {
+                        resetTest();
+                    }
+                }, 2000);
+
+            } else if (testState === 'waiting') {
+                clearTimeout(timeoutId);
+                testState = 'triggered';
+                reactionArea.className = 'reaction-area triggered';
+                reactionText.textContent = '太快了！请等待颜色变化。';
+                setTimeout(resetTest, 1500);
+            }
+        }
+
+        function resetTest() {
+            testState = 'idle';
+            reactionArea.className = 'reaction-area';
+            reactionText.textContent = '点击开始或按空格键';
+            startBtn.disabled = false;
+        }
+
+        startBtn.addEventListener('click', startTest);
+        reactionArea.addEventListener('click', triggerTest);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                if (testState === 'idle') {
+                    startTest();
+                } else {
+                    triggerTest();
+                }
+            }
+        });
+
+        resetTest();
+
+    </script>
+</body>
+</html>
