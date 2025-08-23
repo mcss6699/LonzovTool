@@ -159,6 +159,8 @@ const cardsData = [
     { title: "命令集↗", description: "利用无障碍权限实现全自动填写命令", categories:["friend-links"], link: "https://space.bilibili.com/1526784927", newtap:true },
     { title: "命令模拟器↗", description: "强大的基岩版命令调试程序", categories:["friend-links"], link: "https://commandsimulator.great-site.net/", newtap:true },
     { title: "MT管理器↗", description: "Android 平台文件管理 & 逆向修改神器", categories:["friend-links"], link: "https://mt2.cn/", newtap:true },
+    { title: "ChunkBase↗", description: "通过种子号查询群系结构", categories:["friend-links"], link: "https://www.chunkbase.com/apps/seed-map#seed=%E7%A7%8D%E5%AD%90%E5%8F%B7&platform=bedrock_1_21&dimension=overworld&x=0&z=0&zoom=0.5", newtap:true },
+    { title: "中文wiki↗", description: "在这里你可以找到和mc有关的大部分信息", categories:["friend-links"], link: "https://zh.minecraft.wiki/", newtap:true },
     { title: "蓝天工作室↗", description: "代表作 CRoB命令查询机器人 等", categories:["friend-links"], link: "https://bsc.meteormc.cn/", newtap:true },
     { title: "苦力怕论坛↗", description: "国内最大的基岩版资源分享社区(应该是吧)", categories:["friend-links"], link: "https://klpbbs.com/", newtap:true },
     { title: "网易版导入", description: "限免活动中…站长自营无坑", categories:["resource"], link: "./dr/pro", newtap:true },
@@ -167,6 +169,7 @@ const cardsData = [
     { title: "MT管理器-mc语法包", description: "指令语法高亮，压缩包里有具体使用说明", categories:["resource"], link: "./down/mc语法包", newtap:true },
     { title: "3D字生成↗", description: "轻松制作mc风格中文3D文本！", categories:["other"], link: "https://3dt.easecation.net/", newtap:true },
     { title: "幸运转盘", description: "选择困难症？让转盘来决定！", categories:["other"], link: "./o/spin-the-wheel", newtap:true },
+    { title: "反应速度测试", description: "这是一条反应速度测试的简介~", categories:["other"], link: "./o/sudutest", newtap:true },
     { title: "nohello", description: "不要问在吗 | 短链接:nohello.top (池鱼提供服务器&域名支持)", categories:["other"], link: "./nohello", newtap:true },
     { title: "Markdown渲染器", description: "在线预览Markdown 一键导出多种格式", categories:["other"], link: "./o/md", newtap:true },
     { title: "毒蘑菇性能测试", description: "进行volumeshader性能测试 查看设备GPU性能", categories:["other"], link: "./o/vsbm", newtap:true },
@@ -302,4 +305,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // 更新滚动渐变效果
     updateScrollFade();
     window.addEventListener('resize', updateScrollFade);
+
+    // 回到顶部
+    const backToTopButton = document.getElementById('backToTop');
+    let ticking = false;
+    let isVisible = false;
+
+    function updateBackToTopVisibility() {
+        const headerRect = document.querySelector('header').getBoundingClientRect();
+        const headerBottomToViewportTop = headerRect.bottom;
+        const shouldBeVisible = headerBottomToViewportTop < -270;
+
+        if (shouldBeVisible && !isVisible) {
+            backToTopButton.classList.add('visible');
+            isVisible = true;
+        } else if (!shouldBeVisible && isVisible) {
+            backToTopButton.classList.remove('visible');
+            isVisible = false;
+        }
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(updateBackToTopVisibility);
+            ticking = true;
+        }
+    });
+
+    backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
 });
