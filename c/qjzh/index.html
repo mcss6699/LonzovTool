@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>艺术字转换 - 小舟工具箱</title>
+    <link rel="stylesheet" href="../conver.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+    <script>LA.init({id:"3Ltl0yXYWQcgbDgB",ck:"3Ltl0yXYWQcgbDgB"})</script>
+    <script src="/modal.js"></script>
+    <script>
+        const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        const modalConfig = {
+            title: "注意",
+            id: "qjzh_note_0825",
+            version: "202508250000",
+            forceShow: false,
+            content: `
+                    <p>并不是每个字母都有标准的角标，尤其是大写字母，迫不得已使用了相似的字符，如小写/希腊字母。</p>
+                    <p>如果你发现某个非标准角标，存在更合适的替代或者标准角标，欢迎加群纠错！</p>
+                `,
+            buttons: [
+                { text: "知道了，不再显示", style: "gray", action: "close" },
+            ]
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            showModal(modalConfig);
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <button class="back-button" id="backButton">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <h1 class="header-title">艺术字转换</h1>
+    </header>
+    <main class="container">
+        <div class="editor-container">
+            <div class="input-section">
+                <textarea id="inputText" class="text-input" placeholder="请输入需要转换的文本(仅支持数字和字母)..." spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+                <div class="mode-selector">
+                    <label for="modeSelect">转换模式:</label>
+                    <select id="modeSelect">
+                        <option value="fullwidth">标准艺术字</option>
+                        <option value="superscript">角标(右上)</option>
+                        <option value="subscript">角标(右下)</option>
+                        <option value="latin">类拉丁文(仅大写)</option>
+                    </select>
+                </div>
+            </div>
+            
+
+            <div class="output-controls-section">
+                 <div id="statusMessage" class="status-message">--</div>
+                 <div class="controls">
+                    <button id="convertBtn" class="control-btn">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>转换</span>
+                    </button>
+                    <button id="copyBtn" class="control-btn">
+                        <i class="fas fa-copy"></i>
+                        <span>复制</span>
+                    </button>
+                    <button id="clearBtn" class="control-btn">
+                        <i class="fas fa-trash-alt"></i>
+                        <span>清空</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="input-section">
+                <textarea id="outputText" class="text-input" placeholder="转换结果将显示在这里(仅在mc内显示为艺术字)..." spellcheck="false" readonly></textarea>
+            </div>
+        </div>
+    </main>
+    <script src="script.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,416 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Misa', 'Microsoft YaHei', 'PingFang SC', 'HarmonyOS Sans SC', sans-serif;
+}
+
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #34495e;
+    --text-color: #333;
+    --bg-color: #f5f7fa;
+    --card-bg: #ffffff;
+    --header-bg: #2c3e50;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+    --success-color: #27ae60;
+    --error-color: #e74c3c;
+    --warning-color: #f39c12;
+    --status-default-bg: rgba(52, 152, 219, 0.1);
+    --status-success-bg: rgba(39, 174, 96, 0.1);
+    --status-error-bg: rgba(231, 76, 60, 0.1);
+    --status-warning-bg: rgba(243, 156, 18, 0.1);
+    --status-border-width: 1px;
+    --divider-color: #ddd;
+}
+
+[data-theme="dark"] {
+    --text-color: #e0e0e0;
+    --bg-color: #1f2b38;
+    --card-bg: #2a3849;
+    --header-bg: #1f2b38;
+    --secondary-color: #8ba9ce;
+    --primary-color: #41a3ff;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --status-default-bg: rgba(65, 163, 255, 0.15);
+    --status-success-bg: rgba(46, 170, 97, 0.15);
+    --status-error-bg: rgba(192, 57, 43, 0.15);
+    --status-warning-bg: rgba(211, 84, 0, 0.15);
+    --divider-color: #555;
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding-bottom: 40px;
+    transition: var(--transition);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    background-color: var(--header-bg);
+    color: white;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: var(--shadow);
+    position: relative;
+    transition: var(--transition);
+    margin-bottom: 40px;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 10px;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.header-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    flex-grow: 1;
+    text-align: center;
+    margin: 0;
+}
+
+.editor-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: calc(100vh - 140px);
+}
+
+.input-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 15px;
+    transition: var(--transition);
+    min-height: 150px;
+    position: relative;
+}
+
+.input-fields-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.input-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 10px;
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
+.input-row:last-child {
+    margin-bottom: 0;
+}
+
+.input-row label {
+    white-space: nowrap;
+    font-size: 0.9rem;
+    flex: 0 0 auto;
+    text-align: left;
+    padding-right: 10px;
+}
+
+.input-field {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    transition: var(--transition);
+    min-width: 0;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.input-field[type='number'] {
+    -moz-appearance: textfield;
+    appearance: none;
+}
+
+.input-field[type='number']::-webkit-outer-spin-button,
+.input-field[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.text-input {
+    width: 100%;
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 1rem;
+    resize: none;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    transition: var(--transition);
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.text-input-small {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    transition: var(--transition);
+}
+
+.text-input-small:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.input-section .text-input {
+    width: 100%;
+    height: 100%;
+}
+
+.output-controls-section {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 120px;
+}
+
+.status-message {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+    color: var(--text-color);
+    padding: 20px;
+    background-color: var(--status-default-bg);
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.status-message.success {
+    color: var(--success-color);
+    background-color: var(--status-success-bg);
+}
+
+.status-message.error {
+    color: var(--error-color);
+    background-color: var(--status-error-bg);
+}
+
+.status-message.warning {
+    color: var(--warning-color);
+    background-color: var(--status-warning-bg);
+}
+
+.output-controls-section .status-message {
+    position: relative;
+}
+.output-controls-section .status-message::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background-color: var(--divider-color);
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    flex-wrap: nowrap;
+    min-width: 0;
+}
+
+.control-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    flex: 1 1 auto;
+    min-width: 60px;
+    padding: 12px 25px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.control-btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+}
+
+.control-btn:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.control-btn.icon-only {
+    gap: 0;
+    padding: 0;
+
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    
+}
+
+.control-btn.icon-only i {
+    margin: 0;
+}
+
+.mode-selector {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+.mode-selector label {
+    white-space: nowrap;
+}
+
+.mode-selector select {
+    flex: 1;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.mode-selector select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.main-textarea-row {
+    flex: 1; /* 占据容器内所有可用的垂直空间 */
+    min-height: 0; /* 允许在小容器中收缩 */
+    margin-bottom: 0; /* 它是最后一个元素 */
+}
+
+
+@media (max-width: 768px) {
+    .header-title {
+        font-size: 1.2rem;
+    }
+
+    .status-message {
+        font-size: 1rem;
+        padding: 15px;
+    }
+
+    .controls {
+        gap: 10px;
+        padding: 15px 10px;
+    }
+
+    .control-btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        min-width: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .controls {
+        gap: 5px;
+        padding: 12px 10px;
+    }
+
+    .control-btn {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        min-width: 40px;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 359px) {
+    .control-btn span {
+        display: none;
+    }
+    .control-btn {
+        gap: 0;
+        padding: 0;
+        min-width: 40px;
+        min-height: 40px;
+    }
+    .control-btn i {
+        margin: 0;
+    }
+}

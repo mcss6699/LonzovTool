@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>T显动画生成 - 小舟工具箱</title>
+    <link rel="stylesheet" href="../conver.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+    <script>LA.init({id:"3Ltl0yXYWQcgbDgB",ck:"3Ltl0yXYWQcgbDgB"})</script>
+    <script>
+        const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', currentTheme);
+    </script>
+    <style>
+        .input-section {
+            min-height: 220px;
+            overflow: hidden;
+        }
+
+        .input-fields-container {
+            margin-bottom: 15px;
+        }
+
+        .input-section .text-input {
+            width: 100%;
+            height: 100%;
+            flex: 1;
+            overflow: auto;
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            transition: var(--transition);
+            min-width: 0;
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .input-field::-webkit-outer-spin-button,
+        .input-field::-webkit-inner-spin-button {
+            margin: 0;
+        }
+
+        @media (max-width: 425px) {
+            .input-section {
+                padding: 10px;
+                min-height: 200px;
+            }
+
+            .input-fields-container {
+                margin-bottom: 10px;
+            }
+
+            .input-row {
+                margin-bottom: 8px;
+            }
+
+            .input-row label {
+                font-size: 0.85rem;
+                padding-right: 5px;
+            }
+
+            .input-field {
+                padding: 6px 10px;
+                font-size: 0.9rem;
+            }
+
+            #startScoreInput,
+            #scoreboardInput {
+                width: 0;
+                min-width: 50px;
+            }
+
+            .input-section .text-input {
+                 min-height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button class="back-button" id="backButton">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <h1 class="header-title">T显动画生成</h1>
+    </header>
+    <main class="container">
+        <div class="editor-container">
+            <div class="input-section">
+                <div class="input-fields-container">
+                    <div class="input-row">
+                        <label for="startScoreInput">初始的分数:</label>
+                        <input type="number" id="startScoreInput" class="input-field" placeholder="不填默认为0" min="0">
+                    </div>
+            
+                    <div class="input-row">
+                        <label for="scoreboardInput">计分板名称:</label>
+                        <input type="text" id="scoreboardInput" class="input-field" placeholder="例如: T显">
+                    </div>
+            
+                    <div class="input-row">
+                        <label for="initSelect">是否初始化:</label>
+                        <select id="initSelect" class="input-field">
+                            <option value="false">否</option>
+                            <option value="true">是</option>
+                        </select>
+                    </div>
+                </div>
+            
+                <div class="input-row main-textarea-row">
+                    <textarea id="inputText" class="text-input" placeholder="请输入需要转换的文本..." spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+                </div>
+            </div>
+
+            <div class="output-controls-section">
+                 <div id="statusMessage" class="status-message">--</div>
+                 <div class="controls">
+                    <button id="convertBtn" class="control-btn">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>转换</span>
+                    </button>
+                    <button id="copyBtn" class="control-btn">
+                        <i class="fas fa-copy"></i>
+                        <span>复制</span>
+                    </button>
+                    <button id="clearBtn" class="control-btn">
+                        <i class="fas fa-trash-alt"></i>
+                        <span>清空</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="input-section">
+                <textarea id="outputText" class="text-input" placeholder="转换结果将显示在这里..." spellcheck="false" readonly></textarea>
+            </div>
+        </div>
+    </main>
+    <script src="script.js" type="module"></script>
+</body>
+</html>
