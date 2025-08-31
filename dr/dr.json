@@ -38,7 +38,7 @@
     "tags": [
       "大型"
     ],
-    "desc": "末日风格，适合地铁、PVP、RPG\n· 此文件地面杂化有空气，不清楚是有意设计还是文件问题，介意勿选\n· 补：空气应该是砂土，在其他建筑发现同类问题，源文件空气位置是砂土",
+    "desc": "末日风格，适合地铁、PVP、RPG\n· 此文件地面杂化有空气，不清楚是有意设计还是文件问题，介意勿选",
     "images": [
       "https://img.fastmirror.net/s/2025/05/17/6828a981ad3dd.jpg",
       "https://img.fastmirror.net/s/2025/08/02/688d709da216f.jpg"
@@ -47,10 +47,10 @@
   {
     "title": "火镇",
     "tags": [
-      "中型",
+      "小型",
       "沙漠"
     ],
-    "desc": "小型主城",
+    "desc": "适合主城",
     "images": [
       "https://img.fastmirror.net/s/2025/05/17/6828a9828021c.jpg"
     ]
@@ -89,16 +89,6 @@
     ]
   },
   {
-    "title": "空岛主城2",
-    "tags": [
-      "超大"
-    ],
-    "desc": "红石公爵空岛无指令区版",
-    "images": [
-      "https://img.fastmirror.net/s/2025/05/17/6828aa57cf8a3.jpg"
-    ]
-  },
-  {
     "title": "狼人杀-幽静小镇",
     "tags": [
       "大型"
@@ -125,9 +115,10 @@
     "tags": [
       "巨大"
     ],
-    "desc": "大型 高质量 微泛滥 主城\n展示图待修改",
+    "desc": "大型 高质量 微泛滥 主城",
     "images": [
-      "https://img.fastmirror.net/s/2025/05/17/6828aa17b8f2d.jpg"
+      "https://img.fastmirror.net/s/2025/05/17/6828aa17b8f2d.jpg",
+      "https://img.fastmirror.net/s/2025/08/30/68b2bef596c97.jpg"
     ]
   },
   {
@@ -199,18 +190,18 @@
     ]
   },
   {
-    "title": "主城1",
+    "title": "彩主城",
     "tags": [
-      "巨大",
-      "城堡"
+      "巨大"
     ],
     "desc": "泛滥高质量主城",
     "images": [
-      "https://img.fastmirror.net/s/2025/05/17/6828aa599f6e9.jpg"
+      "https://img.fastmirror.net/s/2025/08/30/68b2b3b290a24.jpg",
+      "https://img.fastmirror.net/s/2025/08/30/68b2b3b14ba44.jpg"
     ]
   },
   {
-    "title": "主城2",
+    "title": "科技主城",
     "tags": [
       "大型",
       "科技"
@@ -305,13 +296,66 @@
     ]
   },
   {
-    "title": "芜湖~",
+    "title": "废弃城镇",
     "tags": [
-      "无"
+      "大型"
     ],
-    "desc": "最近整理了一批常用的，总共300多个慢慢更新，加上后差不多已经能覆盖最近遇到的各种需求了",
+    "desc": "适合地铁",
     "images": [
-      "https://img.fastmirror.net/s/2025/05/17/6827ffcf8218b.jpg"
+      "https://img.fastmirror.net/s/2025/08/30/68b2aeab14ce7.jpg"
+    ]
+  },
+  {
+    "title": "天宫",
+    "tags": [
+      "小型"
+    ],
+    "desc": "适合主城",
+    "images": [
+      "https://img.fastmirror.net/s/2025/08/30/68b2b0195b090.jpg"
+    ]
+  },
+  {
+    "title": "战术小镇",
+    "tags": [
+      "小型"
+    ],
+    "desc": "适合PVP，RPG",
+    "images": [
+      "https://img.fastmirror.net/s/2025/08/30/68b2bb67a4d7c.jpg"
+    ]
+  },
+  {
+    "title": "豪华别墅",
+    "tags": [
+      "小型",
+      "小建筑"
+    ],
+    "desc": "",
+    "images": [
+      "https://img.fastmirror.net/s/2025/08/30/68b2c3ec063d7.jpg"
+    ]
+  },
+  {
+    "title": "超级小主城",
+    "tags": [
+      "小型"
+    ],
+    "desc": "也可以做地铁、PVP地图",
+    "images": [
+      "https://img.fastmirror.net/s/2025/08/30/68b2c59da504e.jpg"
+    ]
+  },
+  {
+    "title": "跑路雪球菜单",
+    "tags": [
+      "小型",
+      "指令"
+    ],
+    "desc": "泛滥动态雪球菜单，动图看图2",
+    "images": [
+      "https://img.fastmirror.net/s/2025/08/30/68b2ce4147525.png",
+      "https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAALqmWiyzJvrbr0FrQ6iVjZJTKNDCIB9AAIkFwACnJuYVfZD5KPZSQABfzYE.webp"
     ]
   }
 ]
