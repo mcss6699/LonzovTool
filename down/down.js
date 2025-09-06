@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.id = 'download-overlay';
     overlay.innerHTML = `
         <p class="overlay-main">接下来如果有 任何不安全的警告请无视</p>
-        <p class="overlay-normal">虚拟主机防火墙限制，SSL证书启用后会504，暂时只能这样，不安全警告是正常的</p>
+        <p class="overlay-normal">虚拟主机防火墙限制，SSL证书启用后会504，暂时只能这样，不安全警告是正常的<br>部分浏览器出于安全考虑会504，请手动修改https为http</p>
         <p class="overlay-small">点击屏幕继续</p>
     `;
     document.body.appendChild(overlay);
