@@ -102,98 +102,93 @@ const TextConverterApp = (function () {
     }
 
 
-    // 核心转换函数
-    function transformText(inputText, scoreboard, startScore, initialize) {
-        if (!inputText || !inputText.toString().trim()) {
-            return '错误: 请输入需要转换的文本';
-        }
-    
-        try {
-            const commands = [];
-            let i = 0;
-            let score = parseInt(startScore, 10);
-            if (isNaN(score)) {
-                 score = 0;
-            }
-    
-            if (typeof scoreboard !== 'string' || !scoreboard.trim()) {
-                 return '错误: 请输入有效的计分板名称';
-            }
-            const trimmedScoreboard = scoreboard.trim();
-    
-            while (i < inputText.length) {
-                let currentText = '';
-    
-                // 递归收集所有连续的§*和\n
-                while (i < inputText.length) {
-                    // 处理§*格式
-                    if (inputText[i] === '§' && i + 1 < inputText.length) {
-                        currentText += inputText.substr(i, 2);
-                        i += 2;
-                        continue;
-                    }
-                    // 处理\n字符串
-                    else if (inputText[i] === '\\' && i + 1 < inputText.length && inputText[i+1] === 'n') {
-                        currentText += '\n'; // 直接使用换行符
-                        i += 2;
-                        continue;
-                    }
-                    // 处理实际换行符
-                    else if (inputText[i] === '\n') {
-                        currentText += '\n';
-                        i++;
-                        continue;
-                    }
-                    break;
-                }
-    
-                // 收集后续一个普通字符
-                if (i < inputText.length && currentText) {
-                    currentText += inputText[i];
-                    i++;
-                }
-    
-                if (currentText) {
-                    const commandData = {
-                        translate: "%%2",
-                        with: {
-                            rawtext: [
-                                {selector: `@s[scores={${trimmedScoreboard}=${score}..}]`},
-                                {text: currentText}
-                            ]
-                        }
-                    };
-                    commands.push(JSON.stringify(commandData));
-                    score++;
-                } else if (i < inputText.length) {
-                    // 处理普通字符
-                    const commandData = {
-                        translate: "%%2",
-                        with: {
-                            rawtext: [
-                                {selector: `@s[scores={${trimmedScoreboard}=${score}..}]`},
-                                {text: inputText[i]}
-                            ]
-                        }
-                    };
-                    commands.push(JSON.stringify(commandData));
-                    i++;
-                    score++;
-                }
-            }
-    
-            let result = "[" + commands.join(",") + "]";
-
-            if (initialize === true) {
-                result = `/titleraw @a[scores={${trimmedScoreboard}=${startScore}..}] actionbar {"rawtext":${result}}`;
-            }
-    
-            return result;
-        } catch (err) {
-            console.error("转换函数内部错误:", err);
-            return `错误: 生成失败 (${err.message})`;
-        }
+// 核心转换函数
+function transformText(inputText, scoreboard, startScore, initialize) {
+    if (!inputText || !inputText.toString().trim()) {
+        return '错误: 请输入需要转换的文本';
     }
+    try {
+        const commands = [];
+        let i = 0;
+        // 正确处理起始分数，默认为0
+        let initialScoreValue = parseInt(startScore, 10);
+        if (isNaN(initialScoreValue)) {
+             initialScoreValue = 0;
+        }
+        // 使用 initialScoreValue 作为后续逻辑的基准
+        let score = initialScoreValue;
+
+        if (typeof scoreboard !== 'string' || !scoreboard.trim()) {
+             return '错误: 请输入有效的计分板名称';
+        }
+        const trimmedScoreboard = scoreboard.trim();
+        while (i < inputText.length) {
+            let currentText = '';
+            // 递归收集所有连续的§*和\n
+            while (i < inputText.length) {
+                // 处理§*格式
+                if (inputText[i] === '§' && i + 1 < inputText.length) {
+                    currentText += inputText.substr(i, 2);
+                    i += 2;
+                    continue;
+                }
+                // 处理\n字符串
+                else if (inputText[i] === '\\' && i + 1 < inputText.length && inputText[i+1] === 'n') {
+                    currentText += '\n'; // 直接使用换行符
+                    i += 2;
+                    continue;
+                }
+                // 处理实际换行符
+                else if (inputText[i] === '\n') {
+                    currentText += '\n';
+                    i++;
+                    continue;
+                }
+                break;
+            }
+            // 收集后续一个普通字符
+            if (i < inputText.length && currentText) {
+                currentText += inputText[i];
+                i++;
+            }
+            if (currentText) {
+                const commandData = {
+                    translate: "%%2",
+                    with: {
+                        rawtext: [
+                            {selector: `@s[scores={${trimmedScoreboard}=${score}..}]`},
+                            {text: currentText}
+                        ]
+                    }
+                };
+                commands.push(JSON.stringify(commandData));
+                score++;
+            } else if (i < inputText.length) {
+                // 处理普通字符
+                const commandData = {
+                    translate: "%%2",
+                    with: {
+                        rawtext: [
+                            {selector: `@s[scores={${trimmedScoreboard}=${score}..}]`},
+                            {text: inputText[i]}
+                        ]
+                    }
+                };
+                commands.push(JSON.stringify(commandData));
+                i++;
+                score++;
+            }
+        }
+        let result = "[" + commands.join(",") + "]";
+        if (initialize === true) {
+            result = `/execute as @a[scores={${trimmedScoreboard}=${initialScoreValue}..}] run titleraw @s actionbar {"rawtext":${result}}`;
+        }
+        return result;
+    } catch (err) {
+        console.error("转换函数内部错误:", err);
+        return `错误: 生成失败 (${err.message})`;
+    }
+}
 
 
     // 转换
