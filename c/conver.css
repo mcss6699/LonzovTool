@@ -118,6 +118,7 @@ header {
     transition: var(--transition);
     min-height: 150px;
     position: relative;
+    margin-bottom: 10px;
 }
 
 .input-fields-container {
@@ -361,6 +362,13 @@ header {
     flex: 1; /* 占据容器内所有可用的垂直空间 */
     min-height: 0; /* 允许在小容器中收缩 */
     margin-bottom: 0; /* 它是最后一个元素 */
+}
+
+footer {
+    text-align: center;
+    color: #777;
+    padding-top: 30px;
+    font-size: 1rem;
 }
 
 
