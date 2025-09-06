@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       const response = await fetch('dr.json');
       photoData = await response.json();
+      console.log('卡片数量:', photoData.length);
       filteredData = [...photoData];
       renderGallery();
     } catch (error) {

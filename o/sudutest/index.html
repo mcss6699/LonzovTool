@@ -72,6 +72,12 @@
             transition: var(--transition);
             margin-bottom: 40px;
         }
+        footer {
+            text-align: center;
+            color: #777;
+            padding-top: 30px;
+            font-size: 1rem;
+        }
         .back-button {
             background: none;
             border: none;
@@ -342,7 +348,7 @@
                     <ul>
                         <li><strong>普通年轻人</strong>：平均约为 <strong>200-300 毫秒</strong>。</li>
                         <li><strong>受过专业训练</strong>：平均约为 <strong>120-180 毫秒</strong>，已知人类极限约为100ms。</li>
-                        <li><strong>影响的因素</strong>：年龄、注意力、疲劳、练习、刺激强度…等等</li>
+                        <li><strong>影响的因素</strong>：硬件延迟、年龄、注意力、疲劳、练习、刺激强度…等等</li>
                     </ul>
                     <p>你的平均反应时间是 <span id="science_average_time_span">-</span> 毫秒，感觉如何？</p>
                 </div>
@@ -364,6 +370,10 @@
             </table>
         </div>
     </main>
+
+    <footer class="container">
+        <p>© 2025 小舟工具箱 | <a href="https://icp.gov.moe/?keyword=20250698" target="_blank">萌ICP备20250698号</a></p>
+    </footer>
 
     <script>
         const currentTheme = localStorage.getItem('theme') || 'light';
