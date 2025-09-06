@@ -93,6 +93,13 @@ body {
     font-size: 0.9rem;
     flex-shrink: 0;
 }
+footer a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+}
+footer a:hover {
+    text-decoration: underline;
+}
 
 /* --- 下载区域 --- */
 .download-section {
