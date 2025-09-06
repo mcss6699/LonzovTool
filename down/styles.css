@@ -1,0 +1,395 @@
+:root {
+    --color-primary: #3498db;
+    --color-primary-hover: #2980b9;
+    --color-secondary: #2c3e50;
+    --color-accent: #e74c3c;
+    --color-success: #27ae60;
+    --color-text: #333;
+    --color-text-secondary: #7f8c8d;
+    --color-bg: #f8f9fa;
+    --color-card-bg: #ffffff;
+    --color-border: #e0e0e0;
+    --color-shadow: rgba(0, 0, 0, 0.1);
+    --color-overlay: rgba(0, 0, 0, 0.85);
+    --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --border-radius: 8px;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --max-width: 800px;
+}
+
+[data-theme="dark"] {
+    --color-primary: #41a3ff;
+    --color-primary-hover: #3a96e6;
+    --color-secondary: #1f2b38;
+    --color-text: #e0e0e0;
+    --color-text-secondary: #b0b0b0;
+    --color-bg: #1f2b38;
+    --color-card-bg: #2a3849;
+    --color-border: #1f2b38;
+    --color-shadow: rgba(0, 0, 0, 0.3);
+    --color-overlay: rgba(0, 0, 0, 0.95);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- 布局 --- */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-header {
+    background-color: var(--color-secondary);
+    color: white;
+    padding: var(--spacing-md) var(--spacing-sm);
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
+}
+
+.app-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.app-main {
+    flex: 1;
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--spacing-lg) var(--spacing-sm);
+    width: 100%;
+}
+
+.app-footer {
+    text-align: center;
+    padding: var(--spacing-md) var(--spacing-sm);
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+/* --- 下载区域 --- */
+.download-section {
+    width: 100%;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-primary);
+}
+
+.section-description {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* --- 下载卡片 --- */
+.download-card {
+    background-color: var(--color-card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px var(--color-shadow);
+    overflow: hidden;
+    margin-bottom: var(--spacing-md);
+    transition: var(--transition);
+}
+
+.download-card:hover {
+    box-shadow: 0 6px 16px var(--color-shadow);
+    transform: translateY(-2px);
+}
+
+.card-header {
+    padding: var(--spacing-md) var(--spacing-md) var(--spacing-sm);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-primary);
+}
+
+.card-description {
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.card-actions {
+    padding: var(--spacing-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.card-content {
+    padding: var(--spacing-md);
+}
+
+/* --- 按钮 --- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition);
+    flex: 1 1 auto;
+    min-width: 120px;
+    text-align: center;
+    gap: 0.5rem; /* 图标与文字间距 */
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background-color: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn:disabled,
+.btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* --- 输入框组 --- */
+.input-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.input-label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.input-wrapper {
+    display: flex;
+}
+
+.input-field {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    background-color: var(--color-card-bg);
+    color: var(--color-text);
+    font-size: 1rem;
+    min-width: 0; /* 防止 flex 溢出 */
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.btn-icon {
+    background-color: var(--color-primary);
+    color: white;
+    border: 1px solid var(--color-primary);
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    padding: 0 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon:hover {
+    background-color: var(--color-primary-hover);
+}
+
+/* --- 消息提示 (Toast) --- */
+.toast {
+    position: fixed;
+    top: var(--spacing-md);
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background-color: var(--color-primary);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px var(--color-shadow);
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    z-index: 1000;
+    font-weight: 500;
+}
+
+.toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast.success {
+    background-color: var(--color-success);
+}
+
+.toast.error {
+    background-color: var(--color-accent);
+}
+
+/* --- 遮罩层 --- */
+#download-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-overlay);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    cursor: pointer;
+    padding: var(--spacing-md);
+    text-align: center;
+}
+
+#download-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#download-overlay .overlay-main {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: var(--spacing-sm);
+    color: #ffffff;
+}
+
+#download-overlay .overlay-normal {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-md);
+    color: #f0f0f0;
+    max-width: 600px;
+    line-height: 1.7;
+}
+
+#download-overlay .overlay-small {
+    font-size: 0.875rem;
+    color: #d0d0d0;
+}
+
+/* --- 响应式 --- */
+@media (max-width: 768px) {
+    .app-main {
+        padding: var(--spacing-md) var(--spacing-sm);
+    }
+
+    .card-actions {
+        flex-direction: column;
+        padding: var(--spacing-sm);
+    }
+
+    .card-content {
+        padding: var(--spacing-sm);
+    }
+
+    .btn {
+        width: 100%;
+        padding: 0.8rem;
+    }
+
+    .input-wrapper {
+        flex-direction: column;
+    }
+
+    .input-field {
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        border-bottom: none;
+    }
+
+    .btn-icon {
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+        border-top: none;
+        padding: 0.8rem;
+    }
+
+    #download-overlay .overlay-main {
+        font-size: 1.2rem;
+    }
+
+    #download-overlay .overlay-normal {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .btn {
+        padding: 0.7rem;
+        font-size: 0.95rem;
+    }
+}

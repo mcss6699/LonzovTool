@@ -1,71 +1,100 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
     <meta charset="UTF-8">
+    <meta name="color-scheme" content="light dark">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>下载 - 小舟工具箱</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="shortcut icon" href="../favicon.png" type="image/png">
-    <link rel="stylesheet" href="down.css">
     <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
     <script>LA.init({id:"3Ltl0yXYWQcgbDgB",ck:"3Ltl0yXYWQcgbDgB"})</script>
-  <script>
-    const downloadData = {
-      lanzoudown: {
-        url: "https://lonzov.lanzouu.com/ieIUm35jquti",
-        password: "i0de"
-      }
-    };
-  </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="../favicon.png" type="image/png">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <h1 class="title">小舟工具箱</h1>
-            </div>
-        </div>
-    </header>
+    <div class="app-container">
+        <header class="app-header">
+            <h1 class="app-title">小舟工具箱</h1>
+        </header>
 
-    <main class="container">
-        <div class="download-card">
-            <h1>文件标题</h1>
-            <p>请选择下载方式</p>
-            
-            <div class="download-option">
-                <h2>快捷下载</h2>
-                <p>一键下载无需输入密码</p>
-                <button id="quickDownloadBtn" class="download-link">
-                    立即下载 <i class="fas fa-download"></i>
-                </button>
-            </div>
-            
-            <div class="download-option">
-                <h2>备用手动下载</h2>
-                <p>前往网盘下载页输入密码下载</p>
-                
-                <div class="password-input-group">
-                    <input type="text" id="downloadPassword" 
-                              placeholder="密码" 
-                              value="" readonly>
-                    <button id="copyPasswordBtn" class="copy-btn">
-                        <i class="fas fa-copy"></i>
-                    </button>
+        <main class="app-main">
+            <section class="download-section">
+                <h2 class="section-title">日志下载</h2>
+                <p class="section-description">如果你是不小心撞进来的，请退出</br>日志文件仅用于淘宝"微星旗舰店"确认是产品本身硬件存在质量问题</br>处理速度：<a id="timer" class="section-description"></a></p>
+
+                <div class="download-card" id="quickDownloadCard">
+                    <div class="card-header">
+                        <h3 class="card-title">快捷下载(推荐)</h3>
+                        <p class="card-description">便捷一键下载。解析需要几秒，请耐心等待不要重复点击</p>
+                    </div>
+                    <div class="card-actions">
+                        <a href="#" class="btn btn-primary" id="directDownloadBtn" target="_blank">
+                            <i class="fas fa-bolt"></i> 星辰云官链
+                        </a>
+                        <button class="btn btn-secondary" id="quickDownloadBtn">
+                            <i class="fas fa-download"></i> 蓝奏云解析
+                        </button>
+                    </div>
                 </div>
-                
-                <a id="manualDownloadLink" href="#" class="download-link">
-                    前往下载 <i class="fas fa-external-link-alt"></i>
-                </a>
-            </div>
 
-            <div id="message" class="message"></div>
-        </div>
-    </main>
+                <div class="download-card" id="manualDownloadCard">
+                    <div class="card-header">
+                        <h3 class="card-title">手动下载</h3>
+                        <p class="card-description">若快捷下载不可用，请使用此方式。记得先复制密码</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="input-group">
+                            <label for="downloadPassword" class="input-label">密码</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="downloadPassword" class="input-field" readonly>
+                                <button class="btn-icon" id="copyPasswordBtn" aria-label="复制密码">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-outline" id="manualDownloadLink" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> 前往网盘
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
 
-    <footer class="container">
-        <p>提示有风险/被拦截不用管，蓝奏云经常这样<br>如果网盘失效加群反馈</p>
-    </footer>
+        <footer class="app-footer">
+            <p>提示有风险/被拦截不用管，蓝奏云经常这样<br>如果网盘失效加群反馈</p>
+        </footer>
+    </div>
+    <div id="message" class="toast"></div>
+    
+    <script>
+        const startTime = new Date('2025-09-05 22:25:06');
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - startTime;
+            const milliseconds = Math.floor(diff % 1000);
+            const seconds = Math.floor(diff / 1000) % 60;
+            const minutes = Math.floor(diff / (1000 * 60));
+            const displayMilliseconds = Math.floor(milliseconds / 100);
+            let result = '';
+            if (minutes > 0) result += `${minutes}分钟 `;
+            result += `${seconds}.${displayMilliseconds}`;
+            document.getElementById('timer').textContent = `${result}`;
+        }
+        updateTimer();
+        setInterval(updateTimer, 100);
+    </script>
 
-    <script src="down.js"></script>
+    <script id="downloadConfig" type="application/json">
+        {
+            "lanzou": {
+                "url": "https://lonzov.lanzouu.com/ieIUm35jquti",
+                "password": "i0de"
+            },
+            "direct": {
+                "url": "https://pan.szczk.top/d/QfAaC/0/dmp日志.7z"
+            }
+        }
+    </script>
+    <script src="script.js"></script>
 </body>
 </html>
