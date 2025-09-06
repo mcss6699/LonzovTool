@@ -39,14 +39,16 @@
       forceShow: true,
       content: `
             <p>大小按导入预计耗时算，具体参考展示内容</p>
-            <p>· 小型：¥3/文件<br>· 中型：¥5/文件<br>· 大型：¥8/文件<br>· 巨大：¥12/文件<br>· 超大：¥20/文件<br>· 特大：¥30/文件</p>
-            <p>支持本地联机、联机大厅、租赁服<br>支持导出，价格是导入一半<br><a style="font-weight: bold">· 认准Q群587984701群主</a></p>
+            <p>长期免费中，欢迎赞助</p>
+            <p>支持本地联机、联机大厅、租赁服<br>支持导出<br><a style="font-weight: bold">· 认准Q群587984701群主</a></p>
         `,
       buttons: [
+        { text: "赞助", style: "", action: "open_link", url: "https://afdian.com/a/lonzov" },
         { text: "加群", style: "gray", action: "open_link", url: "https://qm.qq.com/q/hjTqUyIKEo" },
-        { text: "知道了", style: "", action: "close" },
+        { text: "关闭", style: "red", action: "close" },
       ]
     };
+    //<p>· 小型：¥3/文件<br>· 中型：¥5/文件<br>· 大型：¥8/文件<br>· 巨大：¥12/文件<br>· 超大：¥20/文件<br>· 特大：¥30/文件</p>，价格是导入一半
 
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);

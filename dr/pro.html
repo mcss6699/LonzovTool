@@ -320,8 +320,8 @@
     <div class="container">
         <div class="glass-panel header">
             <h1 class="main-title"><span>考后大解放，方块任你创</span></h1>
-            <p class="sub-title">🎉 没有建筑师？导入天价？<strong>6.18~10.8免费导入</strong></p>
-            <div class="deadline">活动倒计时: <span id="countdown">00天00时00分</span></div>
+            <p class="sub-title">🎉 没有建筑师？导入天价？<strong>我们免费导入！</strong></p>
+            <div class="deadline">活动倒计时: <span id="countdown">长期活动</span></div>
         </div>
         <section class="glass-panel">
             <h2 class="section-title">传统开服痛 vs 我们的解决方案</h2>
@@ -334,9 +334,9 @@
                 </div>
                 <div class="point-card solution-card">
                     <h3>✅ 一站式解决方案</h3>
-                    <p>1. <strong>500+现成建筑</strong>（从中式宫殿到科幻基地）</p>
+                    <p>1. <strong>2.7w+现成建筑</strong>（从中式宫殿到科幻基地）</p>
                     <p>2. <strong>导出建筑</strong>（支持从任意地图导出）</p>
-                    <p>3. <strong>免费额度天天送</strong>（6.18~10.8每人每日1次）</p>
+                    <p>3. <strong>免费额度天天有</strong>（多少次取决于我的时间）</p>
                 </div>
             </div>
             <div style="text-align: center; margin-top: 30px;">
@@ -349,8 +349,8 @@
                 <div class="step-card">
                     <div class="step-num">1</div>
                     <h3>选建筑</h3>
-                    <p>从图册/其他地图选心仪建筑</p>
-                    <p><small>支持导出所有能自由移动的地图</small></p>
+                    <p>选择心仪建筑/地图</p>
+                    <p><small>同时也可以导出，具体看图册常见问题</small></p>
                 </div>
                 <div class="step-card">
                     <div class="step-num">2</div>
@@ -371,7 +371,7 @@
         </section>
     </div>
     <script>
-        // 倒计时
+        /* 倒计时
         function updateCountdown() {
             const endDate = new Date('2025-10-08T23:59:59');
             const now = new Date();
@@ -385,7 +385,7 @@
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             document.getElementById('countdown').textContent =
                 `${days}天${hours}时${minutes}分`;
-        }
+        }*/
 
         function initBackgroundSwitcher() {
             const bgImages = [
@@ -453,8 +453,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            updateCountdown();
-            setInterval(updateCountdown, 60000);
+            // updateCountdown();
+            // setInterval(updateCountdown, 60000);
             initBackgroundSwitcher();
             
             function adjustTitleSize() {
