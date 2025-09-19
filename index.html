@@ -21,16 +21,16 @@
     <script>
         const modalConfig = {
             title: "近期更新",
-            id: "update_log_0907",
-            version: "202509070001",
+            id: "update_log_0919",
+            version: "202509190000",
             forceShow: false,
             content: `
-                    <p>[~] 优化了部分网页的体验</br>[~] 转换类网页统一风格，体验优化</br>[~] 下载页优化</p>
-                    <p><strong>·</strong> 新卡片：wiki，ChunkBase、反应速度测试</p>
+                    <p>[~] 修改了主页卡片样式</p>
+                    <p><strong>·</strong> 新卡片：无更新</p>
                     <p><strong>·</strong> 建议/反馈请加Q群:587984701</p>
                 `,
             buttons: [
-                { text: "查看详情", style: "gray", action: "open_link", url: "https://p.kdocs.cn/l/cdYwfJEuGwBr" },
+                { text: "查看详情", style: "gray", action: "open_link", url: "https://blog.lonzov.top/posts/tool-update/#202509" },
                 { text: "加 群", style: "", action: "open_link", url: "https://qm.qq.com/q/hjTqUyIKEo" },
                 { text: "不再显示", style: "red", action: "close" },
             ]
@@ -333,21 +333,21 @@
 
         .cards-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
             margin-bottom: 40px;
         }
 
         .card {
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
             display: flex;
             flex-direction: column;
             height: 100%;
-            padding: 25px;
+            padding: 22px;
         }
 
         .card:hover {
@@ -364,13 +364,13 @@
         .card-title {
             font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             color: var(--primary-color);
         }
 
         .card-desc {
             color: var(--text-color);
-            margin-bottom: 20px;
+            margin-bottom: 6px;
             flex-grow: 1;
             opacity: 0.9;
         }
@@ -572,8 +572,8 @@
             }
             
             .cards-container {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 2fr));
-                gap: 20px;
+                grid-template-columns: repeat(auto-fill, minmax(180px, 2fr));
+                gap: 16px;
             }
         }
 
@@ -583,7 +583,7 @@
             }
             
             .cards-container {
-                grid-template-columns: repeat(auto-fill, minmax(182px, 2fr));
+                grid-template-columns: repeat(auto-fill, minmax(180px, 2fr));
             }
             
             .header-controls {

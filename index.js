@@ -178,6 +178,7 @@ const cardsData = [
 ];
 
 // 动态生成卡片
+/*
 function generateCards(cards) {
     const container = document.getElementById('cardsContainer');
     container.innerHTML = '';
@@ -199,6 +200,38 @@ function generateCards(cards) {
             </div>
         `;
         
+        container.appendChild(cardElement);
+    });
+} */
+
+// 新版，删掉了立即使用按钮，点击卡片直接访问
+function generateCards(cards) {
+    const container = document.getElementById('cardsContainer');
+    container.innerHTML = '';
+
+    cards.forEach(card => {
+        const cardElement = document.createElement('div');
+        cardElement.className = 'card';
+        cardElement.dataset.category = card.category;
+
+        const linkTarget = card.newtap ? 'target="_blank" rel="noopener noreferrer"' : '';
+
+        cardElement.innerHTML = `
+            <div class="card-content">
+                <h3 class="card-title">${card.title}</h3>
+                <p class="card-desc">${card.description}</p>
+            </div>
+        `;
+
+        // 添加点击事件
+        cardElement.addEventListener('click', function () {
+            if (card.newtap) {
+                window.open(card.link, '_blank', 'noopener,noreferrer');
+            } else {
+                window.location.href = card.link;
+            }
+        });
+
         container.appendChild(cardElement);
     });
 }
