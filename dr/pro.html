@@ -387,7 +387,7 @@
         </footer>
     </div>
     <script>
-        /* 倒计时
+        // 倒计时
         function updateCountdown() {
             const endDate = new Date('2025-10-08T23:59:59');
             const now = new Date();
@@ -401,7 +401,7 @@
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             document.getElementById('countdown').textContent =
                 `${days}天${hours}时${minutes}分`;
-        }*/
+        }
 
         function initBackgroundSwitcher() {
             const bgImages = [
@@ -469,8 +469,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            // updateCountdown();
-            // setInterval(updateCountdown, 60000);
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
             initBackgroundSwitcher();
             
             function adjustTitleSize() {

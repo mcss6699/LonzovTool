@@ -6,26 +6,7 @@
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <title>图册展示</title>
-  <script>
-    (function () {
-        'use strict';
-
-        if (window.location.protocol === 'http:') {
-            const hostname = window.location.hostname;
-            const isLocalhost = hostname === 'localhost';
-            const isLoopback = hostname === '127.0.0.1';
-            const isPrivateIP = hostname.startsWith('192.168.');
-
-            if (!(isLocalhost || isLoopback || isPrivateIP)) {
-                var httpsUrl = 'https://' + window.location.host + window.location.pathname + window.location.search + window.location.hash;
-
-                window.location.replace(httpsUrl);
-            } else {
-                console.log("检测到本地地址 (" + hostname + ")，跳过重定向。");
-            }
-        }
-    })();
-</script>
+  <script>(function(){"use strict";if(window.location.protocol==="http:"){const e=window.location.hostname;if(!(e==="localhost"||e==="127.0.0.1"||e.startsWith("192.168."))){window.location.replace("https://"+window.location.host+window.location.pathname+window.location.search+window.location.hash)}else{console.log("检测到本地地址 ("+e+")，跳过重定向。")}}})()</script>
   <link rel="shortcut icon" href="/favicon.png" type="image/png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="dr.js" defer></script>
@@ -39,8 +20,8 @@
       forceShow: true,
       content: `
             <p>大小按导入预计耗时算，具体参考展示内容</p>
-            <p>长期免费中，欢迎赞助</p>
-            <p>支持本地联机、联机大厅、租赁服<br>支持导出<br><a style="font-weight: bold">· 认准Q群587984701群主</a></p>
+            <p>· 小型：¥3/文件<br>· 中型：¥5/文件<br>· 大型：¥8/文件<br>· 巨大：¥12/文件<br>· 超大：¥15/文件<br>· 特大：¥24/文件</p>
+            <p>支持本地联机、联机大厅、租赁服<br>支持导出，价格是导入一半<br><a style="font-weight: bold">· 认准Q群587984701群主</a></p>
         `,
       buttons: [
         { text: "赞助", style: "", action: "open_link", url: "https://afdian.com/a/lonzov" },
@@ -48,7 +29,6 @@
         { text: "关闭", style: "red", action: "close" },
       ]
     };
-    //<p>· 小型：¥3/文件<br>· 中型：¥5/文件<br>· 大型：¥8/文件<br>· 巨大：¥12/文件<br>· 超大：¥20/文件<br>· 特大：¥30/文件</p>，价格是导入一半
 
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
