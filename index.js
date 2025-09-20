@@ -170,7 +170,7 @@ const cardsData = [
     { title: "3D字生成↗", description: "轻松制作mc风格中文3D文本！", categories:["other"], link: "https://3dt.easecation.net/", newtap:true },
     { title: "幸运转盘", description: "选择困难症？让转盘来决定！", categories:["other"], link: "./o/spin-the-wheel", newtap:true },
     { title: "反应速度测试", description: "这是一条反应速度测试的简介~", categories:["other"], link: "./o/sudutest", newtap:true },
-    { title: "nohello", description: "不要问在吗 | 短链接:nohello.top (池鱼提供服务器&域名支持)", categories:["other"], link: "./nohello", newtap:true },
+    { title: "nohello", description: "不要问在吗 nohello.top", categories:["other"], link: "./nohello", newtap:true },
     { title: "Markdown渲染器", description: "在线预览Markdown 一键导出多种格式", categories:["other"], link: "./o/md", newtap:true },
     { title: "毒蘑菇性能测试", description: "进行volumeshader性能测试 查看设备GPU性能", categories:["other"], link: "./o/vsbm", newtap:true },
 
@@ -204,35 +204,33 @@ function generateCards(cards) {
     });
 } */
 
-// 新版，删掉了立即使用按钮，点击卡片直接访问
+// 采用更语义化的<a>标签包裹整个卡片
 function generateCards(cards) {
     const container = document.getElementById('cardsContainer');
     container.innerHTML = '';
-
+    
     cards.forEach(card => {
-        const cardElement = document.createElement('div');
-        cardElement.className = 'card';
-        cardElement.dataset.category = card.category;
-
-        const linkTarget = card.newtap ? 'target="_blank" rel="noopener noreferrer"' : '';
-
-        cardElement.innerHTML = `
+        // 创建一个链接元素来包装整个卡片
+        const cardLink = document.createElement('a');
+        cardLink.className = 'card';
+        cardLink.href = card.link;
+        cardLink.dataset.category = card.category;
+        
+        // 设置链接属性
+        if (card.newtap) {
+            cardLink.target = '_blank';
+            cardLink.rel = 'noopener noreferrer';
+        }
+        
+        // 保移除了原来的立即使用按钮
+        cardLink.innerHTML = `
             <div class="card-content">
                 <h3 class="card-title">${card.title}</h3>
                 <p class="card-desc">${card.description}</p>
             </div>
         `;
-
-        // 添加点击事件
-        cardElement.addEventListener('click', function () {
-            if (card.newtap) {
-                window.open(card.link, '_blank', 'noopener,noreferrer');
-            } else {
-                window.location.href = card.link;
-            }
-        });
-
-        container.appendChild(cardElement);
+        
+        container.appendChild(cardLink);
     });
 }
 
