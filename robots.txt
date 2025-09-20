@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /detect/
+Sitemap: https://tool.lonzov.top/sitemap.xml
