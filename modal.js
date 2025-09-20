@@ -1,3 +1,4 @@
+// 仿ios弹窗
 (function() {
     const style = document.createElement('style');
     style.textContent = `
@@ -28,7 +29,7 @@
             transition: opacity 0.15s;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             overflow: hidden;
-            font-family: 'Microsoft YaHei', 'Misa', 'PingFang SC', 'HarmonyOS Sans SC', sans-serif;
+            font-family: 'Misa', 'PingFang SC', 'HarmonyOS Sans SC', sans-serif;
         }
         [data-theme="dark"] .modal-container {
             background: rgba(40, 40, 40, 0.8);
@@ -38,7 +39,7 @@
             text-align: center;
             font-weight: 600;
             font-size: 18px;
-            color: #007AFF;
+            color: #dfefffff;
             position: relative;
         }
         .modal-title::after {
@@ -85,7 +86,7 @@
             text-align: center;
             font-size: 16px;
             font-weight: 600;
-            color: #007AFF;
+            color: #0e83ffff;
             background: none;
             border: none;
             cursor: pointer;
