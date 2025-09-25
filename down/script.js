@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const manualDownloadCard = document.getElementById('manualDownloadCard');
 
     // API
-    const API_BASE_URL = 'https://lz.qaiu.top/parser';
+    const API_BASE_URL = 'http://www.722shop.top:6401/parser';
 
     // 根据配置初始化值和控制显示
     let isQuickCardNeeded = false;
@@ -105,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const params = new URLSearchParams({
             url: encodeURIComponent(config.lanzou.url),
             pwd: encodeURIComponent(config.lanzou.password),
-            type: 'down'
         });
         return `${API_BASE_URL}?${params}`;
     }
@@ -122,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 直接执行原遮罩层点击后的逻辑
         const apiUrl = generateApiUrl();
-        if (apiUrl !== '#' && apiUrl !== 'https://lz.qaiu.top/parser?') {
+        if (apiUrl !== '#' && apiUrl !== 'http://www.722shop.top:6401/parser?') {
             console.log("跳转到 API URL:", apiUrl);
             window.open(apiUrl, '_blank');
         } else {
