@@ -13,33 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error("未找到ID为 'downloadConfig' 的配置脚本。");
         showMessage("配置缺失", false);
     }
-
     const downloadPassword = document.getElementById('downloadPassword');
     const manualDownloadLink = document.getElementById('manualDownloadLink');
     const directDownloadBtn = document.getElementById('directDownloadBtn');
     const quickDownloadBtn = document.getElementById('quickDownloadBtn');
     const copyPasswordBtn = document.getElementById('copyPasswordBtn');
     const message = document.getElementById('message');
-
     const quickDownloadCard = document.getElementById('quickDownloadCard');
     const manualDownloadCard = document.getElementById('manualDownloadCard');
 
-    // 遮罩层
-    const overlay = document.getElementById('download-overlay') || (() => {
-        const newOverlay = document.createElement('div');
-        newOverlay.id = 'download-overlay';
-        newOverlay.innerHTML = `
-            <p class="overlay-main">接下来请忽视不安全警告</p>
-            <p class="overlay-normal">即将前往api站解析直链。请忽略浏览器可能弹出的"不安全"警告，这是由服务器SSL配置导致的正常现象。</br>如果不放心请使用星辰云/手动下载</p>
-            <p class="overlay-small">点击任意位置继续</p>
-        `;
-        document.body.appendChild(newOverlay);
-        return newOverlay;
-    })();
-    let isOverlayShown = false;
-
     // API
-    const API_BASE_URL = 'http://api.lonzov.top/lanzou/public/index.php';
+    const API_BASE_URL = 'https://lz.qaiu.top/parser';
 
     // 根据配置初始化值和控制显示
     let isQuickCardNeeded = false;
@@ -126,35 +110,24 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${API_BASE_URL}?${params}`;
     }
 
-    // 处理遮罩层点击
-    function handleOverlayClick() {
-        if (isOverlayShown) {
-            overlay.classList.remove('show');
-            isOverlayShown = false;
-            const apiUrl = generateApiUrl();
-            if (apiUrl !== '#' && apiUrl !== 'http://api.lonzov.top/lanzou/public/index.php?') {
-                console.log("跳转到 API URL:", apiUrl);
-                window.open(apiUrl, '_blank');
-            } else {
-                showMessage("无法生成下载链接", false);
-            }
-        }
-    }
-    overlay.addEventListener('click', handleOverlayClick);
 
-    // 蓝奏云按钮点击事件(显示遮罩，然后跳转)
+    // 蓝奏云按钮点击事件(原本点击按钮是显示遮罩层，现在直接执行原遮罩层点击后的逻辑)
     quickDownloadBtn.addEventListener('click', function(e) {
         if (this.classList.contains('disabled')) {
             e.preventDefault();
             showMessage('蓝奏云解析不可用', false, e);
             return;
         }
+        // e.preventDefault(); // 如果按钮是 <a> 标签，且希望始终在新窗口打开，可以保留此行阻止默认跳转
 
-        if (!isOverlayShown) {
-            overlay.classList.add('show');
-            isOverlayShown = true;
+        // 直接执行原遮罩层点击后的逻辑
+        const apiUrl = generateApiUrl();
+        if (apiUrl !== '#' && apiUrl !== 'https://lz.qaiu.top/parser?') {
+            console.log("跳转到 API URL:", apiUrl);
+            window.open(apiUrl, '_blank');
+        } else {
+            showMessage("无法生成下载链接", false);
         }
-        e.preventDefault();
     });
 
     // 消息提示
@@ -162,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
         message.textContent = text;
         message.className = 'toast show';
         message.classList.add(isSuccess ? 'success' : 'error');
-
         setTimeout(() => {
             message.classList.remove('show');
         }, 3000);
