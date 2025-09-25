@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="description" content="简介">
+    <title>转换器模板 - 小舟工具箱</title>
+    <link rel="stylesheet" href="../conver.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
+    <script>LA.init({id:"3Ltl0yXYWQcgbDgB",ck:"3Ltl0yXYWQcgbDgB"})</script>
+    <script>
+        const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', currentTheme);
+    </script>
+</head>
+<body>
+    <header>
+        <button class="back-button" id="backButton">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <h1 class="header-title">标题</h1>
+    </header>
+    <main class="container">
+        <div class="editor-container">
+            <div class="input-section">
+                <textarea id="inputText" class="text-input" placeholder="请输入需要转换的文本..." spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+            </div>
+
+            <div class="output-controls-section">
+                 <div id="statusMessage" class="status-message">--</div>
+                 <div class="controls">
+                    <button id="convertBtn" class="control-btn">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>转换</span>
+                    </button>
+                    <button id="copyBtn" class="control-btn">
+                        <i class="fas fa-copy"></i>
+                        <span>复制</span>
+                    </button>
+                    <button id="clearBtn" class="control-btn">
+                        <i class="fas fa-trash-alt"></i>
+                        <span>清空</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="input-section">
+                <textarea id="outputText" class="text-input" placeholder="转换结果将显示在这里..." spellcheck="false" readonly></textarea>
+            </div>
+        </div>
+    </main>
+
+    <footer class="container">
+        <p>© 2025 小舟工具箱 | <a href="https://icp.gov.moe/?keyword=20250698" target="_blank">萌ICP备20250698号</a></p>
+    </footer>
+    <script src="script.js" type="module"></script>
+</body>
+</html>
