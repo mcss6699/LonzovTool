@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <!-- 全ai写的，用于编辑 dr.json -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>图册JSON编辑</title>
@@ -393,7 +394,7 @@
 
             <div class="form-group">
                 <label for="tags">标签</label>
-                <textarea id="tags" name="tags" placeholder="例如：标签1&#10;标签2" required autocomplete="on"></textarea>
+                <textarea id="tags" name="tags" required autocomplete="on"></textarea>
             </div>
 
             <div class="form-group">
@@ -403,7 +404,7 @@
 
             <div class="form-group">
                 <label for="images">图片链接</label>
-                <textarea id="images" name="images" placeholder="例如：https://example.com/image1.jpg&#10;https://example.com/image2.jpg"></textarea>
+                <textarea id="images" name="images"></textarea>
                 <div id="imagePreviewContainer" class="image-preview-container"></div>
             </div>
 
@@ -439,7 +440,7 @@
 
         // --- 音效 ---
         // 预加载成功提示音效
-        const successSound = new Audio('./icon/sound/steam.mp3');
+        const successSound = new Audio('/icon/sound/steam.mp3');
         successSound.preload = 'auto'; // 尝试预加载
 
         // --- DOM 元素缓存 ---
