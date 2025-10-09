@@ -4,11 +4,13 @@ const STATUS = {
     WARNING2: 'status-warning2',
     ERROR: 'status-error'
 };
+
+const TOTAL_TIMEOUT_MS = 19999;
+
 const debugLog = [];
 const debugLogElement = document.getElementById('debug-log');
 const debugToggle = document.getElementById('debug-toggle');
 const pingRefreshButton = document.getElementById('ping-refresh');
-
 if (debugLogElement) {
     debugLogElement.style.whiteSpace = 'pre-wrap';
     debugLogElement.style.overflowY = 'auto';
@@ -37,7 +39,6 @@ debugToggle.addEventListener('click', () => {
 
 function updateElement(id, value, status) {
     const element = document.getElementById(id);
-
     if (element) {
         element.textContent = value;
         element.classList.remove(STATUS.NORMAL, STATUS.WARNING, STATUS.WARNING2, STATUS.ERROR);
@@ -54,12 +55,14 @@ window.addEventListener('storage', (e) => {
         document.documentElement.setAttribute('data-theme', e.newValue || 'light');
     }
 });
+
 // 用户代理
 function detectBrowserUA() {
     const ua = navigator.userAgent;
     const element = document.getElementById('browser-ua');
     if (element) element.textContent = ua;
 }
+
 // 浏览器信息
 function detectBrowserCore() {
     const ua = navigator.userAgent;
@@ -78,6 +81,7 @@ function detectBrowserCore() {
     const element = document.getElementById('browser-core');
     if (element) element.textContent = browserCore;
 }
+
 // 深浅色模式
 function detectColorScheme() {
     const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -125,6 +129,7 @@ async function detectIP() {
         return;
     }
 }
+
 async function detectIPLocation(ip) {
     const TIMEOUT = 5500;
     try {
@@ -153,6 +158,7 @@ async function detectIPLocation(ip) {
         updateElement('ipv4-location', '运营商检测失败', STATUS.ERROR);
     }
 }
+
 // IPinfo特殊处理函数
 function processInternationalISP(ispString) {
     const cleaned = ispString
@@ -176,20 +182,19 @@ async function pingWebsite(url, elementId) {
     const MAX_ATTEMPTS = 3;
     const results = [];
     let consecutiveTimeoutsOrErrors = 0;
+    const testStartTime = Date.now(); // 记录整个测试的开始时间
+    let lastFailureTime = testStartTime; // 记录最后一次失败的时间点
 
     addDebugLog(`开始ping测试 (3次平均): ${url}`);
-
     for (let i = 0; i < MAX_ATTEMPTS; i++) {
         try {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => {
                 controller.abort();
             }, SINGLE_TIMEOUT);
-
             const startTime = Date.now();
             const response = await fetch(`https://${url}`, { mode: 'no-cors', signal: controller.signal });
             const latency = Date.now() - startTime;
-
             clearTimeout(timeoutId);
 
             if (!controller.signal.aborted) {
@@ -199,6 +204,7 @@ async function pingWebsite(url, elementId) {
             } else {
                 consecutiveTimeoutsOrErrors++;
                 addDebugLog(`第${i + 1}次ping (${url}) 请求超时 (>=${SINGLE_TIMEOUT}ms)`);
+                lastFailureTime = Date.now(); // 更新失败时间
                 if (i === 1 && consecutiveTimeoutsOrErrors === 2) {
                     addDebugLog(`  ${url} 前两次均超时/失败，提前中止第三次检测。`);
                     break;
@@ -207,13 +213,20 @@ async function pingWebsite(url, elementId) {
         } catch (error) {
             consecutiveTimeoutsOrErrors++;
             const isTimeout = error.name === 'AbortError';
+            const isNetworkError = error.message.includes('Failed to fetch');
+            const failureTime = Date.now(); // 记录当前失败时间
+            lastFailureTime = failureTime; // 更新失败时间
+
             if (isTimeout) {
                 addDebugLog(`第${i + 1}次ping (${url}) 请求超时 (>=${SINGLE_TIMEOUT}ms)`);
+            } else if (isNetworkError) {
+                addDebugLog(`第${i + 1}次ping (${url}) 网络错误: ${error.message}`);
             } else {
                 addDebugLog(`第${i + 1}次ping (${url}) 失败: ${error.message}`);
             }
+
             if (i === 1 && consecutiveTimeoutsOrErrors === 2) {
-                addDebugLog(`  ${url} 前两次均超时/失败，提前中止第三次检测。`);
+                addDebugLog(`${url} 前两次均超时/失败，提前中止第三次检测。`);
                 break;
             }
         }
@@ -223,7 +236,6 @@ async function pingWebsite(url, elementId) {
     if (results.length > 0) {
         const averageLatency = results.reduce((a, b) => a + b, 0) / results.length;
         addDebugLog(`${url} 检测完成，有效次数: ${results.length}, 平均延迟: ${averageLatency.toFixed(2)}ms`);
-
         if (averageLatency < 1000) {
             status = STATUS.NORMAL;
             statusText = '正常';
@@ -241,36 +253,44 @@ async function pingWebsite(url, elementId) {
             statusText = '极慢';
         }
     } else {
-        addDebugLog(`  ${url} 检测完成，所有尝试均失败或超时`);
-        status = STATUS.ERROR;
-        statusText = '超时';
+        // 所有尝试都失败或超时
+        addDebugLog(`${url} 检测完成，所有尝试均失败或超时。`);
+        // 检查最后一次失败是否在总超时时间限制内
+        if (lastFailureTime - testStartTime < TOTAL_TIMEOUT_MS) {
+            status = STATUS.ERROR;
+            statusText = '不可访问';
+        } else {
+            status = STATUS.ERROR;
+            statusText = '超时';
+        }
     }
-
     updateElement(elementId, statusText, status);
 }
 
 function runPingTests() {
-    const pingElements = ['ping-baidu', 'ping-mihoyo', 'ping-bilibili', 'ping-githubio', 'ping-github','ping-vercel', 'ping-vercelapp', 'ping-youtube'];
+    const pingElements = ['ping-toollonzov', 'ping-bloglonzov', 'ping-lz.qaiu.top', 'ping-51.la', 'ping-img.fastmirror.net', 'ping-Remit.ee', 'ping-githubio', 'ping-github','ping-vercel', 'ping-vercelapp', 'ping-youtube'];
     pingElements.forEach(id => {
         updateElement(id, '检测中...', '');
     });
-
-    pingWebsite('baidu.com', 'ping-baidu');
-    pingWebsite('mihoyo.com', 'ping-mihoyo');
-    pingWebsite('bilibili.com', 'ping-bilibili');
+    pingWebsite('tool.lonzov.top', 'ping-toollonzov');
+    pingWebsite('blog.lonzov.top', 'ping-bloglonzov');
+    pingWebsite('lz.qaiu.top', 'ping-lz.qaiu.top');
+    pingWebsite('51.la', 'ping-51.la');
+    pingWebsite('img.fastmirror.net', 'ping-img.fastmirror.net');
+    pingWebsite('img.remit.ee', 'ping-Remit.ee');
     pingWebsite('github.io', 'ping-githubio');
     pingWebsite('github.com', 'ping-github');
     pingWebsite('vercel.com', 'ping-vercel');
     pingWebsite('vercel.app', 'ping-vercelapp');
     pingWebsite('youtube.com', 'ping-youtube');
 }
+
 document.addEventListener('DOMContentLoaded', () => {
     detectBrowserCore();
     detectBrowserUA();
     detectColorScheme();
     detectIP();
     runPingTests();
-
     if (pingRefreshButton) {
         pingRefreshButton.addEventListener('click', () => {
             addDebugLog('===按钮触发刷新Ping===');
