@@ -1,147 +1,3 @@
-// 主题设置
-const themeToggle = document.getElementById('themeToggle');
-const savedTheme = localStorage.getItem('theme') || 'light';
-
-document.documentElement.setAttribute('data-theme', savedTheme);
-
-window.addEventListener('storage', (e) => {
-    if (e.key === 'theme') {
-        document.documentElement.setAttribute('data-theme', e.newValue || 'light');
-    }
-});
-
-themeToggle.addEventListener('click', () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-});
-
-// 菜单控制
-const menuToggle = document.getElementById('menuToggle');
-const menuPanel = document.getElementById('menuPanel');
-const menuOverlay = document.getElementById('menuOverlay');
-
-function toggleMenu() {
-    const isActive = menuPanel.classList.toggle('active');
-    menuOverlay.classList.toggle('active');
-    menuToggle.classList.toggle('active');
-}
-
-menuToggle.addEventListener('click', toggleMenu);
-menuOverlay.addEventListener('click', toggleMenu);
-
-// 分类栏滚动时渐变效果
-const categoryFilter = document.getElementById('categoryFilter');
-const leftFade = document.querySelector('.category-scroll-fade-left');
-const rightFade = document.querySelector('.category-scroll-fade-right');
-
-function updateScrollFade() {
-    // 左端渐变
-    if (categoryFilter.scrollLeft > 0) {
-        leftFade.style.opacity = '1';
-    } else {
-        leftFade.style.opacity = '0';
-    }
-    
-    // 右端渐变
-    const scrollRight = categoryFilter.scrollWidth - categoryFilter.clientWidth - categoryFilter.scrollLeft;
-    if (scrollRight > 1) {
-        rightFade.style.opacity = '1';
-    } else {
-        rightFade.style.opacity = '0';
-    }
-}
-
-// 鼠标滚轮滚动分类栏
-categoryFilter.addEventListener('wheel', (e) => {
-    if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
-        e.preventDefault();
-    }
-    
-    categoryFilter.scrollLeft += e.deltaY;
-    updateScrollFade();
-});
-
-// 拖动滚动分类栏
-let isDown = false;
-let startX;
-let scrollLeft;
-
-categoryFilter.addEventListener('mousedown', (e) => {
-    isDown = true;
-    startX = e.pageX - categoryFilter.offsetLeft;
-    scrollLeft = categoryFilter.scrollLeft;
-    categoryFilter.style.cursor = 'grabbing';
-});
-
-categoryFilter.addEventListener('mouseleave', () => {
-    isDown = false;
-    categoryFilter.style.cursor = 'grab';
-});
-
-categoryFilter.addEventListener('mouseup', () => {
-    isDown = false;
-    categoryFilter.style.cursor = 'grab';
-});
-
-categoryFilter.addEventListener('mousemove', (e) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - categoryFilter.offsetLeft;
-    const walk = (x - startX) * 1.5;
-    categoryFilter.scrollLeft = scrollLeft - walk;
-    updateScrollFade();
-});
-
-categoryFilter.addEventListener('wheel', (e) => {
-    if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
-        e.preventDefault();
-    }
-    
-    categoryFilter.scrollLeft += e.deltaY;
-    updateScrollFade();
-});
-
-let startTouchX = 0;
-let isTouchMove = false;
-
-categoryFilter.addEventListener('touchstart', (e) => {
-    startTouchX = e.touches[0].pageX;
-    scrollLeft = categoryFilter.scrollLeft;
-    isTouchMove = false;
-});
-
-categoryFilter.addEventListener('touchmove', (e) => {
-    const touchX = e.touches[0].pageX;
-    const walk = (touchX - startTouchX) * 1.3;
-    
-    if (Math.abs(walk) > 5) {
-        isTouchMove = true;
-        categoryFilter.scrollLeft = scrollLeft - walk;
-        updateScrollFade();
-    }
-    
-    if (isTouchMove) {
-        e.preventDefault();
-    }
-});
-
-categoryFilter.addEventListener('touchend', (e) => {
-    if (!isTouchMove) {
-        const touch = e.changedTouches[0];
-        const element = document.elementFromPoint(touch.clientX, touch.clientY);
-        
-        if (element && element.classList.contains('filter-btn')) {
-            element.click();
-        }
-    }
-    
-    isTouchMove = false;
-    updateScrollFade();
-});
-
 // 卡片数据
 const cardsData = [
     { title: "ID查询↗", description: "查询原版所有ID · by 命令助手", categories:["command"], link: "https://idlist.projectxero.top/", newtap:true },
@@ -173,55 +29,23 @@ const cardsData = [
     { title: "nohello", description: "不要问在吗 nohello.top", categories:["other"], link: "./nohello", newtap:true },
     { title: "Markdown渲染器", description: "在线预览Markdown 一键导出多种格式", categories:["other"], link: "./o/md", newtap:true },
     { title: "毒蘑菇性能测试", description: "进行volumeshader性能测试 查看设备GPU性能", categories:["other"], link: "./o/vsbm", newtap:true },
-
-    
 ];
 
 // 动态生成卡片
-/*
 function generateCards(cards) {
     const container = document.getElementById('cardsContainer');
     container.innerHTML = '';
-    
-    cards.forEach(card => {
-        const cardElement = document.createElement('div');
-        cardElement.className = 'card';
-        cardElement.dataset.category = card.category;
-        
-        const linkTarget = card.newtap ? 'target="_blank" rel="noopener noreferrer"' : '';
-        
-        cardElement.innerHTML = `
-            <div class="card-content">
-                <h3 class="card-title">${card.title}</h3>
-                <p class="card-desc">${card.description}</p>
-                <a href="${card.link}" class="card-link" ${linkTarget}>
-                    立即使用 <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        `;
-        
-        container.appendChild(cardElement);
-    });
-} */
-
-// 采用更语义化的<a>标签包裹整个卡片
-function generateCards(cards) {
-    const container = document.getElementById('cardsContainer');
-    container.innerHTML = '';
-    
     cards.forEach(card => {
         // 创建一个链接元素来包装整个卡片
         const cardLink = document.createElement('a');
         cardLink.className = 'card';
         cardLink.href = card.link;
-        cardLink.dataset.category = card.category;
-        
+        cardLink.dataset.category = card.categories.join(' '); // 支持多分类
         // 设置链接属性
         if (card.newtap) {
             cardLink.target = '_blank';
             cardLink.rel = 'noopener noreferrer';
         }
-        
         // 保移除了原来的立即使用按钮
         cardLink.innerHTML = `
             <div class="card-content">
@@ -229,33 +53,153 @@ function generateCards(cards) {
                 <p class="card-desc">${card.description}</p>
             </div>
         `;
-        
         container.appendChild(cardLink);
     });
 }
 
+// 主题设置
+const themeToggle = document.getElementById('themeToggle');
+const savedTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+window.addEventListener('storage', (e) => {
+    if (e.key === 'theme') {
+        document.documentElement.setAttribute('data-theme', e.newValue || 'light');
+    }
+});
+themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+});
+
+// 菜单控制
+const menuToggle = document.getElementById('menuToggle');
+const menuPanel = document.getElementById('menuPanel');
+const menuOverlay = document.getElementById('menuOverlay');
+function toggleMenu() {
+    const isActive = menuPanel.classList.toggle('active');
+    menuOverlay.classList.toggle('active');
+    menuToggle.classList.toggle('active');
+}
+menuToggle.addEventListener('click', toggleMenu);
+menuOverlay.addEventListener('click', toggleMenu);
+
+// 分类栏滚动时渐变效果
+const categoryFilter = document.getElementById('categoryFilter');
+const leftFade = document.querySelector('.category-scroll-fade-left');
+const rightFade = document.querySelector('.category-scroll-fade-right');
+function updateScrollFade() {
+    // 左端渐变
+    if (categoryFilter.scrollLeft > 0) {
+        leftFade.style.opacity = '1';
+    } else {
+        leftFade.style.opacity = '0';
+    }
+    // 右端渐变
+    const scrollRight = categoryFilter.scrollWidth - categoryFilter.clientWidth - categoryFilter.scrollLeft;
+    if (scrollRight > 1) {
+        rightFade.style.opacity = '1';
+    } else {
+        rightFade.style.opacity = '0';
+    }
+}
+
+// 鼠标滚轮滚动分类栏
+categoryFilter.addEventListener('wheel', (e) => {
+    if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
+        e.preventDefault();
+    }
+    categoryFilter.scrollLeft += e.deltaY;
+    updateScrollFade();
+});
+
+// 拖动滚动分类栏
+let isDown = false;
+let startX;
+let scrollLeft;
+categoryFilter.addEventListener('mousedown', (e) => {
+    isDown = true;
+    startX = e.pageX - categoryFilter.offsetLeft;
+    scrollLeft = categoryFilter.scrollLeft;
+    categoryFilter.style.cursor = 'grabbing';
+});
+categoryFilter.addEventListener('mouseleave', () => {
+    isDown = false;
+    categoryFilter.style.cursor = 'grab';
+});
+categoryFilter.addEventListener('mouseup', () => {
+    isDown = false;
+    categoryFilter.style.cursor = 'grab';
+});
+categoryFilter.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - categoryFilter.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    categoryFilter.scrollLeft = scrollLeft - walk;
+    updateScrollFade();
+});
+
+let startTouchX = 0;
+let isTouchMove = false;
+categoryFilter.addEventListener('touchstart', (e) => {
+    startTouchX = e.touches[0].pageX;
+    scrollLeft = categoryFilter.scrollLeft;
+    isTouchMove = false;
+});
+categoryFilter.addEventListener('touchmove', (e) => {
+    const touchX = e.touches[0].pageX;
+    const walk = (touchX - startTouchX) * 1.3;
+    if (Math.abs(walk) > 5) {
+        isTouchMove = true;
+        categoryFilter.scrollLeft = scrollLeft - walk;
+        updateScrollFade();
+    }
+    if (isTouchMove) {
+        e.preventDefault();
+    }
+});
+categoryFilter.addEventListener('touchend', (e) => {
+    if (!isTouchMove) {
+        const touch = e.changedTouches[0];
+        const element = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (element && element.classList.contains('filter-btn')) {
+            element.click();
+        }
+    }
+    isTouchMove = false;
+    updateScrollFade();
+});
+
 // 初始化页面
 document.addEventListener('DOMContentLoaded', () => {
+    // 移除 no-js 类
     document.documentElement.classList.remove('no-js');
+
+    // 隐藏加载动画
+    const loadingOverlay = document.getElementById('loading-overlay');
+    if (loadingOverlay) {
+        loadingOverlay.classList.add('hidden');
+    }
+
     const container = document.getElementById('cardsContainer');
     container.innerHTML = '';
-    
     generateCards(cardsData);
-    
+
     const clearSearchBtn = document.getElementById('clearSearch');
     const searchBox = document.querySelector('.search-box');
-    
     const urlParams = new URLSearchParams(window.location.search);
+
     // 检查是否有search参数
     if (urlParams.has('search')) {
         const searchValue = decodeURIComponent(urlParams.get('search'));
         searchBox.value = searchValue;
-        
         if (searchValue) {
             clearSearchBtn.style.display = 'block';
         }
     }
-    
+
     // 叉号功能
     clearSearchBtn.addEventListener('click', () => {
         searchBox.value = '';
@@ -264,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const event = new Event('input', { bubbles: true });
         searchBox.dispatchEvent(event);
     });
-    
+
     // 标签分类过滤功能
     const filterButtons = document.querySelectorAll('.filter-btn');
     filterButtons.forEach(button => {
@@ -272,20 +216,17 @@ document.addEventListener('DOMContentLoaded', () => {
             filterButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
             const category = button.dataset.category;
-            const filteredCards = category === 'all' 
-                ? cardsData 
+            const filteredCards = category === 'all'
+                ? cardsData
                 : cardsData.filter(card => card.categories.includes(category));
-            
             generateCards(filteredCards);
         });
     });
-    
+
     // 搜索功能
     searchBox.addEventListener('input', () => {
         const searchTerm = searchBox.value.toLowerCase();
-        
         clearSearchBtn.style.display = searchTerm ? 'block' : 'none';
-        
         const url = new URL(window.location);
         if (searchTerm) {
             url.searchParams.set('search', encodeURIComponent(searchTerm));
@@ -294,14 +235,11 @@ document.addEventListener('DOMContentLoaded', () => {
             url.searchParams.delete('search');
         }
         window.history.replaceState({}, '', url);
-        
-        const filteredCards = cardsData.filter(card => 
-            card.title.toLowerCase().includes(searchTerm) || 
+        const filteredCards = cardsData.filter(card =>
+            card.title.toLowerCase().includes(searchTerm) ||
             card.description.toLowerCase().includes(searchTerm)
         );
-        
         generateCards(filteredCards);
-        
         // 重置分类按钮状态
         filterButtons.forEach(btn => {
             if (btn.dataset.category === 'all') {
@@ -311,20 +249,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
     searchBox.addEventListener('focus', () => {
         if (!searchBox.dataset.originalPlaceholder) {
             searchBox.dataset.originalPlaceholder = searchBox.placeholder;
         }
         searchBox.placeholder = '';
     });
-    
     searchBox.addEventListener('blur', () => {
         if (searchBox.dataset.originalPlaceholder) {
             searchBox.placeholder = searchBox.dataset.originalPlaceholder;
         }
     });
-    
+
     // 触发初始搜索
     if (urlParams.has('search')) {
         setTimeout(() => {
@@ -332,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
             searchBox.dispatchEvent(event);
         }, 100);
     }
-    
+
     // 更新滚动渐变效果
     updateScrollFade();
     window.addEventListener('resize', updateScrollFade);
@@ -341,12 +277,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToTopButton = document.getElementById('backToTop');
     let ticking = false;
     let isVisible = false;
-
     function updateBackToTopVisibility() {
         const headerRect = document.querySelector('header').getBoundingClientRect();
         const headerBottomToViewportTop = headerRect.bottom;
         const shouldBeVisible = headerBottomToViewportTop < -270;
-
         if (shouldBeVisible && !isVisible) {
             backToTopButton.classList.add('visible');
             isVisible = true;
@@ -356,14 +290,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         ticking = false;
     }
-
     window.addEventListener('scroll', () => {
         if (!ticking) {
             window.requestAnimationFrame(updateBackToTopVisibility);
             ticking = true;
         }
     });
-
     backToTopButton.addEventListener('click', () => {
         window.scrollTo({
             top: 0,
