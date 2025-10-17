@@ -14,6 +14,7 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     <link rel="preload" href="https://cn.windfonts.com/wenfeng/fonts/misa/regular/web/index.css" as="style" crossorigin='anonymous' onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cn.windfonts.com/wenfeng/fonts/misa/regular/web/index.css" crossorigin='anonymous'></noscript>
+    <!-- 此中文网页字体由文风字体（Windfonts）免费提供，您可以自由引用，请务必保留此授权许可标注 https://wenfeng.org/license -->
 
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
     <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
@@ -134,14 +135,14 @@
     <script>
         const modalConfig = {
             title: "近期更新",
-            id: "update_log_1011",
-            version: "202510110000",
+            id: "update_log_1017",
+            version: "202510170000",
             forceShow: false,
             content: `
-                    <p>[~] 优化了主页加载速度</p>
-                    <p><strong>·</strong> 新卡片：无更新</p>
-                    <p><strong>·</strong> 建议/反馈请加Q群:587984701</p>
-                    <p>不知道该更新什么了(°ー°〃)</p>
+                    <p>[~] 大幅优化了主页加载速度<br>[+] 添加新分类 "创作工具"</p>
+                    <p><strong>·</strong> 新卡片：<br>音效大全、贴图大全、MineBBS</p>
+                    <p><strong>·</strong> 建议/反馈请加Q群: 587984701</p>
+                    <p>公告编辑时间: 10-17</p>
                 `,
             buttons: [
                 { text: "查看详情", style: "gray", action: "open_link", url: "https://blog.lonzov.top/posts/tool-update/#202509" },
@@ -213,13 +214,13 @@
     <div class="menu-panel" id="menuPanel">
         <div class="menu-content">
             <a href="https://blog.lonzov.top/posts/tool-about/" class="menu-item" target="_blank">
-                <i class="fas fa-newspaper"></i> 文档
+                <i class="fa-solid fa-circle-info"></i> 关于网站
             </a>
             <a href="https://afdian.com/a/lonzov" class="menu-item" target="_blank">
-                <i class="fas fa-heart"></i> 赞助
+                <i class="fa-solid fa-hand-holding-heart"></i> 赞赏
             </a>
             <a href="https://qm.qq.com/q/hjTqUyIKEo" class="menu-item" target="_blank">
-                <i class="fas fa-address-card"></i> 加群
+                <i class="fa-solid fa-comment"></i> 加入Q群
             </a>
             <!-- a href="./down/小舟工具箱.html" class="menu-item" target="_blank">
                 <i class="fab fa-android"></i> 下载
@@ -240,7 +241,8 @@
             <div class="category-filter" id="categoryFilter">
                 <button class="filter-btn active" data-category="all">全部</button>
                 <button class="filter-btn" data-category="command">在线工具</button>
-                <button class="filter-btn" data-category="friend-links">延伸推荐</button>
+                <button class="filter-btn" data-category="recom">延伸推荐</button>
+                <button class="filter-btn" data-category="creation">创作工具</button>
                 <button class="filter-btn" data-category="other">百宝箱</button>
                 <button class="filter-btn" data-category="resource">其他资源</button>
             </div>
