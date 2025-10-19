@@ -31,7 +31,7 @@ const cardsData = [
     { title: "Markdown渲染器", description: "在线预览Markdown 一键导出多种格式", categories:["other"], link: "./o/md", newtap:true },
     { title: "毒蘑菇性能测试", description: "进行volumeshader性能测试 查看设备GPU性能", categories:["other"], link: "./o/vsbm", newtap:true },
     { title: "MC音效大全<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "格式ogg，如需转换可以搜索 ogg转mp3", categories:["creation"], link: "https://o.xbottle.top/mcsounds/", newtap:true },
-    { title: "MC贴图大全<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "可以下载原版所有素材的贴图", categories:["creation"], link: "https://o.xbottle.top/mcsounds/", newtap:true },
+    { title: "MC贴图大全<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "可以下载原版所有素材的贴图", categories:["creation"], link: "https://mcicons.ccleaf.com/", newtap:true },
 ];
 
 // 动态生成卡片
