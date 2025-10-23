@@ -20,7 +20,7 @@ const cardsData = [
     { title: "蓝天工作室<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "代表作 CRoB命令查询机器人 等", categories:["recom"], link: "https://bsc.meteormc.cn/", newtap:true },
     { title: "苦力怕论坛<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "国内最大的基岩版社区论坛之一", categories:["recom"], link: "https://klpbbs.com/", newtap:true },
     { title: "MineBBS<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "MineBBS 我的世界中文论坛", categories:["recom"], link: "https://www.minebbs.com/", newtap:true },
-    { title: "网易版导入", description: "限免活动中…站长自营无坑", categories:["resource"], link: "./dr/pro", newtap:true },
+    { title: "网易版导入", description: "站长自营无坑", categories:["resource"], link: "./dr/", newtap:true },
     { title: "安卓基岩版下载<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "《优质的境外下载站》", categories:["resource"], link: "https://mcapks.net/", newtap:true },
     { title: "安卓基岩版下载2<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "MineBBS论坛的下载站", categories:["resource"], link: "https://mc.minebbs.com/", newtap:true },
     { title: "MT管理器-mc语法包", description: "指令语法高亮，压缩包里有具体使用说明", categories:["resource"], link: "./down/mc语法包", newtap:true },
