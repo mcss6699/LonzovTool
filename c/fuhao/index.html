@@ -367,11 +367,8 @@
                 codepoint: 'unicode_escape'
             }
         };
-
         let currentCopyMode = CONFIG.copyModes.CHARACTER;
-
         let iconsData = [];
-
         const elements = {
             cardsContainer: document.getElementById('cardsContainer'),
             copyModeSwitch: document.getElementById('copyModeSwitch'),
@@ -383,13 +380,11 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const savedTheme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
-
             window.addEventListener('storage', (e) => {
                 if (e.key === 'theme') {
                     document.documentElement.setAttribute('data-theme', e.newValue || 'light');
                 }
             });
-
             await loadIconsData();
             renderCards();
             bindEvents();
@@ -421,12 +416,10 @@
                 card.dataset.codePointHex = icon.codePointHex;
                 card.dataset.fileName = icon.fileName;
                 card.dataset.character = icon.character;
-
                 const img = document.createElement('img');
                 img.src = CONFIG.iconPath + icon.fileName;
                 img.alt = `Unicode: ${icon.codePointHex}`;
                 img.loading = 'lazy';
-
                 img.addEventListener('load', function () {
                     this.classList.add('loaded');
                     this.parentElement.classList.add('image-loaded');
@@ -436,7 +429,6 @@
                     this.classList.add('loaded');
                     this.parentElement.classList.add('image-loaded');
                 });
-
                 card.appendChild(img);
                 elements.cardsContainer.appendChild(card);
             });
@@ -450,7 +442,6 @@
                     const fallbackTimer = setTimeout(() => {
                         location.href = "/";
                     }, 300);
-
                     window.history.back();
                     window.addEventListener('popstate', function handlePop() {
                         clearTimeout(fallbackTimer);
@@ -466,14 +457,12 @@
             currentCopyMode = elements.copyModeSwitch.checked ?
                 CONFIG.copyModes.CODEPOINT :
                 CONFIG.copyModes.CHARACTER;
-
             showModeInfo(CONFIG.modeLabels[currentCopyMode]);
         }
 
         function showModeInfo(modeLabel) {
             elements.modeInfo.textContent = `复制为:${modeLabel}`;
             elements.modeInfo.classList.add('show');
-
             setTimeout(() => {
                 elements.modeInfo.classList.remove('show');
             }, 1000);
@@ -482,29 +471,52 @@
         function handleCardClick(event) {
             const card = event.target.closest('.card');
             if (!card) return;
-
             const codePointHex = card.dataset.codePointHex;
             const character = card.dataset.character;
             const clickX = event.clientX;
             const clickY = event.clientY;
-
             let copyText = '';
             if (currentCopyMode === CONFIG.copyModes.CHARACTER) {
                 copyText = character;
             } else if (currentCopyMode === CONFIG.copyModes.CODEPOINT) {
                 copyText = `\\u${codePointHex.padStart(4, '0').toUpperCase()}`;
             }
-
             copyToClipboard(copyText, clickX, clickY);
         }
 
+        // 修复大部分移动端浏览器拒绝 Clipboard API 的问题
         function copyToClipboard(text, x, y) {
-            navigator.clipboard.writeText(text).then(() => {
+            // 创建临时 textarea 用于 execCommand
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'absolute';
+            textarea.style.left = '-9999px';
+            textarea.style.top = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            let success = false;
+            try {
+                success = document.execCommand('copy');
+            } catch (err) {
+                success = false;
+            }
+
+            document.body.removeChild(textarea);
+
+            if (success) {
                 showMessage('复制成功', true, { x, y });
-            }).catch(err => {
-                console.error('复制失败:', err);
-                showMessage('复制失败，建议更换浏览器', false, { x, y });
-            });
+            } else {
+                // 降级到 Clipboard API
+                navigator.clipboard.writeText(text)
+                    .then(() => {
+                        showMessage('复制成功', true, { x, y });
+                    })
+                    .catch(() => {
+                        showMessage('复制失败，建议更换浏览器！', false, { x, y });
+                    });
+            }
         }
 
         function showMessage(text, isSuccess, position) {
@@ -512,23 +524,18 @@
             if (existingFeedback) {
                 existingFeedback.remove();
             }
-
             const message = document.createElement('div');
             message.className = 'copy-feedback';
             if (!isSuccess) {
                 message.classList.add('error');
             }
             message.textContent = text;
-
             document.body.appendChild(message);
-
             message.style.left = (position.x + 15) + 'px';
             message.style.top = (position.y + 15) + 'px';
-
             setTimeout(() => {
                 message.classList.add('show');
             }, 10);
-
             setTimeout(() => {
                 message.classList.remove('show');
                 setTimeout(() => {
