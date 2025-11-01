@@ -13,27 +13,9 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script>
     <script>LA.init({id:"3Ltl0yXYWQcgbDgB",ck:"3Ltl0yXYWQcgbDgB"})</script>
-    <script src="/modal.js"></script>
     <script>
         const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', currentTheme);
-
-        const modalConfig = {
-            title: "注意",
-            id: "raw_note_1101",
-            version: "202511020000",
-            forceShow: true,
-            content: `
-                    <p>换行符 \\n 相关转义逻辑存在严重问题，会导致诸如<br>-  \\n 导出为 \\\\n<br>- 导入的 \\n 消失<br>- \\n 和 \\\\n 预览栏渲染错误<br>等问题，正在修复中</p>
-                `,
-            buttons: [
-                { text: "知道了", style: "gray", action: "close" },
-            ]
-        };
-
-        window.addEventListener('DOMContentLoaded', () => {
-            showModal(modalConfig);
-        });
     </script>
 </head>
 <body>
@@ -118,7 +100,7 @@
                 </div>
             </div>
         </div>
-
+        
         <div id="addSubComponentModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
