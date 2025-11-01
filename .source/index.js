@@ -8,6 +8,7 @@ const cardsData = [
     { title: "CHelper<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "命令助手在线版", categories:["command"], link: "https://www.yanceymc.cn/chelper/", newtap:true },
     { title: "MC特殊符号", description: "mc特殊符号，如鸡腿M币等", categories:["command"], link: "./c/fuhao", newtap:false },
     { title: "符号大全<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "特殊符号大全", categories:["command"], link: "https://teshuzifu.cn/", newtap:true },
+    { title: "T显编辑器<i class=\"fa-solid fa-arrow-up-right-dots fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "可视化T显编辑器 · by Dislink", categories:["command"], link: "https://dislink.github.io/rawJSONEditor/", newtap:true },
     { title: "MCNav<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "MC导航站 | MC工具大全", categories:["recom"], link: "https://www.mcnav.net/", newtap:true },
     { title: "命令魔方<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "强大的命令辅助应用", categories:["recom"], link: "https://www.viqu.com/pricing.html", newtap:true },
     { title: "命令助手·Reforged<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "命令助手 | 社区重铸版", categories:["recom"], link: "https://ca.nycx.top", newtap:true },
