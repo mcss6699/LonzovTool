@@ -1,0 +1,614 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
+    padding-top: 40px;
+}
+
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f7fa;
+    --bg-tertiary: #eef2f7;
+    --border: #d1d5db;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-tertiary: #9ca3af;
+    --accent: #3498DB;
+    --accent-hover: #2980b9;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --radius: 6px;
+    --menu-bg: #f8fafc;
+    --menu-hover: #e2e8f0;
+    --submenu-bg: #ffffff;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #0d0d0d;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #2e2e2e;
+    --border: #404040;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #94a3b8;
+    --accent: #41A3FF;
+    --accent-hover: #2c8de0;
+    --success: #34d399;
+    --warning: #fbbf24;
+    --danger: #f87171;
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    --menu-bg: #1a1a1a;
+    --menu-hover: #2e2e2e;
+    --submenu-bg: #1a1a1a;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(10px); }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(0); }
+    to { transform: translateY(-20px); }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(0); }
+    to { transform: translateY(20px); }
+}
+
+.node.adding {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+.node.removing {
+    animation: fadeOut 0.3s ease-in forwards;
+}
+
+.node.moving-up {
+    animation: slideUp 0.2s ease-out forwards;
+}
+
+.node.moving-down {
+    animation: slideDown 0.2s ease-out forwards;
+}
+
+.top-menu-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background-color: var(--menu-bg);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
+}
+
+.menu-item {
+    position: relative;
+    padding: 0 12px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+
+.menu-item:hover {
+    background-color: var(--menu-hover);
+}
+
+.menu-item .submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--submenu-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    min-width: 160px;
+    z-index: 1001;
+    padding: 4px 0;
+}
+
+.menu-item:hover .submenu {
+    display: block;
+}
+
+.submenu-item {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.submenu-item:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.menu-item.right-aligned {
+    margin-left: auto;
+    padding: 0 8px;
+}
+
+.app-container {
+    display: flex;
+    height: calc(100vh - 40px);
+    max-width: 100vw;
+    overflow: hidden;
+}
+
+.editor-panel, .preview-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.editor-panel {
+    width: 60%;
+    min-width: 300px;
+    border-right: 1px solid var(--border);
+}
+
+.preview-panel {
+    width: 40%;
+    min-width: 250px;
+    background-color: var(--bg-secondary);
+}
+
+.panel-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background-color: var(--bg-primary);
+    z-index: 10;
+}
+
+.panel-header h2, .panel-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.btn-primary, .btn-secondary, .component-type-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-primary {
+    background-color: var(--accent);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+.btn-secondary {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background-color: var(--text-tertiary);
+    color: var(--bg-primary);
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn:hover {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.delete-btn {
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.delete-btn.confirmed {
+    color: white;
+    background-color: var(--danger);
+    border-radius: 4px;
+}
+
+.editor-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    background-color: var(--bg-primary);
+}
+
+.tree-container {
+}
+
+.nested-tree {
+    margin-top: 8px;
+    padding-left: 16px;
+    border-left: 1px dashed var(--border);
+}
+
+.node {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    padding: 12px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s ease;
+}
+
+.node:hover {
+    box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15);
+}
+
+.node.selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.node-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+.node-type {
+    font-weight: 600;
+    color: var(--accent);
+    font-size: 0.9rem;
+}
+
+.node-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.node-content {
+    padding: 8px 0;
+}
+
+.node-content input, .node-content textarea, .node-content select {
+    width: 100%;
+    padding: 6px 10px;
+    margin-bottom: 6px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.node-content input:focus, .node-content textarea:focus, .node-content select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.node-content details {
+    margin: 8px 0;
+}
+
+.node-content summary {
+    cursor: pointer;
+    padding: 4px;
+    font-weight: 500;
+    color: var(--accent);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.node-content summary::marker {
+    color: var(--accent);
+}
+
+.node-content summary:hover {
+    color: var(--accent-hover);
+}
+
+.nested-editor-container {
+    margin-top: 8px;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--bg-tertiary);
+}
+
+.nested-editor-container .node {
+    background-color: var(--bg-primary);
+    border-color: var(--text-tertiary);
+}
+
+.nested-editor-container .nested-editor-add-btn {
+    margin-top: 8px;
+    width: 100%;
+}
+
+.empty-nested-state {
+    padding: 8px 0;
+    color: var(--text-tertiary);
+    font-style: italic;
+    text-align: center;
+}
+
+.empty-nested-state p {
+    margin: 0;
+}
+
+.empty-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: var(--text-secondary);
+}
+
+.editor-footer {
+    padding: 16px;
+    border-top: 1px solid var(--border);
+    background-color: var(--bg-primary);
+}
+
+.editor-footer .btn-primary {
+    width: 100%;
+}
+
+.preview-content {
+    padding: 16px;
+    flex: 1;
+    overflow-y: auto;
+    background-color: var(--bg-primary);
+}
+
+.preview-output {
+    padding: 16px;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius);
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: monospace;
+    line-height: 1.6;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    min-height: 100px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background-color: var(--bg-primary);
+    margin: 15% auto;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 500px;
+    box-shadow: var(--shadow);
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    color: var(--text-primary);
+}
+
+.close {
+    color: var(--text-tertiary);
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close:hover {
+    color: var(--text-primary);
+}
+
+.modal-body {
+    padding: 16px;
+}
+
+.modal-body textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    font-family: monospace;
+    resize: vertical;
+    font-size: 0.9rem;
+}
+
+.modal-body p {
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.component-type-btn {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 8px;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    justify-content: flex-start;
+    font-size: 1rem;
+}
+
+.component-type-btn:hover {
+    background-color: var(--accent);
+    color: white;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 0 16px 16px;
+}
+
+#scoreSettingsModalContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.score-setting-item-modal {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius);
+}
+
+.score-setting-item-modal label {
+    flex: 0 0 auto;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.score-setting-item-modal input {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.score-setting-item-modal input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+
+    .editor-panel, .preview-panel {
+        width: 100%;
+    }
+
+    .editor-panel {
+        height: 75%;
+        min-height: 300px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .preview-panel {
+        height: 25%;
+        min-height: 200px;
+    }
+
+    .modal-content {
+        margin: 10% auto;
+    }
+}
+
+@media (max-width: 358px) {
+    .app-container {
+        font-size: 0.9rem;
+    }
+
+    .top-menu-bar {
+        font-size: 0.8rem;
+        padding: 0 8px;
+    }
+
+    .panel-header, .editor-footer {
+        padding: 10px;
+    }
+
+    .node {
+        padding: 10px;
+    }
+
+    .btn-primary, .btn-secondary, .icon-btn {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+    }
+
+    .node-content input, .node-content textarea {
+        font-size: 0.85rem;
+    }
+}

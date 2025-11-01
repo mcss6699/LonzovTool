@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T显可视化编辑器 - 小舟工具箱</title>
+    <meta name="color-scheme" content="light dark">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <script>
+        const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', currentTheme);
+    </script>
+</head>
+<body>
+    <div class="top-menu-bar">
+        <div class="menu-item">
+            <span id="homeBtn"><i class="fas fa-home"></i> 首页</span>
+        </div>
+        <div class="menu-item">
+            <span>文件</span>
+            <div class="submenu">
+                <div class="submenu-item" id="importBtn">导入</div>
+                <div class="submenu-item" id="exportBtn">导出</div>
+            </div>
+        </div>
+        <div class="menu-item">
+            <span>编辑</span>
+            <div class="submenu">
+                <div class="submenu-item" id="undoBtn"><i class="fas fa-undo"></i> 撤销</div>
+                <div class="submenu-item" id="redoBtn"><i class="fas fa-redo"></i> 恢复</div>
+                <div class="submenu-item" id="clearAllBtn"><i class="fas fa-trash-alt"></i> 删除全部</div>
+            </div>
+        </div>
+        <div class="menu-item">
+            <span>预览</span>
+            <div class="submenu">
+                <div class="submenu-item" id="openScoreSettingsBtn"><i class="fas fa-cog"></i> 分数预览设置</div>
+            </div>
+        </div>
+        <div class="menu-item">
+            <span>帮助</span>
+            <div class="submenu">
+                <a class="submenu-item"><i class="fas fa-info-circle"></i> 燃尽了</a>
+                <a class="submenu-item"><i class="fas fa-info-circle"></i> 醒来再说</a>
+                <!--a href="111" target="_blank" class="submenu-item"><i class="fas fa-book"></i> 教程</a>
+                <a href="222" target="_blank" class="submenu-item"><i class="fas fa-info-circle"></i> 关于</a-->
+            </div>
+        </div>
+        <div class="menu-item right-aligned">
+            <span id="themeToggleBtn"><i class="fas fa-moon"></i></span>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <div class="editor-panel">
+            <div class="panel-header">
+                <h2>rawtext 编辑器</h2>
+            </div>
+            <div class="editor-content">
+                <div id="rawTextTree" class="tree-container">
+                </div>
+                <div id="emptyState" class="empty-state">
+                    <p>点击下方按钮添加第一个组件</p>
+                </div>
+            </div>
+            <div class="editor-footer">
+                <button id="addComponentBtn" class="btn-primary">
+                    <i class="fas fa-plus"></i> 添加组件
+                </button>
+            </div>
+        </div>
+
+        <div id="previewPanel" class="preview-panel">
+            <div class="panel-header">
+                <h2>预览</h2>
+            </div>
+            <div class="preview-content">
+                <div id="previewOutput" class="preview-output"></div>
+            </div>
+        </div>
+
+        <div id="addModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>添加新组件</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body" id="addModalBody">
+                    <button class="component-type-btn" data-type="text">纯文本 (text)</button>
+                    <button class="component-type-btn" data-type="translate">翻译文本 (translate)</button>
+                    <button class="component-type-btn" data-type="selector">选择器 (selector)</button>
+                    <button class="component-type-btn" data-type="score">计分板分数 (score)</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="addSubComponentModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>添加子组件</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body" id="addSubModalBody">
+                    <button class="component-type-btn" data-type="text">纯文本 (text)</button>
+                    <button class="component-type-btn" data-type="selector">选择器 (selector)</button>
+                    <button class="component-type-btn" data-type="score">计分板分数 (score)</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="importModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>导入 RawText</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <textarea id="importTextarea" placeholder='粘贴 JSON ...'></textarea>
+                    <div class="modal-actions">
+                        <button id="confirmImportBtn" class="btn-primary">导入</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="exportModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>导出 RawText</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <textarea id="exportTextarea" readonly></textarea>
+                    <div class="modal-actions">
+                        <button id="copyExportBtn" class="btn-secondary">复制</button>
+                        <button id="downloadExportBtn" class="btn-secondary">下载</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="scoreSettingsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>分数预览设置</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div id="scoreSettingsModalContainer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="clearAllModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>确认删除</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>确定要删除所有组件吗？可以通过撤销恢复</p>
+                    <div class="modal-actions">
+                        <button id="cancelClearBtn" class="btn-secondary">取消</button>
+                        <button id="confirmClearBtn" class="btn-primary">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
