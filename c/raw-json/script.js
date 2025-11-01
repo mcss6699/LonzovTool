@@ -463,12 +463,12 @@ function renderComponentContent(component, path) {
     switch (type) {
         case 'text':
             const safePathStr = escapeHtml(JSON.stringify(path));
-            contentHtml = `<textarea rows="3" data-path="${safePathStr}" data-key="text" placeholder="文本内容">${escapeHtml(component.text)}</textarea>`;
+            contentHtml = `<textarea rows="3" data-path="${safePathStr}" data-key="text" placeholder="纯文本">${escapeHtml(component.text)}</textarea>`;
             break;
         case 'translate':
             const safeTranslatePathStr = escapeHtml(JSON.stringify(path));
             contentHtml = `
-                <input type="text" value="${escapeHtml(component.translate)}" data-path="${safeTranslatePathStr}" data-key="translate" placeholder="语言文件键">
+                <input type="text" value="${escapeHtml(component.translate)}" data-path="${safeTranslatePathStr}" data-key="translate" placeholder="格式化字符串">
                 <details>
                     <summary>With (rawtext)</summary>
                     <div class="nested-input">
@@ -479,7 +479,7 @@ function renderComponentContent(component, path) {
             break;
         case 'selector':
             const safeSelectorPathStr = escapeHtml(JSON.stringify(path));
-            contentHtml = `<input type="text" value="${escapeHtml(component.selector)}" data-path="${safeSelectorPathStr}" data-key="selector">`;
+            contentHtml = `<input type="text" value="${escapeHtml(component.selector)}" data-path="${safeSelectorPathStr}" data-key="selector" placeholder="选择器">`;
             break;
         case 'score':
             const safeScorePathStr = escapeHtml(JSON.stringify(path));
