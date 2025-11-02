@@ -3,7 +3,6 @@ let selectedNodePath = null;
 let previewSettings = {};
 let undoStack = [];
 let redoStack = [];
-
 const $ = document;
 const $rawTextTree = $.getElementById('rawTextTree');
 const $emptyState = $.getElementById('emptyState');
@@ -32,7 +31,6 @@ const $redoBtn = $.getElementById('redoBtn');
 const $openScoreSettingsBtn = $.getElementById('openScoreSettingsBtn');
 const $clearAllBtn = $.getElementById('clearAllBtn');
 const $homeBtn = $.getElementById('homeBtn');
-// § 代码映射表
 const formattingCodes = {
     '0': '#000000', '1': '#0000AA', '2': '#00AA00', '3': '#00AAAA',
     '4': '#AA0000', '5': '#AA00AA', '6': '#FFAA00', '7': '#AAAAAA',
@@ -54,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 function attachEventListeners() {
     $homeBtn.addEventListener('click', () => {
-        window.location.href = '/';
+        window.location.href = '/'; 
     });
     $addComponentBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -84,9 +82,7 @@ function attachEventListeners() {
         $importModal.style.display = 'none';
     });
     $.getElementById('exportBtn').addEventListener('click', () => {
-        // 创建一个深拷贝用于导出处理
         const exportData = JSON.parse(JSON.stringify(rawTextArray));
-        // 递归处理文本值，将实际换行符替换为字面量 
         function processTextForExport(obj) {
             if (obj !== null && typeof obj === 'object') {
                 if (Array.isArray(obj)) {
@@ -127,27 +123,21 @@ function attachEventListeners() {
         a.click();
         URL.revokeObjectURL(url);
     });
-    // 删除全部按钮
     $clearAllBtn.addEventListener('click', () => {
         $clearAllModal.style.display = 'block';
     });
-    // 确认删除全部
     $confirmClearBtn.addEventListener('click', () => {
         clearAllComponents();
         $clearAllModal.style.display = 'none';
     });
-    // 取消删除全部
     $cancelClearBtn.addEventListener('click', () => {
         $clearAllModal.style.display = 'none';
     });
-    // 主题切换
     $themeToggleBtn.addEventListener('click', toggleTheme);
-    // 分数预览设置模态框
     $openScoreSettingsBtn.addEventListener('click', () => {
         updateScoreSettingsModalUI();
         $scoreSettingsModal.style.display = 'block';
     });
-    // 撤销/恢复按钮
     $undoBtn.addEventListener('click', undo);
     $redoBtn.addEventListener('click', redo);
     document.addEventListener('focusout', handleInputBlur);
@@ -288,7 +278,7 @@ function moveComponent(fromPath, toPath) {
     }
     const fromElement = document.querySelector(`.node:nth-child(${fromIndex + 1})`);
     if (fromElement) {
-        const targetElement = document.querySelector(`.node:nth-child(${toIndex + (fromIndex < toIndex ? 2 : 1)})`); 
+        const targetElement = document.querySelector(`.node:nth-child(${toIndex + (fromIndex < toIndex ? 2 : 1)})`);
         if (targetElement) {
             const fromRect = fromElement.getBoundingClientRect();
             const targetRect = targetElement.getBoundingClientRect();
@@ -351,7 +341,7 @@ function renderTree(parentArray = rawTextArray, basePath = [], parentElement = $
         $emptyState.style.display = 'flex';
         return;
     }
-    $emptyState.style.display = 'none'; 
+    $emptyState.style.display = 'none';
     parentArray.forEach((component, index) => {
         const currentPath = [...basePath, index];
         const nodeElement = document.createElement('div');
@@ -405,9 +395,18 @@ function renderTree(parentArray = rawTextArray, basePath = [], parentElement = $
             nestedContainer.className = 'nested-tree';
             nodeElement.appendChild(nestedContainer);
             const details = document.createElement('details');
-            if (currentlyExpandedPaths.has(JSON.stringify([...currentPath, 'with', 'rawtext']))) {
+            const withRawtextPathStr = JSON.stringify([...currentPath, 'with', 'rawtext']);
+            if (currentlyExpandedPaths.has(withRawtextPathStr) || expandedDetailsPaths.has(withRawtextPathStr)) {
                 details.setAttribute('open', '');
             }
+            details.ontoggle = () => {
+                if (details.open) {
+                    expandedDetailsPaths.add(withRawtextPathStr);
+                } else {
+                    expandedDetailsPaths.delete(withRawtextPathStr);
+                }
+                saveStateToLocalStorage();
+            };
             details.innerHTML = `<summary>With (rawtext)</summary>`;
             nestedContainer.appendChild(details);
             const nestedContentDiv = document.createElement('div');
@@ -469,12 +468,6 @@ function renderComponentContent(component, path) {
             const safeTranslatePathStr = escapeHtml(JSON.stringify(path));
             contentHtml = `
                 <input type="text" value="${escapeHtml(component.translate)}" data-path="${safeTranslatePathStr}" data-key="translate" placeholder="格式化字符串">
-                <details>
-                    <summary>With (rawtext)</summary>
-                    <div class="nested-input">
-                        <!-- 嵌套的 rawtext 树会在此处渲染 -->
-                    </div>
-                </details>
             `;
             break;
         case 'selector':
@@ -497,7 +490,7 @@ function updatePreview() {
         if (component.text !== undefined) {
             fullText += component.text;
         } else if (component.selector !== undefined) {
-            fullText += '[玩家/实体]';
+            fullText += '[实体]';
         } else if (component.score !== undefined) {
             const name = component.score.name;
             const objective = component.score.objective;
@@ -747,13 +740,13 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
-function handleTextareaChange(e) {
-    const targetTextarea = e.target.closest('textarea[data-path][data-key]');
-    if (targetTextarea) {
-        const pathStr = targetTextarea.dataset.path;
-        const keyStr = targetTextarea.dataset.key;
+function handleInputChange(e) {
+    const targetInput = e.target.closest('input[data-path][data-key], textarea[data-path][data-key]');
+    if (targetInput) {
+        const pathStr = targetInput.dataset.path;
+        const keyStr = targetInput.dataset.key;
         if (!pathStr || !keyStr) {
-            console.warn("handleTextareaChange: data-path 或 data-key 属性为空或缺失", targetTextarea);
+            console.warn("handleInputChange: data-path 或 data-key 属性为空或缺失", targetInput);
             return;
         }
         let path, key;
@@ -761,14 +754,14 @@ function handleTextareaChange(e) {
             path = JSON.parse(pathStr);
             key = keyStr;
         } catch (parseError) {
-            console.error("handleTextareaChange: 解析 data-path 或 data-key 失败", pathStr, keyStr, parseError);
+            console.error("handleInputChange: 解析 data-path 或 data-key 失败", pathStr, keyStr, parseError);
             return;
         }
         if (!Array.isArray(path) || typeof key !== 'string') {
-            console.error("handleTextareaChange: 解析后的 path 或 key 类型不正确", path, key);
+            console.error("handleInputChange: 解析后的 path 或 key 类型不正确", path, key);
             return;
         }
-        currentlyEditingInput = targetTextarea;
+        currentlyEditingInput = targetInput;
         editingPath = path;
         editingKey = key;
     }
@@ -817,5 +810,5 @@ function handleNodeSelection(e) {
     editingKey = null;
 }
 document.addEventListener('DOMContentLoaded', () => {
-    $rawTextTree.addEventListener('input', handleTextareaChange);
+    $rawTextTree.addEventListener('input', handleInputChange);
 });
