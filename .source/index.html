@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="description" content="Minecraft指令工具箱，你需要的这里都有">
     <meta name="keywords" content="我的世界,Minecraft,MC,指令,命令,导航,网址,工具,网站,资源,基岩版,网易版,手机版">
-    <title>小舟工具箱 - MC指令工具箱</title>
+    <title>小舟工具箱 - Minecraft指令工具箱</title>
     <!-- 预加载关键资源 -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
@@ -29,7 +29,7 @@
             box-sizing: border-box;
             font-family: 'Misa', 'Microsoft YaHei', 'PingFang SC', 'HarmonyOS Sans SC', sans-serif;
         }
-
+    
         :root {
             --primary-color: #3498db;
             --secondary-color: #2c3e50;
@@ -43,11 +43,11 @@
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
         }
-
+    
         .no-js-warning {
             display: none;
         }
-
+    
         .no-js .no-js-warning {
             display: block;
             position: fixed;
@@ -64,13 +64,13 @@
             animation: fadeInNoJS 0.2s ease-in forwards;
             animation-delay: 5s;
         }
-
+    
         @keyframes fadeInNoJS {
             to {
                 opacity: 1;
             }
         }
-
+    
         #loading-overlay {
             position: fixed;
             top: 0;
@@ -87,40 +87,53 @@
             z-index: 9999;
             transition: opacity 0.4514s ease;
         }
-
+    
         #loading-overlay.hidden {
             opacity: 0;
             pointer-events: none;
         }
-
+    
         /* 加载动画 来自 css-loaders.com */
         .loader {
-  width: 40px;
-  height: 40px;
-  position: relative;
-  --c:no-repeat linear-gradient(#1487f3 0 0);
-  background:
-    var(--c) center/100% 10px,
-    var(--c) center/10px 100%;
-}
-.loader:before {
-  content:'';
-  position: absolute;
-  inset: 0;
-  background:
-    var(--c) 0    0,
-    var(--c) 100% 0,
-    var(--c) 0    100%,
-    var(--c) 100% 100%;
-  background-size: 15.5px 15.5px;
-  animation: l16 1.5s infinite cubic-bezier(0.3,1,0,1);
-}
-@keyframes l16 {
-   33%  {inset:-10px;transform: rotate(0deg)}
-   66%  {inset:-10px;transform: rotate(90deg)}
-   100% {inset:0    ;transform: rotate(90deg)}
-}
-
+            width: 40px;
+            height: 40px;
+            position: relative;
+            --c: no-repeat linear-gradient(#1487f3 0 0);
+            background:
+                var(--c) center/100% 10px,
+                var(--c) center/10px 100%;
+        }
+    
+        .loader:before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                var(--c) 0 0,
+                var(--c) 100% 0,
+                var(--c) 0 100%,
+                var(--c) 100% 100%;
+            background-size: 15.5px 15.5px;
+            animation: l16 1.5s infinite cubic-bezier(0.3, 1, 0, 1);
+        }
+    
+        @keyframes l16 {
+            33% {
+                inset: -10px;
+                transform: rotate(0deg)
+            }
+    
+            66% {
+                inset: -10px;
+                transform: rotate(90deg)
+            }
+    
+            100% {
+                inset: 0;
+                transform: rotate(90deg)
+            }
+        }
+    
         .loading-text {
             color: white;
             margin-top: 20px;
@@ -135,14 +148,14 @@
     <script>
         const modalConfig = {
             title: "近期更新",
-            id: "update_log_1101",
-            version: "202511010000",
+            id: "update_log_1109",
+            version: "202511090000",
             forceShow: false,
             content: `
-                    <p>[+] 重磅更新！T显可视化编辑器<br>燃尽了，教程视频过几天发</p>
-                    <p><strong>·</strong> 新卡片：T显可视化编辑器</p>
+                    <p>[+] 重磅更新！T显可视化编辑器<br>燃尽了，教程视频过几天发<br>[+] 新分类“社区论坛”</p>
+                    <p><strong>·</strong> 新卡片：T显可视化编辑器、CBerGit</p>
                     <p><strong>·</strong> 建议/反馈请加Q群: 587984701</p>
-                    <p>公告编辑时间: 11-01</p>
+                    <p>公告编辑时间: 11-09</p>
                 `,
             buttons: [
                 { text: "更新日志", style: "gray", action: "open_link", url: "https://blog.lonzov.top/posts/tool-update/#202510" },
@@ -242,6 +255,7 @@
                 <button class="filter-btn active" data-category="all">全部</button>
                 <button class="filter-btn" data-category="command">在线工具</button>
                 <button class="filter-btn" data-category="recom">延伸推荐</button>
+                <button class="filter-btn" data-category="forum">社区论坛</button>
                 <button class="filter-btn" data-category="creation">创作工具</button>
                 <button class="filter-btn" data-category="other">百宝箱</button>
                 <button class="filter-btn" data-category="resource">其他资源</button>
@@ -258,6 +272,7 @@
     <footer class="container">
         <p>排序方式: 添加时间>主观使用频率</p>
         <p>© 2025 小舟工具箱 | <a href="https://icp.gov.moe/?keyword=20250698" target="_blank">萌ICP备20250698号</a></p>
+        <p>本站已苟活 <span id="timer">--年--天--时--分</span></p>
         <script id="LA-DATA-WIDGET" crossorigin="anonymous" charset="UTF-8" src="https://v6-widget.51.la/v6/3Ltl0yXYWQcgbDgB/quote.js?theme=#1690FF,#333333,#777777,#777777,#FFFFFF,#1690FF,11&f=12&display=0,1,1,1,1,1,1,1"></script>
     </footer>
     <script src="./index.js"></script>

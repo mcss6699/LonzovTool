@@ -1,38 +1,39 @@
 // 卡片数据
 const cardsData = [
-    { title: "ID查询<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "查询原版所有ID · by 命令助手", categories:["command"], link: "https://idlist.projectxero.top/", newtap:true },
+    { title: "ID查询<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "查询原版所有ID · by 命令助手", categories:["command"], link: "https://idlist.projectxero.top/", newtap:true },
     { title: "艺术字转换", description: "MC艺术字 游戏内才能显示", categories:["command"], link: "./c/qjzh", newtap:false },
     { title: "T显动画", description: "自动生成“打字机”动画", categories:["command"], link: "./c/tr", newtap:false },
     { title: "T显可视化编辑器", description: "通过可视化界面编辑T显json", categories:["command"], link: "./c/raw-text/", newtap:false },
     { title: "语法转换", description: "execute指令语法升级", categories:["command"], link: "./c/execute", newtap:false },
-    { title: "CHelper<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "命令助手在线版", categories:["command"], link: "https://www.yanceymc.cn/chelper/", newtap:true },
+    { title: "CHelper<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "命令助手在线版", categories:["command"], link: "https://www.yanceymc.cn/chelper/", newtap:true },
     { title: "MC特殊符号", description: "mc特殊符号，如鸡腿M币等", categories:["command"], link: "./c/fuhao", newtap:false },
-    { title: "符号大全<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "特殊符号大全", categories:["command"], link: "https://teshuzifu.cn/", newtap:true },
-    { title: "T显编辑器<i class=\"fa-solid fa-arrow-up-right-dots fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "可视化T显编辑器 · by Dislink", categories:["command"], link: "https://dislink.github.io/rawJSONEditor/", newtap:true },
-    { title: "MCNav<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "MC导航站 | MC工具大全", categories:["recom"], link: "https://www.mcnav.net/", newtap:true },
-    { title: "命令魔方<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "强大的命令辅助应用", categories:["recom"], link: "https://www.viqu.com/pricing.html", newtap:true },
-    { title: "命令助手·Reforged<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "命令助手 | 社区重铸版", categories:["recom"], link: "https://ca.nycx.top", newtap:true },
-    { title: "命令助手<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "便捷易用的命令辅助输入应用", categories:["recom"], link: "https://projectxero.top/ca/", newtap:true },
-    { title: "命令集<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "利用无障碍权限实现全自动填写命令", categories:["recom"], link: "https://space.bilibili.com/1526784927", newtap:true },
-    { title: "命令模拟器<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "强大的基岩版命令调试程序", categories:["recom"], link: "https://commandsimulator.great-site.net/", newtap:true },
-    { title: "MT管理器<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "Android 平台文件管理 & 逆向修改神器", categories:["recom"], link: "https://mt2.cn/", newtap:true },
-    { title: "ChunkBase<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "通过种子号查询群系结构", categories:["recom"], link: "https://www.chunkbase.com/apps/seed-map#seed=%E7%A7%8D%E5%AD%90%E5%8F%B7&platform=bedrock_1_21&dimension=overworld&x=0&z=0&zoom=0.5", newtap:true },
-    { title: "中文wiki<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "在这里你可以找到和mc有关的大部分信息", categories:["recom"], link: "https://zh.minecraft.wiki/", newtap:true },
-    { title: "蓝天工作室<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "代表作 CRoB命令查询机器人 等", categories:["recom"], link: "https://bsc.meteormc.cn/", newtap:true },
-    { title: "苦力怕论坛<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "国内最大的基岩版社区论坛之一", categories:["recom"], link: "https://klpbbs.com/", newtap:true },
-    { title: "MineBBS<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "MineBBS 我的世界中文论坛", categories:["recom"], link: "https://www.minebbs.com/", newtap:true },
+    { title: "符号大全<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "特殊符号大全", categories:["command"], link: "https://teshuzifu.cn/", newtap:true },
+    { title: "T显编辑器<i class=\"fa-solid fa-arrow-up-right-dots\" style=\"transform: scale(0.65);\"></i>", description: "可视化T显编辑器 · by Dislink", categories:["command"], link: "https://dislink.github.io/rawJSONEditor/", newtap:true },
+    { title: "MCNav<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "MC导航站，致力于收录最全面的我的世界网址和工具", categories:["recom"], link: "https://www.mcnav.net/", newtap:true },
+    { title: "命令魔方<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "强大的命令辅助应用", categories:["recom"], link: "https://www.viqu.com/pricing.html", newtap:true },
+    { title: "命令助手·Reforged<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "命令助手 | 社区重铸版", categories:["recom"], link: "https://ca.nycx.top", newtap:true },
+    { title: "命令助手<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "便捷易用的命令辅助输入应用", categories:["recom"], link: "https://projectxero.top/ca/", newtap:true },
+    { title: "命令集<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "利用无障碍权限实现全自动填写命令", categories:["recom"], link: "https://space.bilibili.com/1526784927", newtap:true },
+    { title: "命令模拟器<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "强大的基岩版命令调试程序", categories:["recom"], link: "https://commandsimulator.great-site.net/", newtap:true },
+    { title: "MT管理器<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "安卓平台文件管理 & 逆向修改神器", categories:["recom"], link: "https://mt2.cn/", newtap:true },
+    { title: "ChunkBase<i class=\"fa-solid fa-arrow-up-right-dots\" style=\"transform: scale(0.65);\"></i>", description: "通过种子号定位群系、结构、史莱姆区块等", categories:["recom"], link: "https://www.chunkbase.com/apps/seed-map#seed=%E7%A7%8D%E5%AD%90%E5%8F%B7&platform=bedrock_1_21&dimension=overworld&x=0&z=0&zoom=0.5", newtap:true },
+    { title: "中文wiki<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "在这里可以找到和mc有关的大部分信息", categories:["recom"], link: "https://zh.minecraft.wiki/", newtap:true },
+    { title: "蓝天工作室<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "代表作 CRoB命令查询机器人 等", categories:["recom"], link: "https://bsc.meteormc.cn/", newtap:true },
+    { title: "苦力怕论坛<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "最大的基岩版中文资源、交流论坛之一", categories:["forum"], link: "https://klpbbs.com/", newtap:true },
+    { title: "MineBBS<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "简洁好用的交流讨论和资源分享平台", categories:["forum"], link: "https://www.minebbs.com/", newtap:true },
+    { title: "CBerGit<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "国内首个 MC 指令托管和研发交流平台", categories:["forum"], link: "https://cbergit.com/", newtap:true },
     { title: "网易版导入", description: "站长自营无坑", categories:["resource"], link: "./dr/", newtap:true },
-    { title: "安卓基岩版下载<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "《优质的境外下载站》", categories:["resource"], link: "https://mcapks.net/", newtap:true },
-    { title: "安卓基岩版下载2<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "MineBBS论坛的下载站", categories:["resource"], link: "https://mc.minebbs.com/", newtap:true },
+    { title: "安卓基岩版下载<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "《优质的境外下载站》", categories:["resource"], link: "https://mcapks.net/", newtap:true },
+    { title: "安卓基岩版下载2<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "MineBBS论坛的下载站", categories:["resource"], link: "https://mc.minebbs.com/", newtap:true },
     { title: "MT管理器-mc语法包", description: "指令语法高亮，压缩包里有具体使用说明", categories:["resource"], link: "./down/mc语法包", newtap:true },
-    { title: "3D字生成<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "轻松制作mc风格中文3D文本！", categories:["creation"], link: "https://3dt.easecation.net/", newtap:true },
+    { title: "3D字生成<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "轻松制作mc风格中文3D文本", categories:["creation"], link: "https://3dt.easecation.net/", newtap:true },
     { title: "幸运转盘", description: "选择困难症？让转盘来决定！", categories:["other"], link: "./o/spin-the-wheel", newtap:true },
-    { title: "反应速度测试", description: "这是一条反应速度测试的简介~", categories:["other"], link: "./o/sudutest", newtap:true },
+    { title: "反应速度测试", description: "潜力测试 & 恢复手感", categories:["other"], link: "./o/sudutest", newtap:true },
     { title: "nohello", description: "不要问在吗 nohello.top", categories:["other"], link: "./nohello", newtap:true },
     { title: "Markdown渲染器", description: "在线预览Markdown 一键导出多种格式", categories:["other"], link: "./o/md", newtap:true },
     { title: "毒蘑菇性能测试", description: "进行volumeshader性能测试 查看设备GPU性能", categories:["other"], link: "./o/vsbm", newtap:true },
-    { title: "MC音效大全<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "格式ogg，如需转换可以搜索 ogg转mp3", categories:["creation"], link: "https://o.xbottle.top/mcsounds/", newtap:true },
-    { title: "MC贴图大全<i class=\"fa-solid fa-arrow-up-right-from-square fa-fade\" style=\"transform: scale(0.65);\"></i>", description: "可以下载原版所有素材的贴图", categories:["creation"], link: "https://mcicons.ccleaf.com/", newtap:true },
+    { title: "MC音效大全<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "SomeBottle的Minecraft音效资源站", categories:["creation"], link: "https://o.xbottle.top/mcsounds/", newtap:true },
+    { title: "McIcons<i class=\"fa-solid fa-arrow-up-right-dots\" style=\"transform: scale(0.65);\"></i>", description: "MC资源集合, 包括皮肤头像、贴图和各种生成器等", categories:["creation"], link: "https://mcicons.ccleaf.com/", newtap:true },
 ];
 
 // 动态生成卡片
@@ -307,3 +308,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// 页脚网站运行时长
+const startTime = new Date('2025-04-15 00:00:00');
+
+function formatNumber(num) {
+    return num.toString().padStart(2, '0');
+}
+
+function updateTimer() {
+    const now = new Date();
+    const diff = now - startTime;
+
+    const totalSeconds = Math.floor(diff / 1000);
+
+    const days = Math.floor(totalSeconds / (24 * 60 * 60));
+    let remaining = totalSeconds % (24 * 60 * 60);
+
+    const hours = Math.floor(remaining / (60 * 60));
+    remaining %= (60 * 60);
+
+    const minutes = Math.floor(remaining / 60);
+    const seconds = remaining % 60;
+
+    const result = `${days}天 ${formatNumber(hours)}:${formatNumber(minutes)}:${formatNumber(seconds)}`;
+
+    const timerElements = document.querySelectorAll('#timer');
+    timerElements.forEach(element => {
+        element.textContent = result;
+    });
+}
+
+updateTimer();
+setInterval(updateTimer, 1000);
