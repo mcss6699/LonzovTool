@@ -1,6 +1,4 @@
 User-agent: *
 Disallow: /detect/
 Disallow: /down/
-User-agent: Baiduspider
-Disallow: /
 Sitemap: https://tool.lonzov.top/sitemap.xml
