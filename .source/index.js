@@ -34,6 +34,8 @@ const cardsData = [
     { title: "毒蘑菇性能测试", description: "进行volumeshader性能测试 查看设备GPU性能", categories:["other"], link: "./o/vsbm", newtap:true },
     { title: "MC音效大全<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "SomeBottle的Minecraft音效资源站", categories:["creation"], link: "https://o.xbottle.top/mcsounds/", newtap:true },
     { title: "McIcons<i class=\"fa-solid fa-arrow-up-right-dots\" style=\"transform: scale(0.65);\"></i>", description: "MC资源集合, 包括皮肤头像、贴图和各种生成器等", categories:["creation"], link: "https://mcicons.ccleaf.com/", newtap:true },
+    { title: "基岩版开发wiki<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "专门面向开发者和技术性的内容的wiki", categories:["recom"], link: "https://wiki.mcbe-dev.net/", newtap:true },
+    
 ];
 
 // 动态生成卡片
