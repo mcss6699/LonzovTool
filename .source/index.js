@@ -3,7 +3,7 @@ const cardsData = [
     { title: "ID查询<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "查询原版所有ID · by 命令助手", categories:["command"], link: "https://idlist.projectxero.top/", newtap:true },
     { title: "艺术字转换", description: "MC艺术字 游戏内才能显示", categories:["command"], link: "./c/qjzh", newtap:false },
     { title: "T显动画", description: "自动生成“打字机”动画", categories:["command"], link: "./c/tr", newtap:false },
-    { title: "T显可视化编辑器", description: "通过可视化界面编辑T显json", categories:["command"], link: "./c/raw-text/", newtap:false },
+    { title: "T显可视化编辑器", description: "通过可视化界面编辑T显json", categories:["command"], link: "./c/raw-json/", newtap:false },
     { title: "语法转换", description: "execute指令语法升级", categories:["command"], link: "./c/execute", newtap:false },
     { title: "CHelper<i class=\"fa-solid fa-arrow-up-right-from-square\" style=\"transform: scale(0.65);\"></i>", description: "命令助手在线版", categories:["command"], link: "https://www.yanceymc.cn/chelper/", newtap:true },
     { title: "MC特殊符号", description: "mc特殊符号，如鸡腿M币等", categories:["command"], link: "./c/fuhao", newtap:false },
