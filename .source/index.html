@@ -146,26 +146,44 @@
     <link rel="stylesheet" href="style.css">
     <script src="modal.js"></script>
     <script>
-        const modalConfig = {
+        const IOSmodal_undate = {
             title: "近期更新",
-            id: "update_log_1109",
+            id: "v1_update_1109",
             version: "202511090000",
             forceShow: false,
             content: `
-                    <p>[+] 重磅更新！T显可视化编辑器<br>燃尽了，教程视频过几天发<br>[+] 新分类“社区论坛”</p>
-                    <p><strong>·</strong> 新卡片：T显可视化编辑器、CBerGit、基岩版开发wiki</p>
-                    <p><strong>·</strong> 建议/反馈请加Q群: 587984701</p>
-                    <p>公告编辑时间: 11-09</p>
-                `,
+                        <p>[+] 重磅更新！T显可视化编辑器<br>燃尽了，教程视频过几天发<br>[+] 新分类“社区论坛”</p>
+                        <p><strong>·</strong> 新卡片：T显可视化编辑器、CBerGit、基岩版开发wiki</p>
+                        <p><strong>·</strong> 建议/反馈请加Q群: 587984701</p>
+                        <p>公告编辑时间: 11-09</p>
+                    `,
             buttons: [
                 { text: "更新日志", style: "gray", action: "open_link", url: "https://blog.lonzov.top/posts/tool-update/#202510" },
                 { text: "加 群", style: "", action: "open_link", url: "https://qm.qq.com/q/hjTqUyIKEo" },
                 { text: "关闭", style: "red", action: "close" },
             ]
         };
-        window.addEventListener('DOMContentLoaded', () => {
-            showModal(modalConfig);
+
+        const IOSmodal_survey = {
+            title: "问卷",
+            id: "survey_1114",
+            version: "202511140000",
+            forceShow: false,
+            content: `
+                    <p>诚邀您用2分钟填写未来更新计划问卷，您的意见将帮助我们改进网站</p>
+                    <p style="margin:0;font-size:13px;color:#666;line-height:1.4">问卷入口长期保留，导航栏「≡」菜单中可随时填写</p>
+                    `,
+            buttons: [
+                { text: "填写问卷", style: "", action: "open_link", url: "https://f.kdocs.cn/g/JfmI2Ch8/" },
+                { text: "关闭", style: "red", action: "close" },
+            ]
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            showModal(IOSmodal_survey);
+            showModal(IOSmodal_undate);
         });
+
         const currentTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', currentTheme);
     </script>
@@ -227,16 +245,19 @@
     <div class="menu-panel" id="menuPanel">
         <div class="menu-content">
             <a href="https://blog.lonzov.top/posts/tool-about/" class="menu-item" target="_blank">
-                <i class="fa-solid fa-circle-info"></i> 关于网站
+                <i class="fa-solid fa-circle-info"></i> 关于
             </a>
             <a href="https://afdian.com/a/lonzov" class="menu-item" target="_blank">
                 <i class="fa-solid fa-hand-holding-heart"></i> 赞赏
             </a>
             <a href="https://qm.qq.com/q/hjTqUyIKEo" class="menu-item" target="_blank">
-                <i class="fa-solid fa-comment"></i> 加入Q群
+                <i class="fa-brands fa-qq"></i> QQ群
             </a>
             <a href="https://blog.lonzov.top/" class="menu-item" target="_blank">
                 <i class="fa-solid fa-blog"></i> 博客
+            </a>
+            <a href="https://f.kdocs.cn/g/JfmI2Ch8/" class="menu-item" target="_blank">
+                <i class="fa-solid fa-clipboard-list"></i> 问卷
             </a>
             <!-- a href="./down/小舟工具箱.html" class="menu-item" target="_blank">
                 <i class="fab fa-android"></i> 下载
