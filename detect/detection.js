@@ -182,16 +182,18 @@ async function pingWebsite(url, elementId) {
     const MAX_ATTEMPTS = 3;
     const results = [];
     let consecutiveTimeoutsOrErrors = 0;
-    const testStartTime = Date.now(); // 记录整个测试的开始时间
-    let lastFailureTime = testStartTime; // 记录最后一次失败的时间点
+    const testStartTime = Date.now();
+    let lastFailureTime = testStartTime;
 
     addDebugLog(`开始ping测试 (3次平均): ${url}`);
+
     for (let i = 0; i < MAX_ATTEMPTS; i++) {
         try {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => {
                 controller.abort();
             }, SINGLE_TIMEOUT);
+
             const startTime = Date.now();
             const response = await fetch(`https://${url}`, { mode: 'no-cors', signal: controller.signal });
             const latency = Date.now() - startTime;
@@ -204,7 +206,8 @@ async function pingWebsite(url, elementId) {
             } else {
                 consecutiveTimeoutsOrErrors++;
                 addDebugLog(`第${i + 1}次ping (${url}) 请求超时 (>=${SINGLE_TIMEOUT}ms)`);
-                lastFailureTime = Date.now(); // 更新失败时间
+                lastFailureTime = Date.now();
+                // 前两次均失败/超时 → 提前中止
                 if (i === 1 && consecutiveTimeoutsOrErrors === 2) {
                     addDebugLog(`  ${url} 前两次均超时/失败，提前中止第三次检测。`);
                     break;
@@ -214,8 +217,7 @@ async function pingWebsite(url, elementId) {
             consecutiveTimeoutsOrErrors++;
             const isTimeout = error.name === 'AbortError';
             const isNetworkError = error.message.includes('Failed to fetch');
-            const failureTime = Date.now(); // 记录当前失败时间
-            lastFailureTime = failureTime; // 更新失败时间
+            lastFailureTime = Date.now();
 
             if (isTimeout) {
                 addDebugLog(`第${i + 1}次ping (${url}) 请求超时 (>=${SINGLE_TIMEOUT}ms)`);
@@ -225,6 +227,7 @@ async function pingWebsite(url, elementId) {
                 addDebugLog(`第${i + 1}次ping (${url}) 失败: ${error.message}`);
             }
 
+            // 前两次均失败/超时 → 提前中止
             if (i === 1 && consecutiveTimeoutsOrErrors === 2) {
                 addDebugLog(`${url} 前两次均超时/失败，提前中止第三次检测。`);
                 break;
@@ -233,29 +236,32 @@ async function pingWebsite(url, elementId) {
     }
 
     let status, statusText;
+
     if (results.length > 0) {
-        const averageLatency = results.reduce((a, b) => a + b, 0) / results.length;
-        addDebugLog(`${url} 检测完成，有效次数: ${results.length}, 平均延迟: ${averageLatency.toFixed(2)}ms`);
+        const totalAttempts = MAX_ATTEMPTS;
+        const failedAttempts = totalAttempts - results.length;
+        const averageLatency = (results.reduce((a, b) => a + b, 0) + failedAttempts * SINGLE_TIMEOUT) / totalAttempts;
+
+        addDebugLog(`${url} 检测完成，成功${results.length}次，失败${failedAttempts}次，平均延迟: ${averageLatency.toFixed(2)}ms`);
+
         if (averageLatency < 1000) {
             status = STATUS.NORMAL;
             statusText = '正常';
-        } else if (averageLatency < 3000) {
+        } else if (averageLatency < 2500) {
             status = STATUS.WARNING;
             statusText = '较慢';
-        } else if (averageLatency < 6000) {
+        } else if (averageLatency < 4500) {
             status = STATUS.WARNING2;
             statusText = '慢';
         } else if (averageLatency < 10000) {
             status = STATUS.WARNING2;
             statusText = '极慢';
         } else {
-            status = STATUS.ERROR;
+            status = STATUS.WARNING2;
             statusText = '极慢';
         }
     } else {
-        // 所有尝试都失败或超时
         addDebugLog(`${url} 检测完成，所有尝试均失败或超时。`);
-        // 检查最后一次失败是否在总超时时间限制内
         if (lastFailureTime - testStartTime < TOTAL_TIMEOUT_MS) {
             status = STATUS.ERROR;
             statusText = '不可访问';
@@ -264,6 +270,7 @@ async function pingWebsite(url, elementId) {
             statusText = '超时';
         }
     }
+
     updateElement(elementId, statusText, status);
 }
 
@@ -293,7 +300,9 @@ document.addEventListener('DOMContentLoaded', () => {
     runPingTests();
     if (pingRefreshButton) {
         pingRefreshButton.addEventListener('click', () => {
-            addDebugLog('===按钮触发刷新Ping===');
+            addDebugLog('=====================');
+            addDebugLog('===按钮触发刷新Ping==');
+            addDebugLog('=====================');
             runPingTests();
         });
     }
